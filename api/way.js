@@ -93,7 +93,13 @@ export default async function handler(req) {
     if (!res.ok) {
       const err = await res.text();
       console.error('Gemini error:', err);
-      return new Response(JSON.stringify({ error: 'Wisdom generation failed. Try again.' }), { status: 502, headers });
+      let reason = 'Wisdom generation failed.';
+      try {
+        const parsed = JSON.parse(err);
+        const msg = parsed?.error?.message || parsed?.error?.status;
+        if (msg) reason = `Gemini: ${msg}`;
+      } catch {}
+      return new Response(JSON.stringify({ error: reason }), { status: 502, headers });
     }
 
     const data = await res.json();
