@@ -185,6 +185,15 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 .f-link:hover{color:var(--red)}
 .f-copy{font-size:10px;color:var(--text3);font-family:'Cormorant Garamond',serif}
 
+/* MARQUEE */
+#marquee-strip{background:var(--card-dark);border-top:.5px solid rgba(201,168,76,.12);border-bottom:.5px solid rgba(201,168,76,.12);overflow:hidden;padding:20px 0;position:relative;z-index:2}
+.marquee-track{display:flex;align-items:center;gap:0;width:max-content;animation:mq-scroll 38s linear infinite}
+#marquee-strip:hover .marquee-track{animation-play-state:paused}
+.mq-item{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.6vw,1.2rem);font-style:italic;color:rgba(245,230,208,.45);white-space:nowrap;padding:0 36px;letter-spacing:.02em}
+.mq-item .mw{color:var(--gold);font-style:normal;font-weight:600;font-family:'Cinzel',serif;letter-spacing:2px;font-size:.9em}
+.mq-sep{color:rgba(201,168,76,.3);font-size:.7rem;flex-shrink:0}
+@keyframes mq-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
 /* GRAIN + TOAST */
 .grain{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.022}
 #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);z-index:1000;background:var(--text);color:var(--bg);padding:13px 28px;border-radius:30px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
@@ -242,7 +251,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
     <!-- VALUE PROP — visible before scrolling begins -->
     <div id="hero-intro">
       <div class="hi-eyebrow">Ancient wisdom · Four cultures · Your exact moment</div>
-      <p class="hi-sub">Tell WAY how you feel. Receive guidance from Arabic,<br>Japanese Zen, Stoic &amp; Ubuntu philosophy.</p>
+      <p class="hi-sub">For thousands of years, every culture has held wisdom for the questions you're asking now. WAY hands you a compass and you choose the bearing that feels true.</p>
       <div class="hi-cultures">
         <span class="hi-culture">☽ Arabic</span>
         <span class="hi-culture">⛩ Zen</span>
@@ -280,6 +289,25 @@ Patience is the key to relief.</div>
     </div>
   </div>
 </section>
+
+<!-- ═══ MARQUEE ════════════════════════════════════════════════════════ -->
+<div id="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="mq-item">There must be a <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
+    <span class="mq-item">There's still a long <span class="mw">WAY</span> to go</span><span class="mq-sep">✦</span>
+    <span class="mq-item">I can't find my <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
+    <span class="mq-item">I'm still feeling my <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
+    <span class="mq-item">Which <span class="mw">WAY</span> is yours?</span><span class="mq-sep">✦</span>
+    <span class="mq-item">Which <span class="mw">WAY</span> should you go?</span><span class="mq-sep">✦</span>
+    <!-- duplicate for seamless loop -->
+    <span class="mq-item">There must be a <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
+    <span class="mq-item">There's still a long <span class="mw">WAY</span> to go</span><span class="mq-sep">✦</span>
+    <span class="mq-item">I can't find my <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
+    <span class="mq-item">I'm still feeling my <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
+    <span class="mq-item">Which <span class="mw">WAY</span> is yours?</span><span class="mq-sep">✦</span>
+    <span class="mq-item">Which <span class="mw">WAY</span> should you go?</span><span class="mq-sep">✦</span>
+  </div>
+</div>
 
 <!-- ═══ PHILOSOPHY ══════════════════════════════════════════════════════ -->
 <section id="why">
@@ -332,13 +360,13 @@ Patience is the key to relief.</div>
         <div class="step-num">II</div>
         <div class="step-ln"></div>
         <div class="step-title">Four Bearings</div>
-        <div class="step-desc">Four cultures respond — each a different compass bearing on your truth. Not quotes. Coordinates. Each with the philosophy behind it.</div>
+        <div class="step-desc">Three cultures respond: each with a different compass bearing to guide you. Each coordinate with its own wisdom.</div>
       </div>
       <div class="step" data-d="300">
         <div class="step-num">III</div>
         <div class="step-ln"></div>
         <div class="step-title">Choose Your Direction</div>
-        <div class="step-desc">Deep dive any bearing. Save what resonates. Share what moves you. Return tomorrow — you're always somewhere new.</div>
+        <div class="step-desc">Save the card that resonates. Share the one that moves you. Return tomorrow, you're always somewhere new.</div>
       </div>
     </div>
   </div>
@@ -373,8 +401,6 @@ Patience is the key to relief.</div>
             <div class="sc-arabic" id="sc-arabic">"الصبر مفتاح الفرج"</div>
             <div class="sc-english" id="sc-english">Patience is the key to relief.</div>
           </div>
-          <div class="sc-divider"></div>
-          <div class="sc-concept" id="sc-concept">Sabr — active, trusting endurance</div>
           <div class="sc-bottom">
             <span class="sc-attr" id="sc-attr">Ancient Arabic Wisdom</span>
             <span class="sc-watermark">✦ way.html</span>
@@ -397,7 +423,7 @@ Patience is the key to relief.</div>
   <div class="cta-inner">
     <div class="eyebrow" style="justify-content:center"><div class="ey-line"></div>Begin<div class="ey-line"></div></div>
     <div class="cta-hl">Where are<br>you today?</div>
-    <div class="cta-sub">Ancient cultures have been mapping the human condition for millennia. Let them guide you — one feeling at a time.</div>
+    <div class="cta-sub">Let WAY guide you, one feeling at a time.</div>
     <a href="way.html" class="cta-btn"><span>✦</span>Find My Way<span>✦</span></a>
     <div class="cta-foot">Powered by AI · Rooted in culture · Free to start</div>
   </div>
@@ -787,26 +813,21 @@ document.querySelectorAll('.pillar,.step').forEach(el => io.observe(el));
 
 /* ═══ SHARE CARD ══════════════════════════════════════════════════════ */
 const SHARE_QUOTES = [
-  {glyph:'☽',pill:'Arabic · Sabr',attr:'Ancient Arabic Wisdom',
+  {glyph:'☽',pill:'Arabic · Sabr',attr:'Origin · Arabia · 23°N 45°E',
    arabic:'"الصبر مفتاح الفرج"',
-   english:'Patience is the key to relief.',
-   concept:'Sabr — active, trusting endurance'},
-  {glyph:'⛩',pill:'Zen · Nana Korobi Ya Oki',attr:'Japanese Zen Buddhism',
+   english:'Patience is the key to relief.'},
+  {glyph:'⛩',pill:'Zen · Nana Korobi Ya Oki',attr:'Origin · Kyoto, Japan · 35°N 135°E',
    arabic:'"七転び八起き"',
-   english:'Fall seven times. Rise eight.',
-   concept:'Resilient becoming through each fall'},
-  {glyph:'Φ',pill:'Stoic · Amor Fati',attr:'Marcus Aurelius, 167 AD',
+   english:'Fall seven times. Rise eight.'},
+  {glyph:'Φ',pill:'Stoic · Amor Fati',attr:'Origin · Rome, Italy · 41°N 12°E',
    arabic:'"The impediment to action advances action."',
-   english:'What stands in the way becomes the way.',
-   concept:'Amor Fati — love of what is'},
-  {glyph:'◉',pill:'Ubuntu · African Philosophy',attr:'Southern African Tradition',
+   english:'What stands in the way becomes the way.'},
+  {glyph:'◉',pill:'Ubuntu · African Philosophy',attr:'Origin · Sub-Saharan Africa · 26°S 28°E',
    arabic:'"Umuntu ngumuntu ngabantu."',
-   english:'A person is a person through people.',
-   concept:'Ubuntu — restoration through belonging'},
-  {glyph:'✦',pill:'Persian · Tavakkol',attr:'Ancient Persian Wisdom',
+   english:'A person is a person through people.'},
+  {glyph:'✦',pill:'Persian · Tavakkol',attr:'Origin · Persia · 32°N 53°E',
    arabic:'"آرام باش، این نیز بگذرد"',
-   english:'Be calm. This too shall pass.',
-   concept:'Tavakkol — trust in the unfolding'},
+   english:'Be calm. This too shall pass.'},
 ];
 
 let shareIdx = 0;
@@ -819,7 +840,6 @@ function renderCard(idx, animate){
     document.getElementById('sc-pill').innerHTML     = q.glyph + ' &nbsp;' + q.pill;
     document.getElementById('sc-arabic').textContent  = q.arabic;
     document.getElementById('sc-english').textContent = q.english;
-    document.getElementById('sc-concept').textContent = q.concept;
     document.getElementById('sc-attr').textContent    = q.attr;
     // rebuild dots
     document.getElementById('card-dots').innerHTML = SHARE_QUOTES
