@@ -136,7 +136,7 @@ nav.scrolled{background:rgba(245,230,208,.94);backdrop-filter:blur(24px);border-
   min-height:300px;display:flex;flex-direction:column;justify-content:space-between;
   transition:transform .4s ease,box-shadow .4s ease;cursor:default;
 }
-#share-card:hover{transform:translateY(-4px);box-shadow:0 40px 100px rgba(17,6,8,.4),0 12px 32px rgba(0,0,0,.25)}
+#share-card:hover{box-shadow:0 44px 110px rgba(17,6,8,.45),0 14px 36px rgba(0,0,0,.28)}
 #share-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 25% 20%,rgba(140,27,53,.2) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 75% 80%,rgba(201,168,76,.06) 0%,transparent 65%);pointer-events:none}
 #share-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent)}
 .sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;position:relative;z-index:1}
@@ -194,6 +194,18 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 .mq-sep{color:rgba(201,168,76,.3);font-size:.7rem;flex-shrink:0}
 @keyframes mq-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+/* CUSTOM CURSOR — desktop only */
+@media(hover:hover){
+  *{cursor:none!important}
+  #cursor{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(140,27,53,.32);pointer-events:none;z-index:9998;top:0;left:0;will-change:transform;transition:width .22s ease,height .22s ease,border-color .22s,background .22s}
+  #cursor.hov{width:54px;height:54px;border-color:var(--red);background:rgba(140,27,53,.06)}
+  #cursor-dot{position:fixed;width:5px;height:5px;border-radius:50%;background:var(--red);pointer-events:none;z-index:9999;top:0;left:0;will-change:transform}
+}
+/* SHARE CARD AUDIO BTN */
+.sc-audio-btn{background:transparent;border:.5px solid rgba(201,168,76,.25);color:rgba(201,168,76,.55);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;flex-shrink:0;padding:0;position:relative}
+.sc-audio-btn:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.55);color:var(--gold2)}
+.sc-audio-btn.playing{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:var(--gold2);animation:apl 2s ease-in-out infinite}
+@keyframes apl{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.3)}55%{box-shadow:0 0 0 9px rgba(201,168,76,0)}}
 /* GRAIN + TOAST */
 .grain{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.022}
 #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);z-index:1000;background:var(--text);color:var(--bg);padding:13px 28px;border-radius:30px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
@@ -215,6 +227,8 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 </head>
 <body>
 <div class="grain"></div>
+<div id="cursor" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
 <div id="toast"></div>
 
 <nav id="nav">
@@ -394,6 +408,9 @@ Patience is the key to relief.</div>
         <div id="share-card">
           <div class="sc-top">
             <span class="sc-logo">WAY</span>
+            <button class="sc-audio-btn" id="sc-audio-btn" onclick="WAY.toggleAudio()" title="Play ambient sound" aria-label="Play ambient sound">
+              <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
+            </button>
             <span class="sc-culture-pill" id="sc-pill">☽ &nbsp;Arabic · Sabr</span>
           </div>
           <div class="sc-divider"></div>
@@ -813,19 +830,19 @@ document.querySelectorAll('.pillar,.step').forEach(el => io.observe(el));
 
 /* ═══ SHARE CARD ══════════════════════════════════════════════════════ */
 const SHARE_QUOTES = [
-  {glyph:'☽',pill:'Arabic · Sabr',attr:'Origin · Arabia · 23°N 45°E',
+  {glyph:'☽',pill:'Arabic · Sabr',audioKey:'arabic',attr:'Origin · Arabia · 23°N 45°E',
    arabic:'"الصبر مفتاح الفرج"',
    english:'Patience is the key to relief.'},
-  {glyph:'⛩',pill:'Zen · Nana Korobi Ya Oki',attr:'Origin · Kyoto, Japan · 35°N 135°E',
+  {glyph:'⛩',pill:'Zen · Nana Korobi Ya Oki',audioKey:'zen',attr:'Origin · Kyoto, Japan · 35°N 135°E',
    arabic:'"七転び八起き"',
    english:'Fall seven times. Rise eight.'},
-  {glyph:'Φ',pill:'Stoic · Amor Fati',attr:'Origin · Rome, Italy · 41°N 12°E',
+  {glyph:'Φ',pill:'Stoic · Amor Fati',audioKey:'stoic',attr:'Origin · Rome, Italy · 41°N 12°E',
    arabic:'"The impediment to action advances action."',
    english:'What stands in the way becomes the way.'},
-  {glyph:'◉',pill:'Ubuntu · African Philosophy',attr:'Origin · Sub-Saharan Africa · 26°S 28°E',
+  {glyph:'◉',pill:'Ubuntu · African Philosophy',audioKey:'ubuntu',attr:'Origin · Sub-Saharan Africa · 26°S 28°E',
    arabic:'"Umuntu ngumuntu ngabantu."',
    english:'A person is a person through people.'},
-  {glyph:'✦',pill:'Persian · Tavakkol',attr:'Origin · Persia · 32°N 53°E',
+  {glyph:'✦',pill:'Persian · Tavakkol',audioKey:'persian',attr:'Origin · Persia · 32°N 53°E',
    arabic:'"آرام باش، این نیز بگذرد"',
    english:'Be calm. This too shall pass.'},
 ];
@@ -876,35 +893,215 @@ function showToast(msg){
 }
 
 const WAY = {
-  goCard(i){ shareIdx=i; renderCard(i,true); },
+  goCard(i){
+    const wp = AudioEngine.playing;
+    shareIdx = i; renderCard(i, true);
+    if(wp) AudioEngine.play(SHARE_QUOTES[i].audioKey);
+  },
+
+  toggleAudio(){
+    const q = SHARE_QUOTES[shareIdx];
+    const btn = document.getElementById('sc-audio-btn');
+    const np = AudioEngine.toggle(q.audioKey);
+    btn.classList.toggle('playing', np);
+  },
 
   copyLink(){
     const q = SHARE_QUOTES[shareIdx];
-    const text = q.arabic + '\n\n"' + q.english + '"\n' + q.concept + ' — ' + q.attr + '\n\n' + window.location.href;
+    const text = q.arabic + '\n\n"' + q.english + '"\n— ' + q.attr + '\n\n' + window.location.href;
     navigator.clipboard.writeText(text).then(()=>showToast('Copied ✓'));
   },
 
   shareX(){
     const q = SHARE_QUOTES[shareIdx];
-    const text = '"' + q.english + '"\n— ' + q.pill + '\n\n' + q.concept;
+    const text = '"' + q.english + '"\n— ' + q.pill + '\n\nFind your bearing:';
     window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(window.location.href),'_blank');
   },
 
   shareWhatsApp(){
     const q = SHARE_QUOTES[shareIdx];
-    const text = q.arabic+'\n\n*"'+q.english+'"*\n_'+q.concept+'_\n— '+q.attr+'\n\n'+window.location.href;
+    const text = q.arabic+'\n\n*"'+q.english+'"*\n— '+q.attr+'\n\n'+window.location.href;
     window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
   },
 
   shareNative(){
     const q = SHARE_QUOTES[shareIdx];
     if(navigator.share){
-      navigator.share({title:'WAY — '+q.pill,text:'"'+q.english+'" — '+q.concept,url:window.location.href});
+      navigator.share({title:'WAY — '+q.pill,text:'"'+q.english+'"',url:window.location.href});
     } else {
       this.copyLink();
     }
   }
 };
+
+/* ═══ AMBIENT AUDIO ENGINE ═══════════════════════════════════════════
+   Generative ambient sound per culture — no audio files needed.
+   Uses Web Audio API oscillators + reverb impulse response.
+═══════════════════════════════════════════════════════════════════ */
+const AudioEngine = (() => {
+  let actx = null, master = null, alive = [], playing = false;
+
+  function ctx() {
+    if (!actx) {
+      actx = new (window.AudioContext || window.webkitAudioContext)();
+      master = actx.createGain(); master.gain.value = 0;
+      master.connect(actx.destination);
+    }
+    return actx;
+  }
+
+  function impulseReverb(secs) {
+    const ac = ctx(), len = ac.sampleRate * secs;
+    const buf = ac.createBuffer(2, len, ac.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = buf.getChannelData(ch);
+      for (let i = 0; i < len; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 2.8);
+    }
+    const c = ac.createConvolver(); c.buffer = buf; return c;
+  }
+
+  function sine(freq, gainVal, dest, detuneAmt) {
+    const ac = ctx(), o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sine'; o.frequency.value = freq;
+    if (detuneAmt) o.detune.value = (Math.random()-.5) * detuneAmt;
+    g.gain.value = gainVal;
+    o.connect(g); g.connect(dest); o.start(); alive.push(o); return {o,g};
+  }
+
+  function withTremolo(node, rate, depth) {
+    const ac = ctx(), lfo = ac.createOscillator(), lg = ac.createGain();
+    lfo.frequency.value = rate; lg.gain.value = depth;
+    lfo.connect(lg); lg.connect(node.g.gain); lfo.start(); alive.push(lfo);
+  }
+
+  const SOUNDS = {
+    arabic() {
+      const rv = impulseReverb(5); rv.connect(master);
+      const f = ctx().createBiquadFilter(); f.type='lowpass'; f.frequency.value=1100; f.connect(rv);
+      [220, 247, 330, 415].forEach((freq,i) => {
+        const n = sine(freq, 0.048, f, 10);
+        withTremolo(n, 3 + i*.4, .009);
+      });
+    },
+    zen() {
+      const rv = impulseReverb(10); rv.connect(master);
+      sine(432, 0.13, rv, 3);
+      sine(864, 0.04, rv, 2);
+      function bell() {
+        if (!playing) return;
+        const ac = ctx(), o = ac.createOscillator(), g = ac.createGain();
+        o.type='sine'; o.frequency.value = 880 + Math.random()*40;
+        g.gain.setValueAtTime(0.16, ac.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 4.5);
+        o.connect(g); g.connect(rv); o.start(); o.stop(ac.currentTime+4.6);
+        setTimeout(bell, 7000 + Math.random()*6000);
+      }
+      setTimeout(bell, 1800);
+    },
+    stoic() {
+      const rv = impulseReverb(7); rv.connect(master);
+      const f = ctx().createBiquadFilter(); f.type='lowpass'; f.frequency.value=480; f.connect(rv);
+      [55, 110, 165].forEach(freq => {
+        const ac = ctx(), o = ac.createOscillator(), g = ac.createGain();
+        o.type='sawtooth'; o.frequency.value=freq; g.gain.value=0.055;
+        o.connect(g); g.connect(f); o.start(); alive.push(o);
+      });
+    },
+    ubuntu() {
+      const rv = impulseReverb(4); rv.connect(master);
+      [264, 330, 396, 495].forEach((freq,i) => {
+        const n = sine(freq, 0.055, rv, 7);
+        withTremolo(n, 4.5 + i*.3, .007);
+      });
+    },
+    persian() {
+      const rv = impulseReverb(6); rv.connect(master);
+      [196, 233, 294, 370].forEach((freq,i) => {
+        const n = sine(freq, 0.06, rv, 8);
+        withTremolo(n, 2.8 + i*.2, .012);
+      });
+    }
+  };
+
+  return {
+    play(key) {
+      this.stop();
+      const fn = SOUNDS[key]; if (!fn) return;
+      const ac = ctx(); if (ac.state === 'suspended') ac.resume();
+      fn(); playing = true;
+      master.gain.cancelScheduledValues(ac.currentTime);
+      master.gain.setTargetAtTime(1, ac.currentTime, 1.4);
+    },
+    stop() {
+      if (!actx) return;
+      master.gain.setTargetAtTime(0, actx.currentTime, 0.5);
+      const kill = [...alive];
+      setTimeout(() => kill.forEach(n => { try { n.stop(); } catch(e){} }), 1800);
+      alive = []; playing = false;
+    },
+    toggle(key) {
+      if (playing) { this.stop(); return false; }
+      this.play(key); return true;
+    },
+    get playing() { return playing; }
+  };
+})();
+
+/* ═══ CUSTOM CURSOR ══════════════════════════════════════════════════ */
+(function(){
+  if (!window.matchMedia('(hover:hover)').matches) return;
+  const ring = document.getElementById('cursor');
+  const dot  = document.getElementById('cursor-dot');
+  if (!ring || !dot) return;
+  let rx=0,ry=0,tx=0,ty=0;
+  window.addEventListener('mousemove', e => { tx=e.clientX; ty=e.clientY; });
+  (function tick(){
+    rx += (tx-rx)*.12; ry += (ty-ry)*.12;
+    ring.style.transform = `translate(${rx-18}px,${ry-18}px)`;
+    dot.style.transform  = `translate(${tx-2.5}px,${ty-2.5}px)`;
+    requestAnimationFrame(tick);
+  })();
+  document.querySelectorAll('a,button,.pillar,.card-nav,.card-dot,.share-btn,.hi-culture').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('hov'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('hov'));
+  });
+})();
+
+/* ═══ 3D CARD TILT ══════════════════════════════════════════════════ */
+(function(){
+  if (!window.matchMedia('(hover:hover)').matches) return;
+  const card = document.getElementById('share-card');
+  if (!card) return;
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const dx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+    const dy = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+    card.style.transition = 'transform .07s ease,box-shadow .07s ease';
+    card.style.transform  = `perspective(900px) rotateX(${dy*-7}deg) rotateY(${dx*10}deg) translateY(-6px) scale(1.01)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'transform .65s ease,box-shadow .65s ease';
+    card.style.transform  = '';
+  });
+})();
+
+/* ═══ MAGNETIC BUTTONS ══════════════════════════════════════════════ */
+(function(){
+  if (!window.matchMedia('(hover:hover)').matches) return;
+  document.querySelectorAll('.hi-btn,.cta-btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width/2))  * 0.3;
+      const dy = (e.clientY - (r.top  + r.height/2)) * 0.3;
+      btn.style.transition = 'transform .1s ease';
+      btn.style.transform  = `translate(${dx}px,${dy}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transition = 'transform .5s ease';
+      btn.style.transform  = '';
+    });
+  });
+})();
 </script>
 </body>
 </html>

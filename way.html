@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>WAY — Find Your Bearing</title>
+<meta name="description" content="Tell WAY how you feel. Receive ancient wisdom from four cultures."/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0608;--bg2:#110a0c;
+  --parch:#f5e6d0;--parch2:rgba(245,230,208,.75);--parch3:rgba(245,230,208,.45);
+  --red:#8c1b35;--red2:#a82040;
+  --gold:#c9a84c;--gold2:#e0bc6a;--golddim:rgba(201,168,76,.5);
+  --arabic:#8c1b35;--zen:#1a6b58;--stoic:#7a4820;--ubuntu:#7a3010;--persian:#4a2878;
+  --border:rgba(245,230,208,.08);
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;overflow-x:hidden;min-height:100svh}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--golddim)}
+
+/* ── CURSOR ─────────────────────────────── */
+@media(hover:hover){
+  *{cursor:none!important}
+  #cursor{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(245,230,208,.25);pointer-events:none;z-index:9998;top:0;left:0;will-change:transform;transition:width .22s,height .22s,border-color .22s,background .22s}
+  #cursor.hov{width:48px;height:48px;border-color:var(--gold);background:rgba(201,168,76,.06)}
+  #cursor-dot{position:fixed;width:4px;height:4px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:9999;top:0;left:0;will-change:transform}
+}
+
+/* ── NAV ─────────────────────────────────── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:.5px solid transparent;transition:all .4s}
+#nav.scrolled{background:rgba(10,6,8,.9);backdrop-filter:blur(20px);border-color:var(--border)}
+.nav-logo{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;letter-spacing:8px;color:var(--parch);text-decoration:none;opacity:.9}
+.nav-back{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--parch3);text-decoration:none;transition:color .3s;display:flex;align-items:center;gap:8px}
+.nav-back:hover{color:var(--gold)}
+.nav-back::before{content:'←';font-size:1rem;font-family:serif}
+
+/* ── CANVAS BG ───────────────────────────── */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── SHARED STATES ───────────────────────── */
+.state{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px 48px}
+.state.hidden{display:none!important}
+
+/* ── INPUT STATE ─────────────────────────── */
+#state-input .content{width:100%;max-width:680px;text-align:center}
+.input-eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--golddim);margin-bottom:24px}
+.input-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,7vw,5.5rem);font-weight:400;font-style:italic;line-height:1.05;color:var(--parch);margin-bottom:40px;letter-spacing:-.01em}
+#feeling{
+  width:100%;min-height:160px;max-height:280px;
+  background:rgba(245,230,208,.04);
+  border:.5px solid rgba(245,230,208,.15);
+  border-radius:16px;padding:24px 28px;
+  color:var(--parch);font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.8;
+  resize:none;outline:none;transition:border-color .3s,background .3s;
+  caret-color:var(--gold);
+}
+#feeling::placeholder{color:rgba(245,230,208,.3)}
+#feeling:focus{border-color:rgba(201,168,76,.4);background:rgba(245,230,208,.06)}
+.input-meta{margin-top:14px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:rgba(245,230,208,.25);text-transform:uppercase}
+.seek-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--parch);color:var(--bg);
+  border:none;border-radius:10px;padding:17px 44px;margin-top:32px;
+  font-family:'Cinzel',serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;
+  box-shadow:0 8px 32px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.3);
+}
+.seek-btn:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.5)}
+.seek-btn:disabled{opacity:.4;pointer-events:none}
+.input-coord-row{
+  margin-top:48px;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;
+  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(245,230,208,.18);
+}
+.coord-sep{color:rgba(245,230,208,.1)}
+
+/* ── LOADING STATE ───────────────────────── */
+#state-loading .content{text-align:center;display:flex;flex-direction:column;align-items:center;gap:32px}
+#compass-wrap{position:relative;width:120px;height:120px}
+#compass-svg{width:120px;height:120px;animation:crot 8s linear infinite}
+@keyframes crot{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.load-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--golddim)}
+.load-cultures{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.lc{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.2);transition:color .6s}
+.lc.lit{color:var(--gold)}
+.load-bar-wrap{width:200px;height:1px;background:rgba(245,230,208,.08);border-radius:1px;overflow:hidden}
+.load-bar{height:100%;background:var(--gold);width:0%;transition:width .4s ease}
+
+/* ── RESULTS STATE ───────────────────────── */
+#state-results{justify-content:flex-start;padding-top:100px}
+.results-header{text-align:center;margin-bottom:64px;width:100%}
+.results-eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--golddim);margin-bottom:16px}
+.results-summary{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4vw,3rem);font-style:italic;color:var(--parch);font-weight:300}
+.bearings-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+  width:100%;max-width:1100px;
+}
+@media(max-width:760px){.bearings-grid{grid-template-columns:1fr}}
+
+/* ── BEARING CARD ────────────────────────── */
+.bc{
+  background:rgba(245,230,208,.03);
+  border:.5px solid var(--border);
+  border-radius:20px;padding:32px 32px 28px;
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(24px);
+  transition:border-color .3s,box-shadow .3s;
+  display:flex;flex-direction:column;gap:0;
+}
+.bc.vis{opacity:1;transform:translateY(0);transition:opacity .7s ease,transform .7s ease,border-color .3s,box-shadow .3s}
+.bc:hover{box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.bc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0}
+.bc.arabic::before{background:linear-gradient(90deg,transparent,var(--arabic),transparent)}
+.bc.zen::before{background:linear-gradient(90deg,transparent,var(--zen),transparent)}
+.bc.stoic::before{background:linear-gradient(90deg,transparent,var(--stoic),transparent)}
+.bc.ubuntu::before{background:linear-gradient(90deg,transparent,var(--ubuntu),transparent)}
+.bc.arabic:hover{border-color:rgba(140,27,53,.25)}
+.bc.zen:hover{border-color:rgba(26,107,88,.25)}
+.bc.stoic:hover{border-color:rgba(122,72,32,.25)}
+.bc.ubuntu:hover{border-color:rgba(122,48,16,.25)}
+
+.bc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.bc-left{display:flex;align-items:center;gap:14px}
+.bc-glyph{font-size:1.8rem;line-height:1;filter:drop-shadow(0 0 12px currentColor)}
+.bc-arabic .bc-glyph{color:var(--arabic)}
+.bc-zen .bc-glyph{color:var(--zen)}
+.bc-stoic .bc-glyph{color:var(--stoic)}
+.bc-ubuntu .bc-glyph{color:var(--ubuntu)}
+.bc-meta{}
+.bc-culture{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--parch2)}
+.bc-coord{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-top:4px}
+.bc-audio{background:transparent;border:.5px solid rgba(245,230,208,.15);color:rgba(245,230,208,.4);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;flex-shrink:0;padding:0}
+.bc-audio:hover,.bc-audio.playing{border-color:var(--golddim);color:var(--gold);background:rgba(201,168,76,.08)}
+.bc-audio.playing{animation:apl 2s ease-in-out infinite}
+@keyframes apl{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.25)}55%{box-shadow:0 0 0 8px rgba(201,168,76,0)}}
+
+.bc-divider{height:.5px;background:var(--border);margin:18px 0}
+
+.bc-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,2.2vw,1.5rem);font-style:italic;color:var(--parch);line-height:1.55;margin-bottom:10px}
+.bc-translation{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,1.6vw,1.1rem);color:var(--parch3);line-height:1.6;margin-bottom:14px}
+
+.bc-concept-badge{display:inline-flex;align-items:center;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;border:.5px solid var(--border);border-radius:20px;padding:5px 12px;color:var(--golddim);margin-bottom:18px}
+
+.bc-context{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.8vw,1.2rem);line-height:1.75;color:var(--parch3);font-style:italic;margin-bottom:20px;flex:1}
+
+.bc-practice{background:rgba(245,230,208,.04);border:.5px solid rgba(245,230,208,.07);border-radius:10px;padding:16px 18px;margin-bottom:22px}
+.bc-practice-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--golddim);margin-bottom:8px}
+.bc-practice-text{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.6vw,1.1rem);line-height:1.7;color:var(--parch2)}
+
+.bc-share{display:flex;align-items:center;gap:8px;background:transparent;border:.5px solid rgba(245,230,208,.15);color:rgba(245,230,208,.5);padding:10px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;width:fit-content}
+.bc-share:hover{border-color:var(--golddim);color:var(--gold)}
+
+/* ── SHARE MODAL ─────────────────────────── */
+#share-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:24px}
+#share-modal.hidden{display:none!important}
+.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(12px)}
+.modal-inner{position:relative;z-index:1;width:100%;max-width:520px;display:flex;flex-direction:column;gap:20px}
+.modal-close{position:absolute;top:-16px;right:0;background:transparent;border:.5px solid rgba(245,230,208,.2);color:rgba(245,230,208,.5);width:32px;height:32px;border-radius:50%;font-size:.9rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{color:var(--parch);border-color:rgba(245,230,208,.5)}
+
+/* Share card inside modal — same dark card design */
+.modal-card{background:#110608;border-radius:18px;padding:36px 40px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.modal-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 25% 20%,rgba(140,27,53,.18) 0%,transparent 65%);pointer-events:none}
+.modal-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent)}
+.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;position:relative;z-index:1}
+.mc-logo{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:6px;color:rgba(245,230,208,.9);font-weight:700}
+.mc-pill{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold2);border:.5px solid rgba(201,168,76,.3);border-radius:20px;padding:5px 12px}
+.mc-div{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent);margin:16px 0;position:relative;z-index:1}
+.mc-quote-block{position:relative;z-index:1;text-align:center;padding:8px 0;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.mc-original{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,2.5vw,1.6rem);font-style:italic;color:rgba(245,230,208,.95);line-height:1.5}
+.mc-english{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,1.8vw,1.15rem);font-style:italic;color:rgba(245,230,208,.7)}
+.mc-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:20px;position:relative;z-index:1}
+.mc-attr{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3)}
+.mc-wm{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.3)}
+
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.modal-btn{display:flex;align-items:center;gap:7px;background:transparent;border:.5px solid rgba(245,230,208,.15);color:rgba(245,230,208,.6);padding:11px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.modal-btn:hover{border-color:rgba(245,230,208,.35);color:var(--parch)}
+.modal-btn.primary{background:rgba(245,230,208,.08);border-color:rgba(245,230,208,.25)}
+
+/* ── ERROR TOAST ─────────────────────────── */
+#toast{position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(20px);z-index:1000;background:rgba(245,230,208,.95);color:#110608;padding:12px 26px;border-radius:30px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── RESPONSIVE ──────────────────────────── */
+@media(max-width:600px){
+  #nav{padding:16px 20px}
+  #state-input .content{text-align:left}
+  .input-title{font-size:2.4rem}
+  .seek-btn{width:100%;justify-content:center}
+  .modal-card{padding:24px 22px}
+}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="cursor" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="toast"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">WAY</a>
+  <a href="index.html" class="nav-back">Back</a>
+</nav>
+
+<!-- ═══ INPUT ════════════════════════════════════════════════════════ -->
+<div class="state" id="state-input">
+  <div class="content">
+    <div class="input-eyebrow">Find your bearing</div>
+    <h1 class="input-title">Where are you<br>today?</h1>
+    <textarea id="feeling" rows="5" placeholder="Write how you feel in plain language. Lost. Overwhelmed. At a crossroads. Afraid of what comes next. There is no wrong answer." maxlength="600"></textarea>
+    <div class="input-meta"><span id="char-count">0</span> / 600</div>
+    <br>
+    <button class="seek-btn" id="seek-btn" onclick="seek()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+      Find My Way
+    </button>
+    <div class="input-coord-row">
+      <span>ARABIC · 23°N 45°E</span><span class="coord-sep">✦</span>
+      <span>ZEN · 35°N 135°E</span><span class="coord-sep">✦</span>
+      <span>STOIC · 41°N 12°E</span><span class="coord-sep">✦</span>
+      <span>UBUNTU · 26°S 28°E</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LOADING ═══════════════════════════════════════════════════════ -->
+<div class="state hidden" id="state-loading">
+  <div class="content">
+    <div id="compass-wrap">
+      <svg id="compass-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="46" stroke="rgba(245,230,208,.07)" stroke-width=".8"/>
+        <circle cx="50" cy="50" r="38" stroke="rgba(201,168,76,.12)" stroke-width=".5"/>
+        <!-- N -->
+        <polygon points="50,8 46,48 50,44 54,48" fill="#c9a84c" opacity=".9"/>
+        <!-- S -->
+        <polygon points="50,92 46,52 50,56 54,52" fill="rgba(245,230,208,.25)"/>
+        <!-- E -->
+        <polygon points="92,50 52,46 56,50 52,54" fill="rgba(245,230,208,.2)"/>
+        <!-- W -->
+        <polygon points="8,50 48,46 44,50 48,54" fill="rgba(245,230,208,.2)"/>
+        <!-- cardinal ticks -->
+        <line x1="50" y1="2" x2="50" y2="6" stroke="rgba(201,168,76,.4)" stroke-width="1"/>
+        <line x1="98" y1="50" x2="94" y2="50" stroke="rgba(245,230,208,.2)" stroke-width=".8"/>
+        <line x1="2" y1="50" x2="6" y2="50" stroke="rgba(245,230,208,.2)" stroke-width=".8"/>
+        <line x1="50" y1="98" x2="50" y2="94" stroke="rgba(245,230,208,.2)" stroke-width=".8"/>
+        <!-- center -->
+        <circle cx="50" cy="50" r="3.5" fill="var(--gold)" opacity=".8"/>
+        <circle cx="50" cy="50" r="7" stroke="rgba(201,168,76,.2)" stroke-width=".5" fill="none"/>
+      </svg>
+    </div>
+    <div class="load-label">Reading your bearing</div>
+    <div class="load-cultures">
+      <span class="lc" id="lc-arabic">ARABIC</span>
+      <span class="lc" id="lc-zen">ZEN</span>
+      <span class="lc" id="lc-stoic">STOIC</span>
+      <span class="lc" id="lc-ubuntu">UBUNTU</span>
+    </div>
+    <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
+  </div>
+</div>
+
+<!-- ═══ RESULTS ═══════════════════════════════════════════════════════ -->
+<div class="state hidden" id="state-results">
+  <div class="results-header">
+    <div class="results-eyebrow">Your four bearings</div>
+    <div class="results-summary" id="results-summary"></div>
+  </div>
+  <div class="bearings-grid" id="bearings-grid"></div>
+</div>
+
+<!-- ═══ SHARE MODAL ════════════════════════════════════════════════════ -->
+<div id="share-modal" class="hidden">
+  <div class="modal-backdrop" onclick="closeShareModal()"></div>
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeShareModal()" aria-label="Close">✕</button>
+    <div class="modal-card">
+      <div class="mc-top">
+        <span class="mc-logo">WAY</span>
+        <span class="mc-pill" id="mc-pill"></span>
+      </div>
+      <div class="mc-div"></div>
+      <div class="mc-quote-block">
+        <div class="mc-original" id="mc-original"></div>
+        <div class="mc-english" id="mc-english"></div>
+      </div>
+      <div class="mc-div"></div>
+      <div class="mc-bottom">
+        <span class="mc-attr" id="mc-attr"></span>
+        <span class="mc-wm">✦ way.html</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn primary" id="modal-audio-btn" onclick="toggleModalAudio()">
+        <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
+        Play Ambient
+      </button>
+      <button class="modal-btn" onclick="modalCopy()">⎘ Copy</button>
+      <button class="modal-btn" onclick="modalX()">𝕏 Share</button>
+      <button class="modal-btn" onclick="modalWhatsApp()">✉ WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══ STAR CANVAS BG ════════════════════════════════════════════════ */
+(function(){
+  const c = document.getElementById('bg');
+  const cx = c.getContext('2d');
+  let W,H,stars=[],shoots=[];
+  const dunes=[[0,.72],[.07,.68],[.18,.74],[.28,.63],[.40,.70],[.50,.61],[.62,.69],[.72,.59],[.84,.67],[.93,.63],[1,.66]];
+
+  function init(){
+    W=c.width=window.innerWidth; H=c.height=window.innerHeight;
+    stars=[];
+    const n=Math.floor(W*H/4200);
+    for(let i=0;i<n;i++) stars.push({x:Math.random()*W,y:Math.random()*H*.76,r:.1+Math.random()*1.4,ph:Math.random()*Math.PI*2,sp:.006+Math.random()*.02,br:.25+Math.random()*.75,col:Math.random()<.12?[255,210,140]:Math.random()<.1?[180,200,255]:[237,229,200]});
+  }
+
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    const sg=cx.createLinearGradient(0,0,0,H);
+    sg.addColorStop(0,'#05030a');sg.addColorStop(.6,'#090507');sg.addColorStop(1,'#0d0905');
+    cx.fillStyle=sg;cx.fillRect(0,0,W,H);
+
+    stars.forEach(s=>{
+      s.ph+=s.sp;
+      const a=s.br*(.45+.55*Math.sin(s.ph));
+      if(a<.04)return;
+      cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a})`;cx.fill();
+      if(s.r>.85){
+        const g=cx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3.5);
+        g.addColorStop(0,`rgba(255,248,238,${a*.1})`);g.addColorStop(1,'rgba(0,0,0,0)');
+        cx.fillStyle=g;cx.beginPath();cx.arc(s.x,s.y,s.r*3.5,0,Math.PI*2);cx.fill();
+      }
+    });
+
+    if(Math.random()<.003) shoots.push({x:(.05+Math.random()*.88)*W,y:(.02+Math.random()*.35)*H,vx:(-3-Math.random()*5),vy:(.8+Math.random()*2),life:1});
+    for(let i=shoots.length-1;i>=0;i--){
+      const s=shoots[i];s.x+=s.vx;s.y+=s.vy;s.life-=.04;
+      if(s.life<=0){shoots.splice(i,1);continue}
+      cx.beginPath();cx.moveTo(s.x,s.y);cx.lineTo(s.x-s.vx*11,s.y-s.vy*11);
+      const g=cx.createLinearGradient(s.x,s.y,s.x-s.vx*11,s.y-s.vy*11);
+      g.addColorStop(0,`rgba(255,245,220,${s.life*.8})`);g.addColorStop(1,'rgba(255,245,220,0)');
+      cx.strokeStyle=g;cx.lineWidth=.85;cx.stroke();
+    }
+
+    const hY=H*.68;
+    const hg=cx.createLinearGradient(0,hY-H*.08,0,hY+H*.12);
+    hg.addColorStop(0,'rgba(0,0,0,0)');hg.addColorStop(.4,'rgba(110,60,22,.16)');hg.addColorStop(1,'rgba(0,0,0,0)');
+    cx.fillStyle=hg;cx.fillRect(0,hY-H*.08,W,H*.2);
+
+    const dg=cx.createLinearGradient(0,hY,0,H);
+    dg.addColorStop(0,'rgba(10,6,4,1)');dg.addColorStop(1,'rgba(4,2,1,1)');
+    cx.beginPath();
+    const dp=dunes.map(([fx,fy])=>[fx*W,hY+(fy-.62)*(H-hY)*.5+H*.04]);
+    cx.moveTo(dp[0][0],dp[0][1]);
+    for(let i=1;i<dp.length-1;i++){
+      const mx=(dp[i][0]+dp[i+1][0])/2,my=(dp[i][1]+dp[i+1][1])/2;
+      cx.quadraticCurveTo(dp[i][0],dp[i][1],mx,my);
+    }
+    cx.lineTo(W,H);cx.lineTo(0,H);cx.fillStyle=dg;cx.fill();
+    requestAnimationFrame(draw);
+  }
+
+  init(); window.addEventListener('resize',init); draw();
+})();
+
+/* ═══ AUDIO ENGINE ══════════════════════════════════════════════════ */
+const AudioEngine = (() => {
+  let actx=null, master=null, alive=[], playing=false;
+  function ctx(){
+    if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=0;master.connect(actx.destination);}
+    return actx;
+  }
+  function ireverb(s){
+    const ac=ctx(),len=ac.sampleRate*s,buf=ac.createBuffer(2,len,ac.sampleRate);
+    for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.8);}
+    const c=ac.createConvolver();c.buffer=buf;return c;
+  }
+  function osc(f,type,g,dest,det){
+    const ac=ctx(),o=ac.createOscillator(),gn=ac.createGain();
+    o.type=type;o.frequency.value=f;if(det)o.detune.value=(Math.random()-.5)*det;
+    gn.gain.value=g;o.connect(gn);gn.connect(dest);o.start();alive.push(o);return{o,gn};
+  }
+  function lfo(n,rate,depth){
+    const ac=ctx(),l=ac.createOscillator(),lg=ac.createGain();
+    l.frequency.value=rate;lg.gain.value=depth;l.connect(lg);lg.connect(n.gn.gain);l.start();alive.push(l);
+  }
+  const S={
+    arabic(){const rv=ireverb(5);rv.connect(master);const f=ctx().createBiquadFilter();f.type='lowpass';f.frequency.value=1100;f.connect(rv);[220,247,330,415].forEach((freq,i)=>{const n=osc(freq,'sine',.048,f,10);lfo(n,3+i*.4,.009);});},
+    zen(){
+      const rv=ireverb(10);rv.connect(master);osc(432,'sine',.13,rv,3);osc(864,'sine',.04,rv,2);
+      function bell(){if(!playing)return;const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=880+Math.random()*50;g.gain.setValueAtTime(.18,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+4.5);o.connect(g);g.connect(rv);o.start();o.stop(ac.currentTime+4.6);setTimeout(bell,7000+Math.random()*6000);}
+      setTimeout(bell,2000);
+    },
+    stoic(){const rv=ireverb(7);rv.connect(master);const f=ctx().createBiquadFilter();f.type='lowpass';f.frequency.value=460;f.connect(rv);[55,110,165].forEach(freq=>{const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.value=freq;g.gain.value=.055;o.connect(g);g.connect(f);o.start();alive.push(o);});},
+    ubuntu(){const rv=ireverb(4);rv.connect(master);[264,330,396,495].forEach((freq,i)=>{const n=osc(freq,'sine',.055,rv,7);lfo(n,4.5+i*.3,.007);});},
+    persian(){const rv=ireverb(6);rv.connect(master);[196,233,294,370].forEach((freq,i)=>{const n=osc(freq,'sine',.06,rv,8);lfo(n,2.8+i*.2,.012);}); }
+  };
+  return{
+    play(key){this.stop();const fn=S[key];if(!fn)return;const ac=ctx();if(ac.state==='suspended')ac.resume();fn();playing=true;master.gain.cancelScheduledValues(ac.currentTime);master.gain.setTargetAtTime(1,ac.currentTime,1.4);},
+    stop(){if(!actx)return;master.gain.setTargetAtTime(0,actx.currentTime,.5);const k=[...alive];setTimeout(()=>k.forEach(n=>{try{n.stop();}catch(e){}}),1800);alive=[];playing=false;},
+    toggle(key){if(playing){this.stop();return false;}this.play(key);return true;},
+    get playing(){return playing;}
+  };
+})();
+
+/* ═══ CURSOR ════════════════════════════════════════════════════════ */
+(function(){
+  if(!window.matchMedia('(hover:hover)').matches)return;
+  const ring=document.getElementById('cursor'),dot=document.getElementById('cursor-dot');
+  if(!ring||!dot)return;
+  let rx=0,ry=0,tx=0,ty=0;
+  window.addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;});
+  (function tick(){rx+=(tx-rx)*.12;ry+=(ty-ry)*.12;ring.style.transform=`translate(${rx-16}px,${ry-16}px)`;dot.style.transform=`translate(${tx-2}px,${ty-2}px)`;requestAnimationFrame(tick);})();
+  document.querySelectorAll('a,button,.bc,.bc-share').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hov'));el.addEventListener('mouseleave',()=>ring.classList.remove('hov'));});
+})();
+
+/* ═══ CHAR COUNT ════════════════════════════════════════════════════ */
+const feelingEl = document.getElementById('feeling');
+const charCount = document.getElementById('char-count');
+feelingEl.addEventListener('input',()=>{charCount.textContent=feelingEl.value.length;});
+feelingEl.addEventListener('keydown', e => {
+  if(e.key==='Enter' && (e.metaKey||e.ctrlKey)) seek();
+});
+
+/* ═══ TOAST ═════════════════════════════════════════════════════════ */
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* ═══ STATE MACHINE ═════════════════════════════════════════════════ */
+function show(id){
+  ['state-input','state-loading','state-results'].forEach(s=>{
+    document.getElementById(s).classList.toggle('hidden',s!==id);
+  });
+}
+
+/* ═══ LOADING ANIMATION ════════════════════════════════════════════ */
+let loadTimer = null;
+const lcIds = ['lc-arabic','lc-zen','lc-stoic','lc-ubuntu'];
+function startLoadAnim(){
+  const bar = document.getElementById('load-bar');
+  bar.style.width='0%';
+  lcIds.forEach(id=>document.getElementById(id).classList.remove('lit'));
+  let pct=0;
+  loadTimer = setInterval(()=>{
+    pct = Math.min(pct + (Math.random()*2.5 + 0.5), 88);
+    bar.style.width = pct+'%';
+    const lit = Math.floor(pct/25);
+    lcIds.slice(0,lit).forEach(id=>document.getElementById(id).classList.add('lit'));
+  }, 220);
+}
+function finishLoadAnim(){
+  clearInterval(loadTimer);
+  document.getElementById('load-bar').style.width='100%';
+  lcIds.forEach(id=>document.getElementById(id).classList.add('lit'));
+}
+
+/* ═══ SEEK — MAIN FLOW ══════════════════════════════════════════════ */
+let lastWisdom = null;
+async function seek(){
+  const feeling = feelingEl.value.trim();
+  if(feeling.length < 3){ showToast('Share a little more…'); feelingEl.focus(); return; }
+
+  AudioEngine.stop();
+  show('state-loading');
+  startLoadAnim();
+
+  try {
+    const res = await fetch('/api/way', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ feeling })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok || data.error){
+      throw new Error(data.error || 'Generation failed');
+    }
+
+    finishLoadAnim();
+    lastWisdom = data;
+    renderResults(data, feeling);
+    show('state-results');
+    window.scrollTo({top:0,behavior:'instant'});
+
+  } catch(err) {
+    finishLoadAnim();
+    show('state-input');
+    showToast(err.message || 'Something went wrong. Try again.');
+  }
+}
+
+/* ═══ RENDER RESULTS ════════════════════════════════════════════════ */
+const BEARINGS = [
+  {key:'arabic', glyph:'☽', label:'ARABIC',  cls:'arabic', coord:'23°N 45°E · Arabia'},
+  {key:'zen',    glyph:'⛩', label:'ZEN',     cls:'zen',    coord:'35°N 135°E · Kyoto'},
+  {key:'stoic',  glyph:'Φ', label:'STOIC',   cls:'stoic',  coord:'41°N 12°E · Rome'},
+  {key:'ubuntu', glyph:'◉', label:'UBUNTU',  cls:'ubuntu', coord:'26°S 28°E · Africa'},
+];
+
+function renderResults(data, feeling){
+  document.getElementById('results-summary').textContent = data.summary || '';
+
+  const grid = document.getElementById('bearings-grid');
+  grid.innerHTML = '';
+
+  BEARINGS.forEach((b, i) => {
+    const d = data[b.key];
+    if(!d) return;
+    const card = document.createElement('div');
+    card.className = `bc ${b.cls}`;
+    card.dataset.delay = i * 120;
+    card.innerHTML = `
+      <div class="bc-header">
+        <div class="bc-left">
+          <span class="bc-glyph bc-${b.cls}">${b.glyph}</span>
+          <div class="bc-meta">
+            <div class="bc-culture">${b.label}</div>
+            <div class="bc-coord">${d.coordinate || b.coord} · ${d.region || ''}</div>
+          </div>
+        </div>
+        <button class="bc-audio" onclick="toggleCardAudio(this,'${b.key}')" title="Play ambient sound">
+          <svg width="9" height="11" viewBox="0 0 9 11" fill="currentColor"><polygon points="0,0 9,5.5 0,11"/></svg>
+        </button>
+      </div>
+      <div class="bc-divider"></div>
+      <div class="bc-quote">${escHtml(d.quote)}</div>
+      <div class="bc-translation">${escHtml(d.translation)}</div>
+      <span class="bc-concept-badge">${escHtml(d.concept)}</span>
+      <div class="bc-context">${escHtml(d.context)}</div>
+      <div class="bc-practice">
+        <div class="bc-practice-label">Practice Today</div>
+        <div class="bc-practice-text">${escHtml(d.practice)}</div>
+      </div>
+      <button class="bc-share" onclick="openShareModal('${b.key}')">Share this bearing ↗</button>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Staggered reveal
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('vis'), parseInt(e.target.dataset.delay||0));
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.1});
+  grid.querySelectorAll('.bc').forEach(c=>io.observe(c));
+}
+
+function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ═══ CARD AUDIO TOGGLE ═════════════════════════════════════════════ */
+function toggleCardAudio(btn, key){
+  document.querySelectorAll('.bc-audio').forEach(b=>{if(b!==btn)b.classList.remove('playing');});
+  const np = AudioEngine.toggle(key);
+  btn.classList.toggle('playing', np);
+}
+
+/* ═══ SHARE MODAL ════════════════════════════════════════════════════ */
+let activeShareKey = null;
+function openShareModal(key){
+  if(!lastWisdom) return;
+  activeShareKey = key;
+  const d = lastWisdom[key];
+  const b = BEARINGS.find(b=>b.key===key);
+  document.getElementById('mc-pill').textContent = b ? b.glyph + '  ' + b.label : '';
+  document.getElementById('mc-original').textContent = d.quote || '';
+  document.getElementById('mc-english').textContent = d.translation || '';
+  document.getElementById('mc-attr').textContent = (d.coordinate||'') + ' · ' + (d.region||'');
+  document.getElementById('share-modal').classList.remove('hidden');
+  document.getElementById('modal-audio-btn').classList.remove('active');
+  AudioEngine.stop();
+  // Auto-play ambient for the culture
+  setTimeout(()=>{ AudioEngine.play(key); updateModalAudioBtn(true); }, 400);
+}
+
+function closeShareModal(){
+  document.getElementById('share-modal').classList.add('hidden');
+  AudioEngine.stop();
+}
+
+function updateModalAudioBtn(playing){
+  const btn = document.getElementById('modal-audio-btn');
+  btn.innerHTML = playing
+    ? '<svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor"><rect x="1" y="1" width="3.5" height="9"/><rect x="6.5" y="1" width="3.5" height="9"/></svg> Pause'
+    : '<svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg> Play Ambient';
+}
+
+function toggleModalAudio(){
+  if(!activeShareKey) return;
+  const np = AudioEngine.toggle(activeShareKey);
+  updateModalAudioBtn(np);
+}
+
+function modalCopy(){
+  if(!lastWisdom||!activeShareKey) return;
+  const d=lastWisdom[activeShareKey];
+  const text = d.quote + '\n\n"' + d.translation + '"\n' + d.concept + '\n\n' + window.location.origin + '/way.html';
+  navigator.clipboard.writeText(text).then(()=>showToast('Copied ✓'));
+}
+
+function modalX(){
+  if(!lastWisdom||!activeShareKey) return;
+  const d=lastWisdom[activeShareKey];
+  const text = '"' + d.translation + '"\n— ' + d.concept + ', ' + (BEARINGS.find(b=>b.key===activeShareKey)?.label||'');
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(window.location.origin+'/way.html'),'_blank');
+}
+
+function modalWhatsApp(){
+  if(!lastWisdom||!activeShareKey) return;
+  const d=lastWisdom[activeShareKey];
+  const text = d.quote+'\n\n*"'+d.translation+'"*\n_'+d.concept+'_\n\n'+window.location.origin+'/way.html';
+  window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+}
+
+/* ═══ SCROLL NAV TINT ═══════════════════════════════════════════════ */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+/* ═══ MAGNETIC SEEK BTN ═════════════════════════════════════════════ */
+(function(){
+  if(!window.matchMedia('(hover:hover)').matches)return;
+  const btn=document.getElementById('seek-btn');
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    btn.style.transition='transform .1s ease';
+    btn.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*.3}px,${(e.clientY-(r.top+r.height/2))*.3}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>{btn.style.transition='transform .5s ease';btn.style.transform='';});
+})();
+</script>
+</body>
+</html>
