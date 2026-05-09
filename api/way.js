@@ -73,37 +73,40 @@ export default async function handler(req) {
     return new Response(JSON.stringify({ error: 'Share how you feel — even a few words.' }), { status: 400, headers });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'API key not configured. Set GEMINI_API_KEY in Vercel environment variables.' }), { status: 500, headers });
+    return new Response(JSON.stringify({ error: 'API key not configured. Set GROQ_API_KEY in your environment variables.' }), { status: 500, headers });
   }
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`;
-    const res = await fetch(url, {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
       body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM }] },
-        contents: [{ role: 'user', parts: [{ text: feeling }] }],
-        generationConfig: { maxOutputTokens: 2000, temperature: 0.9 },
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: SYSTEM },
+          { role: 'user', content: feeling },
+        ],
+        max_tokens: 2000,
+        temperature: 0.9,
       }),
     });
 
     if (!res.ok) {
       const err = await res.text();
-      console.error('Gemini error:', err);
+      console.error('Groq error:', err);
       let reason = 'Wisdom generation failed.';
       try {
         const parsed = JSON.parse(err);
-        const msg = parsed?.error?.message || parsed?.error?.status;
-        if (msg) reason = `Gemini: ${msg}`;
+        const msg = parsed?.error?.message || parsed?.error?.code;
+        if (msg) reason = `Groq: ${msg}`;
       } catch {}
       return new Response(JSON.stringify({ error: reason }), { status: 502, headers });
     }
 
     const data = await res.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = data.choices?.[0]?.message?.content || '';
     const match = text.match(/\{[\s\S]*\}/);
 
     if (!match) {
