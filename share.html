@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title id="page-title">WAY — A Wisdom Bearing</title>
+<meta name="description" id="page-desc" content="Ancient wisdom to guide you. Find your own bearing at WAY."/>
+<meta property="og:title" id="og-title" content="WAY — A Wisdom Bearing"/>
+<meta property="og:description" id="og-desc" content="Ancient wisdom to guide you. Find your own bearing at WAY."/>
+<meta property="og:image" content="/og.svg"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/og.svg"/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0608;
+  --parch:#f5e6d0;--parch2:rgba(245,230,208,.75);--parch3:rgba(245,230,208,.45);
+  --gold:#c9a84c;--gold2:#e0bc6a;--golddim:rgba(201,168,76,.5);
+  --border:rgba(245,230,208,.08);
+  --c-arabic:#8c1b35;--c-zen:#1a6b58;--c-stoic:#7a4820;--c-ubuntu:#7a3010;
+}
+html{background:var(--bg);min-height:100%}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px 60px;overflow-x:hidden}
+
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── LOGO ── */
+.top-logo{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:18px 24px;border-bottom:.5px solid transparent}
+.top-logo a{font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;letter-spacing:8px;color:rgba(245,230,208,.7);text-decoration:none;transition:color .3s}
+.top-logo a:hover{color:var(--parch)}
+
+/* ── CARD WRAP ── */
+.share-wrap{position:relative;z-index:1;width:100%;max-width:580px;display:flex;flex-direction:column;gap:32px;padding-top:48px}
+
+/* ── EYEBROW ── */
+.share-eyebrow{text-align:center;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:4px;text-transform:uppercase;color:var(--golddim)}
+
+/* ── THE CARD ── */
+.share-card{
+  background:rgba(245,230,208,.03);
+  border:.5px solid var(--border);
+  border-radius:20px;
+  padding:32px 32px 28px;
+  position:relative;overflow:hidden;
+}
+.share-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0}
+.share-card.arabic::before{background:linear-gradient(90deg,transparent,var(--c-arabic),transparent)}
+.share-card.zen::before{background:linear-gradient(90deg,transparent,var(--c-zen),transparent)}
+.share-card.stoic::before{background:linear-gradient(90deg,transparent,var(--c-stoic),transparent)}
+.share-card.ubuntu::before{background:linear-gradient(90deg,transparent,var(--c-ubuntu),transparent)}
+
+.share-card::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 50% at 20% 15%,rgba(140,27,53,.12) 0%,transparent 60%);}
+
+.sc-header{display:flex;align-items:center;gap:14px;margin-bottom:22px;position:relative;z-index:1}
+.sc-glyph{font-size:1.8rem;line-height:1;filter:drop-shadow(0 0 10px currentColor)}
+.arabic .sc-glyph{color:var(--c-arabic)}
+.zen .sc-glyph{color:var(--c-zen)}
+.stoic .sc-glyph{color:var(--c-stoic)}
+.ubuntu .sc-glyph{color:var(--c-ubuntu)}
+.sc-culture{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--parch2)}
+.sc-coord{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-top:4px}
+
+.sc-divider{height:.5px;background:var(--border);margin:0 0 20px;position:relative;z-index:1}
+
+.sc-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-style:italic;color:var(--parch);line-height:1.5;margin-bottom:12px;position:relative;z-index:1}
+.sc-translation{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2vw,1.2rem);color:var(--parch3);line-height:1.65;margin-bottom:16px;position:relative;z-index:1}
+
+.sc-badge{display:inline-flex;align-items:center;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;border:.5px solid var(--border);border-radius:20px;padding:5px 12px;color:var(--golddim);margin-bottom:20px;position:relative;z-index:1}
+
+.sc-context{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2vw,1.15rem);line-height:1.75;color:var(--parch3);font-style:italic;margin-bottom:20px;position:relative;z-index:1}
+
+.sc-practice{background:rgba(245,230,208,.04);border:.5px solid rgba(245,230,208,.07);border-radius:10px;padding:16px 18px;position:relative;z-index:1}
+.sc-practice-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--golddim);margin-bottom:8px}
+.sc-practice-text{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.8vw,1.1rem);line-height:1.7;color:var(--parch2)}
+
+/* ── CTA ── */
+.share-cta{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;position:relative;z-index:1}
+.cta-label{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.3)}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--parch);color:var(--bg);
+  border:none;border-radius:10px;padding:16px 40px;
+  font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  text-decoration:none;transition:all .3s;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.cta-btn:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.5)}
+
+/* ── NOT FOUND ── */
+#not-found{text-align:center;display:flex;flex-direction:column;align-items:center;gap:24px;position:relative;z-index:1}
+.nf-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-style:italic;color:var(--parch3)}
+.nf-sub{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.25)}
+
+@media(max-width:600px){
+  .share-card{padding:24px 20px 22px}
+  .share-wrap{padding-top:36px}
+}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<nav class="top-logo">
+  <a href="way.html">WAY</a>
+</nav>
+
+<div class="share-wrap" id="share-wrap" style="display:none">
+  <div class="share-eyebrow">A wisdom bearing</div>
+  <div class="share-card" id="share-card">
+    <div class="sc-header">
+      <span class="sc-glyph" id="sc-glyph"></span>
+      <div>
+        <div class="sc-culture" id="sc-culture"></div>
+        <div class="sc-coord" id="sc-coord"></div>
+      </div>
+    </div>
+    <div class="sc-divider"></div>
+    <div class="sc-quote" id="sc-quote"></div>
+    <div class="sc-translation" id="sc-translation"></div>
+    <span class="sc-badge" id="sc-badge"></span>
+    <div class="sc-context" id="sc-context"></div>
+    <div class="sc-practice" id="sc-practice">
+      <div class="sc-practice-label">Practice Today</div>
+      <div class="sc-practice-text" id="sc-practice-text"></div>
+    </div>
+  </div>
+  <div class="share-cta">
+    <div class="cta-label">Find your own bearing</div>
+    <a href="way.html" class="cta-btn">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+      Find My Way
+    </a>
+  </div>
+</div>
+
+<div id="not-found" style="display:none">
+  <div class="nf-title">No bearing found</div>
+  <div class="nf-sub">This link may have expired</div>
+  <a href="way.html" class="cta-btn" style="margin-top:8px">Find My Way</a>
+</div>
+
+<script>
+/* ── STAR CANVAS ── */
+(function(){
+  const c=document.getElementById('bg'),cx=c.getContext('2d');
+  let W,H,stars=[];
+  const dunes=[[0,.72],[.07,.68],[.18,.74],[.28,.63],[.40,.70],[.50,.61],[.62,.69],[.72,.59],[.84,.67],[.93,.63],[1,.66]];
+  function init(){
+    W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];
+    const n=Math.floor(W*H/4200);
+    for(let i=0;i<n;i++) stars.push({x:Math.random()*W,y:Math.random()*H*.76,r:.1+Math.random()*1.4,ph:Math.random()*Math.PI*2,sp:.006+Math.random()*.02,br:.25+Math.random()*.75,col:Math.random()<.12?[255,210,140]:Math.random()<.1?[180,200,255]:[237,229,200]});
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    const sg=cx.createLinearGradient(0,0,0,H);
+    sg.addColorStop(0,'#05030a');sg.addColorStop(.6,'#090507');sg.addColorStop(1,'#0d0905');
+    cx.fillStyle=sg;cx.fillRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.ph+=s.sp;const a=s.br*(.45+.55*Math.sin(s.ph));if(a<.04)return;
+      cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a})`;cx.fill();
+    });
+    const hY=H*.68;
+    const dg=cx.createLinearGradient(0,hY,0,H);
+    dg.addColorStop(0,'rgba(10,6,4,1)');dg.addColorStop(1,'rgba(4,2,1,1)');
+    cx.beginPath();
+    const dp=dunes.map(([fx,fy])=>[fx*W,hY+(fy-.62)*(H-hY)*.5+H*.04]);
+    cx.moveTo(dp[0][0],dp[0][1]);
+    for(let i=1;i<dp.length-1;i++){const mx=(dp[i][0]+dp[i+1][0])/2,my=(dp[i][1]+dp[i+1][1])/2;cx.quadraticCurveTo(dp[i][0],dp[i][1],mx,my);}
+    cx.lineTo(W,H);cx.lineTo(0,H);cx.fillStyle=dg;cx.fill();
+    requestAnimationFrame(draw);
+  }
+  init();window.addEventListener('resize',init);draw();
+})();
+
+/* ── RENDER ── */
+const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
+const LABELS={arabic:'ARABIC',zen:'ZEN',stoic:'STOIC',ubuntu:'UBUNTU'};
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+const p=new URLSearchParams(location.search);
+const k=p.get('k')||'';
+const quote=p.get('q')||'';
+const translation=p.get('t')||'';
+const concept=p.get('c')||'';
+const coordinate=p.get('co')||'';
+const region=p.get('r')||'';
+const practice=p.get('p')||'';
+const ctx=p.get('ctx')||'';
+
+if(!k||!quote){
+  document.getElementById('not-found').style.display='flex';
+} else {
+  const card=document.getElementById('share-card');
+  card.classList.add(k);
+  document.getElementById('sc-glyph').textContent=GLYPHS[k]||'✦';
+  document.getElementById('sc-culture').textContent=LABELS[k]||k.toUpperCase();
+  document.getElementById('sc-coord').textContent=[coordinate,region].filter(Boolean).join(' · ');
+  document.getElementById('sc-quote').innerHTML=esc(quote);
+  document.getElementById('sc-translation').innerHTML=esc(translation);
+  document.getElementById('sc-badge').textContent=concept;
+  const ctxEl=document.getElementById('sc-context');
+  if(ctx){ctxEl.innerHTML=esc(ctx);}else{ctxEl.style.display='none';}
+  const pEl=document.getElementById('sc-practice');
+  if(practice){document.getElementById('sc-practice-text').innerHTML=esc(practice);}else{pEl.style.display='none';}
+  document.getElementById('share-wrap').style.display='flex';
+
+  // Update page title/description with quote content
+  const shortQuote=translation.length>80?translation.slice(0,77)+'…':translation;
+  document.getElementById('page-title').textContent=`"${shortQuote}" — WAY`;
+  document.getElementById('og-title').content=`${LABELS[k]||''} wisdom — WAY`;
+  document.getElementById('og-desc').content=`"${shortQuote}" · ${concept}`;
+  document.getElementById('page-desc').content=`"${shortQuote}" · ${concept}`;
+}
+</script>
+</body>
+</html>
