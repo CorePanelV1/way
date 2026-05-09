@@ -621,8 +621,25 @@ function modalX(){
 function modalWhatsApp(){
   if(!lastWisdom||!activeShareKey) return;
   const d=lastWisdom[activeShareKey];
-  const text = d.quote+'\n\n*"'+d.translation+'"*\n_'+d.concept+'_\n\n'+window.location.origin+'/way.html';
-  window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+  const b=BEARINGS.find(b=>b.key===activeShareKey);
+  const label=b?b.label:'';
+  const glyph=b?b.glyph:'✦';
+  const lines=[
+    `${glyph} *WAY · ${label}*`,
+    `_${d.coordinate||''} · ${d.region||''}_`,
+    ``,
+    d.quote,
+    ``,
+    `*"${d.translation}"*`,
+    ``,
+    `_${d.concept}_`,
+    ``,
+    `▸ *Practice:* ${d.practice}`,
+    ``,
+    `─────────────────`,
+    `Find your bearing → ${window.location.origin}/way.html`,
+  ];
+  window.open('https://wa.me/?text='+encodeURIComponent(lines.join('\n')),'_blank');
 }
 
 /* ═══ SCROLL NAV TINT ═══════════════════════════════════════════════ */
