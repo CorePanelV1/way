@@ -154,8 +154,8 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 
 .bc-context{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.8vw,1.2rem);line-height:1.75;color:var(--parch3);font-style:italic;margin-bottom:20px;flex:1}
 
-.bc-practice{background:rgba(245,230,208,.04);border:.5px solid rgba(245,230,208,.07);border-radius:10px;padding:16px 18px;margin-bottom:22px}
-.bc-practice-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--golddim);margin-bottom:8px}
+.bc-practice{background:rgba(201,168,76,.06);border:.5px solid rgba(201,168,76,.18);border-left:2px solid var(--gold);border-radius:10px;padding:16px 18px;margin-bottom:20px}
+.bc-practice-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
 .bc-practice-text{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.6vw,1.1rem);line-height:1.7;color:var(--parch2)}
 
 .bc-share{display:flex;align-items:center;gap:8px;background:transparent;border:.5px solid rgba(245,230,208,.15);color:rgba(245,230,208,.5);padding:10px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;width:fit-content}
@@ -298,7 +298,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
       <div class="mc-div"></div>
       <div class="mc-bottom">
         <span class="mc-attr" id="mc-attr"></span>
-        <span class="mc-wm">✦ way.html</span>
+        <span class="mc-wm">✦ WAY</span>
       </div>
     </div>
     <div class="modal-actions">
@@ -547,11 +547,11 @@ function renderResults(data, feeling){
       <div class="bc-quote">${escHtml(d.quote)}</div>
       <div class="bc-translation">${escHtml(d.translation)}</div>
       <span class="bc-concept-badge">${escHtml(d.concept)}</span>
-      <div class="bc-context">${escHtml(d.context)}</div>
       <div class="bc-practice">
-        <div class="bc-practice-label">Practice Today</div>
+        <div class="bc-practice-label">✦ Practice Today</div>
         <div class="bc-practice-text">${escHtml(d.practice)}</div>
       </div>
+      <div class="bc-context">${escHtml(d.context)}</div>
       <button class="bc-share" onclick="openShareModal('${b.key}')">Share this bearing ↗</button>
     `;
     grid.appendChild(card);
@@ -625,7 +625,6 @@ function buildShareUrl(key){
     co:d.coordinate||'',
     r:d.region||'',
     p:d.practice||'',
-    ctx:d.context||'',
   });
   return window.location.origin+'/share.html?'+params.toString();
 }
