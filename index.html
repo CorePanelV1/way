@@ -8,9 +8,11 @@
 <meta property="og:title" content="WAY — Where Are You?"/>
 <meta property="og:description" content="Tell WAY how you feel. Receive guidance from Arabic, Japanese Zen, Stoic and Ubuntu philosophy."/>
 <meta property="og:type" content="website"/>
-<meta name="twitter:card" content="summary"/>
+<meta property="og:image" content="/og.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="WAY — Where Are You?"/>
 <meta name="twitter:description" content="Ancient wisdom for your exact moment."/>
+<meta name="twitter:image" content="/og.svg"/>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -37,6 +39,7 @@ nav.scrolled{background:rgba(245,230,208,.94);backdrop-filter:blur(24px);border-
 .nav-link:hover{color:var(--red)}
 .nav-cta{background:transparent;border:.5px solid rgba(140,27,53,.35);color:var(--red);padding:9px 24px;border-radius:6px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .nav-cta:hover{background:var(--red);color:var(--bg)}
+.nav-mobile-cta{display:none;align-items:center;gap:6px;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:9px 18px;font-family:'Cinzel',serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none}
 
 /* HERO */
 #hero-section{position:relative;height:500vh;z-index:1}
@@ -212,7 +215,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 /* RESPONSIVE */
 @media(max-width:900px){.share-layout{grid-template-columns:1fr;gap:48px}}
 @media(max-width:680px){
-  nav{padding:16px 20px}.nav-links{display:none}
+  nav{padding:16px 20px}.nav-links{display:none}.nav-mobile-cta{display:flex}
   .section-wrap{padding:80px 20px}
   #cta-section{padding:100px 20px}
   footer{padding:28px 20px;flex-direction:column;text-align:center}.f-links{justify-content:center}
@@ -236,6 +239,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
     <a href="#share-section" class="nav-link">Share</a>
     <button class="nav-cta" onclick="document.getElementById('cta-section').scrollIntoView({behavior:'smooth'})">Find My Way</button>
   </div>
+  <a href="way.html" class="nav-mobile-cta">Find My Way →</a>
 </nav>
 
 <!-- ═══ HERO ═══════════════════════════════════════════════════════════ -->
@@ -347,7 +351,7 @@ Patience is the key to relief.</div>
 <section id="how-section">
   <div class="section-wrap">
     <div class="eyebrow"><div class="ey-line"></div>How It Works<div class="ey-line"></div></div>
-    <div class="big-hl" style="font-size:clamp(1.9rem,4.5vw,3.8rem)">Three steps.<br>Infinite wisdom.</div>
+    <div class="big-hl" style="font-size:clamp(1.9rem,4.5vw,3.8rem)">Three steps.<br>Four traditions.</div>
     <div class="steps">
       <div class="step" data-d="0">
         <div class="step-num">I</div>
@@ -358,8 +362,8 @@ Patience is the key to relief.</div>
       <div class="step" data-d="160">
         <div class="step-num">II</div>
         <div class="step-ln"></div>
-        <div class="step-title">Three Bearings</div>
-        <div class="step-desc">Three cultures respond: each with a different compass bearing to guide you. Each coordinate with its own wisdom.</div>
+        <div class="step-title">Four Bearings</div>
+        <div class="step-desc">Four traditions respond — Arabic, Zen, Stoic, Ubuntu — each with a distinct compass bearing and coordinate rooted in its culture.</div>
       </div>
       <div class="step" data-d="300">
         <div class="step-num">III</div>
@@ -405,7 +409,7 @@ Patience is the key to relief.</div>
           </div>
           <div class="sc-bottom">
             <span class="sc-attr" id="sc-attr">Ancient Arabic Wisdom</span>
-            <span class="sc-watermark">✦ way.html</span>
+            <span class="sc-watermark">✦ WAY</span>
           </div>
         </div>
 
@@ -441,7 +445,7 @@ Patience is the key to relief.</div>
     <a href="#how-section" class="f-link">How It Works</a>
     <a href="#share-section" class="f-link">Share</a>
   </div>
-  <div class="f-copy">© 2026 WAY · wisdom rooted in culture</div>
+  <div class="f-copy">© 2026 WAY · wisdom rooted in culture<br><span style="font-size:9px;opacity:.6">Wisdom is AI-generated. Quotes are intended to reflect authentic traditions — always verify before citing.</span></div>
 </footer>
 
 <script>
@@ -711,7 +715,6 @@ const CULTURES=[
   {q:'"七転び八起き"\n\nFall seven times. Rise eight.',c:'Japanese Zen · Nana Korobi Ya Oki',h:'JAPANESE ZEN · 35°N 136°E'},
   {q:'"The impediment to action advances action."\n— Marcus Aurelius',c:'Stoic Philosophy · Amor Fati',h:'STOIC · 41°N 12°E'},
   {q:'"Umuntu ngumuntu ngabantu."\n\nA person is a person through people.',c:'Ubuntu · African Philosophy',h:'UBUNTU · 26°S 28°E'},
-  {q:'"آرام باش، این نیز بگذرد"\n\nBe calm. This too shall pass.',c:'Persian Wisdom · Tavakkol',h:'PERSIAN · 32°N 53°E'},
 ];
 let lastCI=-1;
 
@@ -827,9 +830,6 @@ const SHARE_QUOTES = [
   {glyph:'◉',pill:'Ubuntu',audioKey:'ubuntu',attr:'Cultural origin · Sub-Saharan Africa · 26°S 28°E',
    arabic:'"Umuntu ngumuntu ngabantu."',
    english:'A person is a person through people.'},
-  {glyph:'✦',pill:'Persian',audioKey:'persian',attr:'Cultural origin · Persia · 32°N 53°E',
-   arabic:'"آرام باش، این نیز بگذرد"',
-   english:'Be calm. This too shall pass.'},
 ];
 
 let shareIdx = 0;
@@ -892,27 +892,29 @@ const WAY = {
   },
 
   copyLink(){
-    const q = SHARE_QUOTES[shareIdx];
-    const text = q.arabic + '\n\n"' + q.english + '"\n— ' + q.attr + '\n\n' + window.location.href;
-    navigator.clipboard.writeText(text).then(()=>showToast('Copied ✓'));
+    const url = window.location.origin + '/way.html';
+    navigator.clipboard.writeText(url).then(()=>showToast('Link copied ✓'));
   },
 
   shareX(){
     const q = SHARE_QUOTES[shareIdx];
-    const text = '"' + q.english + '"\n— ' + q.pill + '\n\nFind your bearing:';
-    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(window.location.href),'_blank');
+    const text = '"' + q.english + '"\n— ' + q.pill + '\n\nFind your own bearing:';
+    const url = window.location.origin + '/way.html';
+    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url),'_blank');
   },
 
   shareWhatsApp(){
     const q = SHARE_QUOTES[shareIdx];
-    const text = q.arabic+'\n\n*"'+q.english+'"*\n— '+q.attr+'\n\n'+window.location.href;
+    const url = window.location.origin + '/way.html';
+    const text = q.arabic+'\n\n*"'+q.english+'"*\n\nFind your own bearing → '+url;
     window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
   },
 
   shareNative(){
     const q = SHARE_QUOTES[shareIdx];
+    const url = window.location.origin + '/way.html';
     if(navigator.share){
-      navigator.share({title:'WAY — '+q.pill,text:'"'+q.english+'"',url:window.location.href});
+      navigator.share({title:'WAY — Find Your Bearing',text:'"'+q.english+'" — find your own bearing at WAY',url});
     } else {
       this.copyLink();
     }
