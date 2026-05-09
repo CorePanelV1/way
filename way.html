@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>WAY — Find Your Bearing</title>
 <meta name="description" content="Tell WAY how you feel. Receive ancient wisdom from four cultures."/>
+<meta property="og:title" content="WAY — Find Your Bearing"/>
+<meta property="og:description" content="Tell WAY how you feel. Receive ancient wisdom from Arabic, Zen, Stoic and Ubuntu traditions."/>
+<meta property="og:image" content="/og.svg"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/og.svg"/>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -608,18 +614,32 @@ function toggleModalAudio(){
   updateModalAudioBtn(np);
 }
 
+function buildShareUrl(key){
+  if(!lastWisdom) return window.location.origin+'/way.html';
+  const d=lastWisdom[key];
+  const params=new URLSearchParams({
+    k:key,
+    q:d.quote||'',
+    t:d.translation||'',
+    c:d.concept||'',
+    co:d.coordinate||'',
+    r:d.region||'',
+    p:d.practice||'',
+    ctx:d.context||'',
+  });
+  return window.location.origin+'/share.html?'+params.toString();
+}
+
 function modalCopy(){
   if(!lastWisdom||!activeShareKey) return;
-  const d=lastWisdom[activeShareKey];
-  const text = d.quote + '\n\n"' + d.translation + '"\n' + d.concept + '\n\n' + window.location.origin + '/way.html';
-  navigator.clipboard.writeText(text).then(()=>showToast('Copied ✓'));
+  navigator.clipboard.writeText(buildShareUrl(activeShareKey)).then(()=>showToast('Link copied ✓'));
 }
 
 function modalX(){
   if(!lastWisdom||!activeShareKey) return;
   const d=lastWisdom[activeShareKey];
-  const text = '"' + d.translation + '"\n— ' + d.concept + ', ' + (BEARINGS.find(b=>b.key===activeShareKey)?.label||'');
-  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(window.location.origin+'/way.html'),'_blank');
+  const text='"'+d.translation+'"\n— '+d.concept+', '+(BEARINGS.find(b=>b.key===activeShareKey)?.label||'');
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(buildShareUrl(activeShareKey)),'_blank');
 }
 
 async function modalWhatsApp(){
@@ -648,7 +668,7 @@ async function modalWhatsApp(){
 
     canvas.toBlob(async(blob)=>{
       const file=new File([blob],'way-wisdom.png',{type:'image/png'});
-      const fallbackText=`${b?.glyph||'✦'} *WAY · ${b?.label||''}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${window.location.origin}/way.html`;
+      const fallbackText=`${b?.glyph||'✦'} *WAY · ${b?.label||''}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${buildShareUrl(activeShareKey)}`;
 
       if(navigator.canShare&&navigator.canShare({files:[file]})){
         await navigator.share({files:[file],text:fallbackText});
@@ -663,7 +683,7 @@ async function modalWhatsApp(){
     },'image/png');
   } catch(e){
     // Fallback to text-only share
-    const text=`${b?.glyph||'✦'} *WAY · ${b?.label||''}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${window.location.origin}/way.html`;
+    const text=`${b?.glyph||'✦'} *WAY · ${b?.label||''}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${buildShareUrl(activeShareKey)}`;
     window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
     waBtn.innerHTML=orig;waBtn.disabled=false;
   }
