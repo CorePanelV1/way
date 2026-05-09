@@ -270,7 +270,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 
 Patience is the key to relief.</div>
       <div class="pf-line"></div>
-      <div class="pf-culture" id="ov-culture">Arabic Wisdom · Sabr</div>
+      <div class="pf-culture" id="ov-culture">Arabic Wisdom</div>
     </div>
 
     <div id="star-burst"></div>
@@ -316,31 +316,27 @@ Patience is the key to relief.</div>
   <div class="section-wrap">
     <div class="eyebrow"><div class="ey-line"></div>The Philosophy<div class="ey-line"></div></div>
     <div class="big-hl">Ancient bearings.<br>Modern soul.</div>
-    <div class="body-t">Every culture on earth has spent millennia answering the questions you're asking today. WAY doesn't give you generic affirmations — it gives you a coordinate system. Four cultures, four worldviews, one emotional state.</div>
+    <div class="body-t">For thousands of years, every culture has held wisdom for the questions you're asking now. WAY hands you a compass and you choose the bearing that feels true.</div>
     <div class="pillars">
       <div class="pillar" data-d="0">
         <span class="p-glyph" style="color:#8c1b35">☽</span>
         <div class="p-culture" style="color:#8c1b35">Arabic</div>
         <div class="p-quote">"الصبر مفتاح الفرج"<br><em>Patience is the key to relief.</em></div>
-        <div class="p-concept">Sabr — active, trusting endurance</div>
       </div>
       <div class="pillar" data-d="100">
         <span class="p-glyph" style="color:#2a7a6a">⛩</span>
         <div class="p-culture" style="color:#2a7a6a">Japanese Zen</div>
         <div class="p-quote">"七転び八起き"<br><em>Fall seven times. Rise eight.</em></div>
-        <div class="p-concept">Nana korobi ya oki — resilient becoming</div>
       </div>
       <div class="pillar" data-d="200">
         <span class="p-glyph" style="color:#6b4020">Φ</span>
         <div class="p-culture" style="color:#6b4020">Stoic</div>
         <div class="p-quote"><em>"The impediment to action advances action."</em></div>
-        <div class="p-concept">Amor Fati — love of what is</div>
       </div>
       <div class="pillar" data-d="300">
         <span class="p-glyph" style="color:#7a4020">◉</span>
         <div class="p-culture" style="color:#7a4020">Ubuntu</div>
         <div class="p-quote"><em>"Umuntu ngumuntu ngabantu."</em><br>A person is a person through people.</div>
-        <div class="p-concept">Ubuntu — restoration through belonging</div>
       </div>
     </div>
   </div>
@@ -361,7 +357,7 @@ Patience is the key to relief.</div>
       <div class="step" data-d="160">
         <div class="step-num">II</div>
         <div class="step-ln"></div>
-        <div class="step-title">Four Bearings</div>
+        <div class="step-title">Three Bearings</div>
         <div class="step-desc">Three cultures respond: each with a different compass bearing to guide you. Each coordinate with its own wisdom.</div>
       </div>
       <div class="step" data-d="300">
@@ -399,7 +395,7 @@ Patience is the key to relief.</div>
             <button class="sc-audio-btn" id="sc-audio-btn" onclick="WAY.toggleAudio()" title="Play ambient sound" aria-label="Play ambient sound">
               <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
             </button>
-            <span class="sc-culture-pill" id="sc-pill">☽ &nbsp;Arabic · Sabr</span>
+            <span class="sc-culture-pill" id="sc-pill">☽ &nbsp;Arabic</span>
           </div>
           <div class="sc-divider"></div>
           <div class="sc-main-quote">
@@ -818,19 +814,19 @@ document.querySelectorAll('.pillar,.step').forEach(el => io.observe(el));
 
 /* ═══ SHARE CARD ══════════════════════════════════════════════════════ */
 const SHARE_QUOTES = [
-  {glyph:'☽',pill:'Arabic · Sabr',audioKey:'arabic',attr:'Origin · Arabia · 23°N 45°E',
+  {glyph:'☽',pill:'Arabic',audioKey:'arabic',attr:'Cultural origin · Arabia · 23°N 45°E',
    arabic:'"الصبر مفتاح الفرج"',
    english:'Patience is the key to relief.'},
-  {glyph:'⛩',pill:'Zen · Nana Korobi Ya Oki',audioKey:'zen',attr:'Origin · Kyoto, Japan · 35°N 135°E',
+  {glyph:'⛩',pill:'Zen',audioKey:'zen',attr:'Cultural origin · Kyoto, Japan · 35°N 135°E',
    arabic:'"七転び八起き"',
    english:'Fall seven times. Rise eight.'},
-  {glyph:'Φ',pill:'Stoic · Amor Fati',audioKey:'stoic',attr:'Origin · Rome, Italy · 41°N 12°E',
+  {glyph:'Φ',pill:'Stoic',audioKey:'stoic',attr:'Cultural origin · Rome, Italy · 41°N 12°E',
    arabic:'"The impediment to action advances action."',
    english:'What stands in the way becomes the way.'},
-  {glyph:'◉',pill:'Ubuntu · African Philosophy',audioKey:'ubuntu',attr:'Origin · Sub-Saharan Africa · 26°S 28°E',
+  {glyph:'◉',pill:'Ubuntu',audioKey:'ubuntu',attr:'Cultural origin · Sub-Saharan Africa · 26°S 28°E',
    arabic:'"Umuntu ngumuntu ngabantu."',
    english:'A person is a person through people.'},
-  {glyph:'✦',pill:'Persian · Tavakkol',audioKey:'persian',attr:'Origin · Persia · 32°N 53°E',
+  {glyph:'✦',pill:'Persian',audioKey:'persian',attr:'Cultural origin · Persia · 32°N 53°E',
    arabic:'"آرام باش، این نیز بگذرد"',
    english:'Be calm. This too shall pass.'},
 ];
