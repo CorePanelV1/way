@@ -40,7 +40,7 @@ nav.scrolled{background:rgba(245,230,208,.94);backdrop-filter:blur(24px);border-
 /* HERO */
 #hero-section{position:relative;height:500vh;z-index:1}
 #hero-sticky{position:sticky;top:0;height:100svh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
-#hero-bg{position:absolute;inset:0;z-index:0;background:#f5e6d0}
+#hero-bg{position:absolute;inset:0;z-index:0;background:#0a0608}
 #scrub-canvas{position:absolute;inset:0;z-index:1;width:100%;height:100%}
 #parallax-wrap{position:absolute;inset:0;z-index:2;pointer-events:none;perspective:600px;overflow:hidden}
 .plx-layer{position:absolute;inset:-6% -4%;will-change:transform;transition:opacity .4s}
@@ -53,7 +53,7 @@ nav.scrolled{background:rgba(245,230,208,.94);backdrop-filter:blur(24px);border-
 #frame-loader-fill{height:100%;background:var(--gold);width:0%;transition:width .1s linear}
 #frame-loader.done{opacity:0;pointer-events:none;transition:opacity 1s .5s}
 #vid-overlay-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}
-#vignette{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(245,230,208,.55) 100%)}
+#vignette{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.5) 100%)}
 
 /* HERO TITLES */
 .hero-title{position:relative;z-index:7;font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,12vw,10rem);font-weight:600;line-height:.85;letter-spacing:-.02em;will-change:transform,opacity;user-select:none}
@@ -67,10 +67,7 @@ nav.scrolled{background:rgba(245,230,208,.94);backdrop-filter:blur(24px);border-
   max-width:min(600px,88vw);
   will-change:opacity,transform;
 }
-.hi-eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--golddim);margin-bottom:14px}
-.hi-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2vw,1.35rem);font-style:italic;line-height:1.8;color:var(--text2);font-weight:300;margin-bottom:22px}
-.hi-cultures{display:flex;justify-content:center;gap:10px;margin-bottom:26px;flex-wrap:wrap}
-.hi-culture{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:6px 13px;border:.5px solid rgba(140,27,53,.15);border-radius:20px;background:rgba(245,230,208,.65)}
+.hi-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.2vw,1.5rem);font-style:italic;line-height:1.8;color:var(--text2);font-weight:300;margin-bottom:28px}
 .hi-btn{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:var(--bg);border-radius:8px;padding:14px 36px;font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-decoration:none;box-shadow:0 8px 32px rgba(140,27,53,.22);transition:all .3s}
 .hi-btn:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 14px 44px rgba(140,27,53,.32)}
 
@@ -219,7 +216,6 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
   #cta-section{padding:100px 20px}
   footer{padding:28px 20px;flex-direction:column;text-align:center}.f-links{justify-content:center}
   #hud{right:16px}
-  .hi-cultures{gap:8px}
   #share-card{padding:28px 24px}
   .share-actions{justify-content:center}
 }
@@ -264,15 +260,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 
     <!-- VALUE PROP — visible before scrolling begins -->
     <div id="hero-intro">
-      <div class="hi-eyebrow">Ancient wisdom · Four cultures · Your exact moment</div>
-      <p class="hi-sub">For thousands of years, every culture has held wisdom for the questions you're asking now. WAY hands you a compass and you choose the bearing that feels true.</p>
-      <div class="hi-cultures">
-        <span class="hi-culture">☽ Arabic</span>
-        <span class="hi-culture">⛩ Zen</span>
-        <span class="hi-culture">Φ Stoic</span>
-        <span class="hi-culture">◉ Ubuntu</span>
-        <span class="hi-culture">✦ Persian</span>
-      </div>
+      <p class="hi-sub">Ancient wisdom for exactly where you are.</p>
       <a href="way.html" class="hi-btn">Find My Way →</a>
     </div>
 
@@ -1061,7 +1049,7 @@ const AudioEngine = (() => {
     dot.style.transform  = `translate(${tx-2.5}px,${ty-2.5}px)`;
     requestAnimationFrame(tick);
   })();
-  document.querySelectorAll('a,button,.pillar,.card-nav,.card-dot,.share-btn,.hi-culture').forEach(el=>{
+  document.querySelectorAll('a,button,.pillar,.card-nav,.card-dot,.share-btn').forEach(el=>{
     el.addEventListener('mouseenter',()=>ring.classList.add('hov'));
     el.addEventListener('mouseleave',()=>ring.classList.remove('hov'));
   });
