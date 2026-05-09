@@ -1,4 +1,4 @@
-// Vercel Edge Function — WAY wisdom generator
+// Vercel Edge Function — WAY wisdom generator (Gemini)
 export const config = { runtime: 'edge' };
 
 const SYSTEM = `You are WAY — a cultural wisdom oracle. Someone has shared how they feel. Respond with four wisdom bearings, each genuinely tailored to what they said.
@@ -73,35 +73,31 @@ export default async function handler(req) {
     return new Response(JSON.stringify({ error: 'Share how you feel — even a few words.' }), { status: 400, headers });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'API key not configured. Set ANTHROPIC_API_KEY in Vercel environment variables.' }), { status: 500, headers });
+    return new Response(JSON.stringify({ error: 'API key not configured. Set GEMINI_API_KEY in Vercel environment variables.' }), { status: 500, headers });
   }
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const res = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2000,
-        system: SYSTEM,
-        messages: [{ role: 'user', content: feeling }],
+        systemInstruction: { parts: [{ text: SYSTEM }] },
+        contents: [{ role: 'user', parts: [{ text: feeling }] }],
+        generationConfig: { maxOutputTokens: 2000, temperature: 0.9 },
       }),
     });
 
     if (!res.ok) {
       const err = await res.text();
-      console.error('Anthropic error:', err);
+      console.error('Gemini error:', err);
       return new Response(JSON.stringify({ error: 'Wisdom generation failed. Try again.' }), { status: 502, headers });
     }
 
     const data = await res.json();
-    const text = data.content?.[0]?.text || '';
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const match = text.match(/\{[\s\S]*\}/);
 
     if (!match) {
