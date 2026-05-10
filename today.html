@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title id="pg-title">WAY of the Day</title>
+<meta name="description" id="pg-desc" content="Today's collective wisdom bearing from WAY."/>
+<meta property="og:title" id="og-title" content="WAY of the Day"/>
+<meta property="og:description" id="og-desc" content="Ancient wisdom for today."/>
+<meta property="og:image" content="/og.svg"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/og.svg"/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0608;
+  --parch:#f5e6d0;--parch2:rgba(245,230,208,.75);--parch3:rgba(245,230,208,.45);
+  --gold:#c9a84c;--gold2:#e0bc6a;--golddim:rgba(201,168,76,.5);
+  --border:rgba(245,230,208,.08);
+  --accent:#c9a84c;
+}
+html{background:var(--bg);min-height:100%}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 20px 80px;overflow-x:hidden}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:.5px solid transparent;transition:all .4s}
+.top-nav.scrolled{background:rgba(10,6,8,.9);backdrop-filter:blur(20px);border-color:var(--border)}
+.nav-logo{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;letter-spacing:8px;color:rgba(245,230,208,.8);text-decoration:none;transition:color .3s}
+.nav-logo:hover{color:var(--parch)}
+.nav-cta{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.4);text-decoration:none;transition:color .3s}
+.nav-cta:hover{color:var(--gold)}
+
+/* HERO DATE HEADER */
+.day-header{position:relative;z-index:1;width:100%;max-width:680px;text-align:center;padding-top:120px;padding-bottom:56px}
+.day-eyebrow{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--golddim);margin-bottom:14px}
+.day-date{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.4rem);font-style:italic;color:var(--parch3);margin-bottom:8px}
+.day-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,4rem);font-style:italic;font-weight:300;color:var(--parch);line-height:1.15}
+
+/* THE CARD */
+.day-card{
+  position:relative;z-index:1;width:100%;max-width:600px;
+  background:rgba(245,230,208,.03);
+  border:.5px solid var(--border);
+  border-radius:22px;padding:36px 36px 32px;
+  overflow:hidden;
+  animation:rise .8s ease forwards;
+  opacity:0;transform:translateY(24px);
+}
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+.day-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+.day-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 50% at 20% 15%,rgba(var(--accent-rgb),.1) 0%,transparent 60%);
+}
+
+.dc-header{display:flex;align-items:center;gap:14px;margin-bottom:22px;position:relative;z-index:1}
+.dc-glyph{font-size:1.9rem;line-height:1;filter:drop-shadow(0 0 12px var(--accent))}
+.dc-culture{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--parch2)}
+.dc-coord{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-top:4px}
+
+.dc-divider{height:.5px;background:var(--border);margin:0 0 22px;position:relative;z-index:1}
+
+.dc-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3.5vw,1.85rem);font-style:italic;color:var(--parch);line-height:1.5;margin-bottom:12px;position:relative;z-index:1}
+.dc-translation{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2vw,1.2rem);color:var(--parch3);line-height:1.65;margin-bottom:18px;position:relative;z-index:1}
+
+.dc-concept{display:inline-flex;align-items:center;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;border:.5px solid var(--border);border-radius:20px;padding:5px 12px;color:var(--golddim);margin-bottom:22px;position:relative;z-index:1}
+
+.dc-practice{background:rgba(201,168,76,.06);border:.5px solid rgba(201,168,76,.18);border-left:2px solid var(--gold);border-radius:10px;padding:16px 18px;margin-bottom:22px;position:relative;z-index:1}
+.dc-practice-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.dc-practice-text{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.8vw,1.1rem);line-height:1.7;color:var(--parch2)}
+
+.dc-context{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.8vw,1.1rem);line-height:1.8;color:var(--parch3);font-style:italic;position:relative;z-index:1}
+
+/* CTA */
+.day-cta{position:relative;z-index:1;width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:40px;text-align:center}
+.cta-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.25)}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;background:var(--parch);color:var(--bg);border:none;border-radius:10px;padding:16px 40px;font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all .3s;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.cta-btn:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.5)}
+
+/* SHARE ROW */
+.share-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding-top:16px}
+.sh-btn{display:flex;align-items:center;gap:7px;background:transparent;border:.5px solid rgba(245,230,208,.12);color:rgba(245,230,208,.45);padding:10px 16px;border-radius:8px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none}
+.sh-btn:hover{border-color:rgba(245,230,208,.3);color:rgba(245,230,208,.75)}
+
+/* FOOTER NOTE */
+.day-foot{position:relative;z-index:1;margin-top:56px;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.2);text-align:center}
+
+@media(max-width:600px){
+  .top-nav{padding:16px 20px}
+  .day-card{padding:24px 22px}
+  .day-header{padding-top:90px;padding-bottom:40px}
+}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<nav class="top-nav" id="top-nav">
+  <a href="index.html" class="nav-logo">WAY</a>
+  <a href="way.html" class="nav-cta">Find My Way →</a>
+</nav>
+
+<div class="day-header">
+  <div class="day-eyebrow">WAY of the Day</div>
+  <div class="day-date" id="day-date"></div>
+  <div class="day-title">Today's<br>bearing</div>
+</div>
+
+<div class="day-card" id="day-card">
+  <div class="dc-header">
+    <span class="dc-glyph" id="dc-glyph"></span>
+    <div>
+      <div class="dc-culture" id="dc-culture"></div>
+      <div class="dc-coord" id="dc-coord"></div>
+    </div>
+  </div>
+  <div class="dc-divider"></div>
+  <div class="dc-quote" id="dc-quote"></div>
+  <div class="dc-translation" id="dc-translation"></div>
+  <span class="dc-concept" id="dc-concept"></span>
+  <div class="dc-practice">
+    <div class="dc-practice-label">✦ Practice Today</div>
+    <div class="dc-practice-text" id="dc-practice"></div>
+  </div>
+  <div class="dc-context" id="dc-context"></div>
+</div>
+
+<div class="day-cta">
+  <div class="cta-lbl">Find your own bearing</div>
+  <a href="way.html" class="cta-btn">
+    <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+    Find My Way
+  </a>
+  <div class="share-row">
+    <button class="sh-btn" onclick="copyLink()">⎘ Copy Link</button>
+    <a class="sh-btn" id="x-btn" href="#" target="_blank">𝕏 Share on X</a>
+  </div>
+</div>
+
+<div class="day-foot">Returns each day with the turning of the compass · WAY</div>
+
+<script>
+/* ── STAR CANVAS ── */
+(function(){
+  const c=document.getElementById('bg'),cx=c.getContext('2d');
+  let W,H,stars=[];
+  const dunes=[[0,.72],[.07,.68],[.18,.74],[.28,.63],[.40,.70],[.50,.61],[.62,.69],[.72,.59],[.84,.67],[.93,.63],[1,.66]];
+  function init(){
+    W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];
+    const n=Math.floor(W*H/4200);
+    for(let i=0;i<n;i++) stars.push({x:Math.random()*W,y:Math.random()*H*.76,r:.1+Math.random()*1.4,ph:Math.random()*Math.PI*2,sp:.006+Math.random()*.02,br:.25+Math.random()*.75,col:Math.random()<.12?[255,210,140]:Math.random()<.1?[180,200,255]:[237,229,200]});
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    const sg=cx.createLinearGradient(0,0,0,H);
+    sg.addColorStop(0,'#05030a');sg.addColorStop(.6,'#090507');sg.addColorStop(1,'#0d0905');
+    cx.fillStyle=sg;cx.fillRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.ph+=s.sp;const a=s.br*(.45+.55*Math.sin(s.ph));if(a<.04)return;
+      cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a})`;cx.fill();
+    });
+    const hY=H*.68;
+    const dg=cx.createLinearGradient(0,hY,0,H);
+    dg.addColorStop(0,'rgba(10,6,4,1)');dg.addColorStop(1,'rgba(4,2,1,1)');
+    cx.beginPath();
+    const dp=dunes.map(([fx,fy])=>[fx*W,hY+(fy-.62)*(H-hY)*.5+H*.04]);
+    cx.moveTo(dp[0][0],dp[0][1]);
+    for(let i=1;i<dp.length-1;i++){const mx=(dp[i][0]+dp[i+1][0])/2,my=(dp[i][1]+dp[i+1][1])/2;cx.quadraticCurveTo(dp[i][0],dp[i][1],mx,my);}
+    cx.lineTo(W,H);cx.lineTo(0,H);cx.fillStyle=dg;cx.fill();
+    requestAnimationFrame(draw);
+  }
+  init();window.addEventListener('resize',init);draw();
+})();
+
+/* ── DAILY CARD DATA ── */
+const CARDS = [
+  {key:'arabic',glyph:'☽',culture:'ARABIC',coord:'23°N 45°E · Arabia',
+   quote:'الصبر مفتاح الفرج',translation:'Patience is the key to relief.',
+   concept:'Sabr',
+   practice:'Set one intention for today, then release the need to control its outcome.',
+   context:'Every tradition carries its own word for the grace that comes from waiting without despair. In Arabic, Sabr is not passive endurance — it is an active, dignified holding.'},
+
+  {key:'zen',glyph:'⛩',culture:'ZEN',coord:'35°N 135°E · Kyoto',
+   quote:'七転び八起き',translation:'Fall seven times, rise eight.',
+   concept:'Nana Korobi Ya Oki',
+   practice:'Name one thing you have risen from before. Write it down somewhere you will see it today.',
+   context:'The Japanese understanding of resilience is not the absence of falling — it is the mathematics of rising one more time than you fall. Today that is enough.'},
+
+  {key:'stoic',glyph:'Φ',culture:'STOIC',coord:'41°N 12°E · Rome',
+   quote:'Nusquam est qui ubique est.',translation:'One who is everywhere is nowhere.',
+   concept:'Ataraxia',
+   practice:'Choose one single task and give it your full, undivided attention for 25 minutes.',
+   context:'Seneca wrote this as a warning against scattering the self across too many things. To be present somewhere — truly present — is the only antidote to feeling perpetually lost.'},
+
+  {key:'ubuntu',glyph:'◉',culture:'UBUNTU',coord:'0°S 25°E · East Africa',
+   quote:'Umuntu ngumuntu ngabantu.',translation:'A person is a person through other people.',
+   concept:'Ubuntu',
+   practice:'Reach out to one person today — not to ask for anything, simply to say you thought of them.',
+   context:'Ubuntu teaches that your humanity is not a solo achievement. It is called forth by others. Where you feel alone, you are being called back into relationship.'},
+
+  {key:'arabic',glyph:'☽',culture:'ARABIC',coord:'24°N 54°E · Arabia',
+   quote:'من صبر ظفر',translation:'He who is patient, succeeds.',
+   concept:'Zafar',
+   practice:'Write down the one thing you are most impatient about. Then set it aside for the rest of the day.',
+   context:'The Arabic tradition does not promise that patience is easy — it promises that it is the only road that arrives. Success here is not achievement; it is alignment.'},
+
+  {key:'zen',glyph:'⛩',culture:'ZEN',coord:'34°N 132°E · Hiroshima',
+   quote:'今ここにいること',translation:'Being here, now.',
+   concept:'Ishin-denshin',
+   practice:'For five minutes, put everything down and simply notice what is already here.',
+   context:'Zen does not require enlightenment as a destination. It asks only that you arrive — fully — in this moment. That arrival is the practice and the reward.'},
+
+  {key:'stoic',glyph:'Φ',culture:'STOIC',coord:'37°N 22°E · Athens',
+   quote:'Ἐκτὸς γὰρ τοῦ θελήματος ἡ τύχη.',translation:'Fortune is outside the will.',
+   concept:'Prohairesis',
+   practice:'List what is genuinely within your control today. Let the rest go without apology.',
+   context:'Epictetus, born a slave, built an entire philosophy around the one freedom that cannot be taken: the will. Everything outside that — reputation, outcome, others\'s choices — belongs to fortune, not you.'},
+
+  {key:'ubuntu',glyph:'◉',culture:'UBUNTU',coord:'4°S 15°E · Congo',
+   quote:'Motho ke motho ka batho.',translation:'A person is a person through persons.',
+   concept:'Botho',
+   practice:'Do one small, unseen act of generosity today — one that no one will know about.',
+   context:'Botho in Southern African philosophy is the quality of being deeply human — not through individual excellence, but through the way you carry others with you. Invisible kindness is not wasted.'},
+
+  {key:'arabic',glyph:'☽',culture:'ARABIC',coord:'33°N 44°E · Baghdad',
+   quote:'العلم نور',translation:'Knowledge is light.',
+   concept:'Ilm',
+   practice:'Learn one thing today — not for any use, just because it lights something up in you.',
+   context:'The Islamic Golden Age was built on the conviction that seeking knowledge is itself a spiritual act. Curiosity is not frivolous — it is a form of worship of the world\'s complexity.'},
+
+  {key:'zen',glyph:'⛩',culture:'ZEN',coord:'35°N 138°E · Shizuoka',
+   quote:'一期一会',translation:'One time, one meeting.',
+   concept:'Ichi-go Ichi-e',
+   practice:'Treat the next conversation you have as if it will never happen again in exactly this way. Because it won\'t.',
+   context:'The Japanese tea ceremony tradition teaches that every encounter is unrepeatable. This moment, these people, this exact configuration of the world — it will never reassemble itself. Be here for it.'},
+
+  {key:'stoic',glyph:'Φ',culture:'STOIC',coord:'40°N 22°E · Thessaloniki',
+   quote:'Amor fati.',translation:'Love of fate.',
+   concept:'Amor Fati',
+   practice:'Find one thing about today\'s circumstances — even a difficult one — that you can genuinely choose to accept.',
+   context:'Nietzsche borrowed this from the Stoics: the idea that the highest freedom is not escaping your circumstances but loving them as necessary. Not resignation — a radical yes.'},
+
+  {key:'ubuntu',glyph:'◉',culture:'UBUNTU',coord:'6°S 12°E · Angola',
+   quote:'If you want to go fast, go alone. If you want to go far, go together.',
+   translation:'If you want to go fast, go alone. If you want to go far, go together.',
+   concept:'Harambee',
+   practice:'Identify one place where you\'ve been trying to move fast and alone. Consider who you might invite in.',
+   context:'The African concept of Harambee — collective effort — is not a compromise of ambition. It is the recognition that sustainable progress is always built on mutual support.'},
+
+  {key:'arabic',glyph:'☽',culture:'ARABIC',coord:'36°N 37°E · Aleppo',
+   quote:'لكل أمر نهاية',translation:'Every matter has an end.',
+   concept:'Nihaya',
+   practice:'Name the thing that feels endless right now. Say out loud: "This, too, will end."',
+   context:'Arabic wisdom carries deep comfort in the impermanence of difficulty. Not because things don\'t matter, but because their ending is already woven into their beginning.'},
+
+  {key:'zen',glyph:'⛩',culture:'ZEN',coord:'33°N 130°E · Fukuoka',
+   quote:'Before enlightenment, chop wood, carry water. After enlightenment, chop wood, carry water.',
+   translation:'Before enlightenment, chop wood, carry water. After enlightenment, chop wood, carry water.',
+   concept:'Wabi-Sabi',
+   practice:'Do one ordinary task today with complete attention — as if it were the only thing.',
+   context:'Zen locates the sacred not in extraordinary experiences but in ordinary ones met with full presence. The magic was always in the chopping and the carrying.'},
+
+  {key:'stoic',glyph:'Φ',culture:'STOIC',coord:'41°N 28°E · Constantinople',
+   quote:'Nemo ante mortem beatus.',translation:'No man is to be called happy before his death.',
+   concept:'Eudaimonia',
+   practice:'Define what a good life looks like for you today — not someday, but in the next 24 hours.',
+   context:'Solon\'s warning, echoed through Stoic philosophy: happiness is not a destination arrived at but a quality of the journey. It lives in how you move through today, not in what today delivers.'},
+
+  {key:'ubuntu',glyph:'◉',culture:'UBUNTU',coord:'1°S 36°E · Nairobi',
+   quote:'A child who is not embraced by the village will burn it down.',
+   translation:'A child who is not embraced by the village will burn it down.',
+   concept:'Ujamaa',
+   practice:'Think of someone on the margins of your community or workplace. Do one thing to include them.',
+   context:'Ubuntu ethics are not sentimental — they are practical. Exclusion creates the conditions for its own consequences. Belonging is not charity; it is collective intelligence about how communities survive.'},
+
+  {key:'arabic',glyph:'☽',culture:'ARABIC',coord:'25°N 55°E · Dubai',
+   quote:'اطلب العلم من المهد إلى اللحد',translation:'Seek knowledge from the cradle to the grave.',
+   concept:'Tafakkur',
+   practice:'Give 15 minutes today to something you know nothing about — purely for the joy of learning.',
+   context:'The Arabic concept of Tafakkur — deep reflection — treats learning as a lifelong spiritual orientation, not a phase that ends. You are never too finished to begin learning something new.'},
+
+  {key:'zen',glyph:'⛩',culture:'ZEN',coord:'35°N 136°E · Nagoya',
+   quote:'无为而无不为',translation:'Do nothing, and nothing is left undone.',
+   concept:'Wu Wei',
+   practice:'Identify one situation where you have been forcing. Today, do less and observe what moves on its own.',
+   context:'Wu Wei — effortless action — is the Taoist principle absorbed into Zen: that the universe has its own intelligence, and sometimes our greatest contribution is to stop obstructing it.'},
+
+  {key:'stoic',glyph:'Φ',culture:'STOIC',coord:'38°N 23°E · Athens',
+   quote:'ὁ ἀνεξέταστος βίος οὐ βιωτὸς ἀνθρώπῳ',translation:'The unexamined life is not worth living.',
+   concept:'Epimeleia Heautou',
+   practice:'Spend five minutes at the end of today asking: What did I do well? What would I do differently?',
+   context:'Socrates said this at his trial, preferring death to the silence of self-examination. The invitation is not to judge yourself — it is to stay curious about who you are becoming.'},
+
+  {key:'ubuntu',glyph:'◉',culture:'UBUNTU',coord:'26°S 28°E · Johannesburg',
+   quote:'Umntu akalahlwa.',translation:'A person is not thrown away.',
+   concept:'Isithunzi',
+   practice:'Withhold a judgment of someone today. Replace it with a single question: What might they be carrying?',
+   context:'In Zulu philosophy, Isithunzi — dignity — is not earned through achievement but inherent. No person is disposable. This is not idealism; it is the foundation of a functional community.'},
+
+  {key:'arabic',glyph:'☽',culture:'ARABIC',coord:'30°N 31°E · Cairo',
+   quote:'ما قل ودل خير مما كثر وألهى',translation:'What is little but sufficient is better than what is much but distracting.',
+   concept:'Qana\'a',
+   practice:'Choose one thing to not consume today — information, food, distraction. Practice sufficiency.',
+   context:'Qana\'a — contentment — is the Arabic antidote to the relentless accumulation the modern world demands. It is not poverty of spirit but richness of attention.'},
+
+  {key:'zen',glyph:'⛩',culture:'ZEN',coord:'34°N 135°E · Osaka',
+   quote:'始めよければ終わりよし',translation:'A good beginning makes a good ending.',
+   concept:'Kaizen',
+   practice:'Begin one thing today — even imperfectly. A beginning already made is already half the work.',
+   context:'The Japanese concept of Kaizen — continuous small improvement — teaches that quality is not a single destination but a direction. The smallest right beginning is worth more than the perfect plan.'},
+
+  {key:'stoic',glyph:'Φ',culture:'STOIC',coord:'39°N 26°E · Ephesus',
+   quote:'Πάντα ῥεῖ',translation:'Everything flows.',
+   concept:'Heraclitean Flux',
+   practice:'Notice one thing that is different about today compared to yesterday. Change is already here.',
+   context:'Heraclitus understood that the universe is not a static collection of things but an ongoing process. Resistance to change is resistance to the nature of reality itself. The river never stops.'},
+
+  {key:'ubuntu',glyph:'◉',culture:'UBUNTU',coord:'9°N 38°E · Addis Ababa',
+   quote:'When the music changes, so does the dance.',
+   translation:'When the music changes, so does the dance.',
+   concept:'Imani',
+   practice:'Name one way the music of your life has changed recently. How might your steps adapt?',
+   context:'African wisdom traditions prize adaptability not as weakness but as the highest intelligence — the same intelligence that allows grasslands to return after fire, and rivers to find their way around mountains.'},
+
+  {key:'arabic',glyph:'☽',culture:'ARABIC',coord:'21°N 39°E · Mecca',
+   quote:'إنما الأعمال بالنيات',translation:'Actions are but by intentions.',
+   concept:'Niyyah',
+   practice:'Before your next action — however small — pause and name your intention for it.',
+   context:'The concept of Niyyah in Islamic thought teaches that the quality of an act is inseparable from the quality of the intention behind it. What you mean shapes what you make.'},
+
+  {key:'zen',glyph:'⛩',culture:'ZEN',coord:'35°N 133°E · Tottori',
+   quote:'柔能く剛を制す',translation:'Softness overcomes hardness.',
+   concept:'Ju',
+   practice:'Find one place today where you have been hard. Try meeting it with softness and see what moves.',
+   context:'The principle of Ju — yielding — found in both Zen and martial arts teaches that the oak breaks in the storm while the willow bends and survives. Flexibility is not weakness; it is the strategy of water.'},
+
+  {key:'stoic',glyph:'Φ',culture:'STOIC',coord:'36°N 28°E · Rhodes',
+   quote:'Dum spiro, spero.',translation:'While I breathe, I hope.',
+   concept:'Spes',
+   practice:'Take three full breaths. With each one, name one thing that is still possible.',
+   context:'The Stoics did not preach false optimism — they practiced honest hope grounded in what remains possible right now. Breath is the first and last proof of capacity. While it continues, so does the field of action.'},
+
+  {key:'ubuntu',glyph:'◉',culture:'UBUNTU',coord:'14°N 17°W · Dakar',
+   quote:'Teranga.',translation:'Hospitality — the act of making the stranger feel at home.',
+   concept:'Teranga',
+   practice:'Offer hospitality today to whoever crosses your path — a warm word, an open door, your full attention.',
+   context:'In Wolof culture, Teranga is not mere politeness but a cosmic orientation: the stranger carries the sacred with them. To welcome them is to welcome what you cannot yet see.'},
+];
+
+/* ── CULTURE ACCENT COLORS ── */
+const ACCENTS = {
+  arabic:'140,27,53',
+  zen:'26,107,88',
+  stoic:'122,72,32',
+  ubuntu:'122,48,16',
+};
+
+/* ── DAY OF YEAR ── */
+function dayOfYear(d){
+  const start = new Date(d.getFullYear(),0,0);
+  return Math.floor((d - start) / 86400000);
+}
+
+/* ── RENDER ── */
+(function(){
+  const now = new Date();
+  const idx = dayOfYear(now) % CARDS.length;
+  const card = CARDS[idx];
+
+  // Set accent CSS var
+  const root = document.documentElement;
+  root.style.setProperty('--accent', `rgb(${ACCENTS[card.key] || '201,168,76'})`);
+  root.style.setProperty('--accent-rgb', ACCENTS[card.key] || '201,168,76');
+
+  // Date display
+  const dateStr = now.toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('day-date').textContent = dateStr;
+
+  // Card content
+  document.getElementById('dc-glyph').textContent = card.glyph;
+  document.getElementById('dc-glyph').style.color = `rgb(${ACCENTS[card.key]||'201,168,76'})`;
+  document.getElementById('dc-culture').textContent = card.culture;
+  document.getElementById('dc-coord').textContent = card.coord;
+  document.getElementById('dc-quote').textContent = card.quote;
+  document.getElementById('dc-translation').textContent = card.translation;
+  document.getElementById('dc-concept').textContent = card.concept;
+  document.getElementById('dc-practice').textContent = card.practice;
+  document.getElementById('dc-context').textContent = card.context;
+
+  // Meta tags
+  const short = card.translation.length > 80 ? card.translation.slice(0,77)+'…' : card.translation;
+  document.getElementById('pg-title').textContent = `WAY of the Day — ${dateStr}`;
+  document.getElementById('og-title').content = `WAY of the Day — ${card.culture} Wisdom`;
+  document.getElementById('og-desc').content = `"${short}" · ${card.concept}`;
+  document.getElementById('pg-desc').content = `"${short}" · ${card.concept}`;
+
+  // X share link
+  const xText = `"${card.translation}"\n— ${card.concept}, ${card.culture} Wisdom · WAY of the Day`;
+  document.getElementById('x-btn').href =
+    'https://twitter.com/intent/tweet?text=' + encodeURIComponent(xText) + '&url=' + encodeURIComponent(location.href);
+})();
+
+/* ── COPY LINK ── */
+function copyLink(){
+  navigator.clipboard.writeText(location.href).then(()=>{
+    const btn = document.querySelector('.sh-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied';
+    setTimeout(()=>btn.textContent=orig,2000);
+  });
+}
+
+/* ── NAV SCROLL TINT ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('top-nav').classList.toggle('scrolled',window.scrollY>40);
+},{passive:true});
+</script>
+</body>
+</html>
