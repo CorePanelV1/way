@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title id="pt">A Wisdom Bearing — WAY</title>
+<meta name="description" id="pd" content="Ancient wisdom for where you are today. Find your own bearing at WAY."/>
+<meta property="og:title" id="ogt" content="A Wisdom Bearing — WAY"/>
+<meta property="og:description" id="ogd" content="Ancient wisdom for where you are today."/>
+<meta property="og:image" content="/og.svg"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/og.svg"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0608;
+  --parch:#f5e6d0;--parch2:rgba(245,230,208,.8);--parch3:rgba(245,230,208,.5);
+  --gold:#c9a84c;--gold2:#e0bc6a;--golddim:rgba(201,168,76,.5);
+  --border:rgba(245,230,208,.08);
+  --accent:140,27,53;
+}
+html{background:var(--bg);min-height:100%}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;overflow-x:hidden}
+
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* Cultural glow — colour set by JS */
+#glow{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 70% 55% at 50% 25%, rgba(var(--accent),.22) 0%, transparent 68%);
+  transition:opacity 1.2s ease}
+
+/* Layout */
+.page{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px 48px}
+
+/* WAY wordmark at top */
+.s-logo{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:center;padding:20px;pointer-events:none}
+.s-logo a{font-family:'Cinzel',serif;font-size:.8rem;font-weight:700;letter-spacing:7px;color:rgba(245,230,208,.35);text-decoration:none;pointer-events:auto;transition:color .3s}
+.s-logo a:hover{color:rgba(245,230,208,.7)}
+
+/* Card wrapper — animates in */
+.card-wrap{
+  width:100%;max-width:560px;
+  animation:cardRise .9s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay:.15s;
+  opacity:0;
+}
+@keyframes cardRise{
+  from{opacity:0;transform:translateY(28px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* THE CARD */
+.s-card{
+  background:rgba(245,230,208,.03);
+  border:.5px solid rgba(245,230,208,.1);
+  border-radius:22px;
+  padding:36px 36px 32px;
+  position:relative;overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,.5), 0 0 0 .5px rgba(245,230,208,.06);
+}
+.s-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0}
+.k-arabic  .s-card::before{background:linear-gradient(90deg,transparent,rgba(140,27,53,.9),transparent)}
+.k-zen     .s-card::before{background:linear-gradient(90deg,transparent,rgba(26,107,88,.9),transparent)}
+.k-stoic   .s-card::before{background:linear-gradient(90deg,transparent,rgba(122,72,32,.9),transparent)}
+.k-ubuntu  .s-card::before{background:linear-gradient(90deg,transparent,rgba(122,48,16,.9),transparent)}
+.s-card::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 50% at 20% 10%, rgba(var(--accent),.1) 0%, transparent 55%)}
+
+/* Culture header */
+.s-head{display:flex;align-items:center;gap:16px;margin-bottom:24px;position:relative;z-index:1}
+.s-glyph{font-size:2.4rem;line-height:1;filter:drop-shadow(0 0 14px currentColor)}
+.k-arabic  .s-glyph{color:rgb(140,27,53)}
+.k-zen     .s-glyph{color:rgb(26,107,88)}
+.k-stoic   .s-glyph{color:rgb(170,120,60)}
+.k-ubuntu  .s-glyph{color:rgb(180,90,40)}
+.s-culture{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--parch2)}
+.s-coord{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-top:5px}
+
+.s-div{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);margin:0 0 28px;position:relative;z-index:1}
+
+/* Quote — the hero element */
+.s-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.5rem,4vw,2rem);
+  font-style:italic;
+  color:var(--parch);
+  line-height:1.5;
+  margin-bottom:14px;
+  position:relative;z-index:1;
+  letter-spacing:.01em;
+}
+.s-translation{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,2.2vw,1.25rem);
+  color:var(--parch3);
+  line-height:1.7;
+  margin-bottom:20px;
+  font-style:italic;
+  position:relative;z-index:1;
+}
+.s-badge{
+  display:inline-flex;align-items:center;
+  font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;
+  border:.5px solid var(--border);border-radius:20px;padding:5px 14px;
+  color:var(--golddim);margin-bottom:22px;position:relative;z-index:1;
+}
+
+/* Practice — most important, most prominent */
+.s-practice{
+  background:rgba(201,168,76,.07);
+  border:.5px solid rgba(201,168,76,.2);
+  border-left:2.5px solid var(--gold);
+  border-radius:12px;padding:18px 20px;
+  margin-bottom:22px;position:relative;z-index:1;
+}
+.s-practice-label{
+  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:9px;display:flex;align-items:center;gap:6px;
+}
+.s-practice-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,2vw,1.15rem);
+  line-height:1.75;color:var(--parch2);
+}
+
+/* Context */
+.s-context{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(.95rem,1.8vw,1.1rem);
+  line-height:1.8;color:var(--parch3);
+  font-style:italic;position:relative;z-index:1;
+}
+
+/* CTA section */
+.s-cta-wrap{
+  margin-top:28px;text-align:center;
+  animation:cardRise .9s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay:.35s;
+  opacity:0;
+}
+.s-cta-line{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.15),rgba(201,168,76,.15),transparent);margin-bottom:24px}
+.s-cta-hook{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,2.5vw,1.25rem);
+  font-style:italic;color:var(--parch3);
+  margin-bottom:18px;line-height:1.6;
+}
+.s-cta-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--parch);color:var(--bg);
+  border:none;border-radius:11px;
+  padding:16px 44px;
+  font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  text-decoration:none;transition:all .3s;
+  box-shadow:0 8px 40px rgba(0,0,0,.4);
+}
+.s-cta-btn:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 16px 50px rgba(0,0,0,.5)}
+.s-cta-sub{
+  margin-top:14px;
+  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;
+  text-transform:uppercase;color:rgba(245,230,208,.2);
+}
+
+/* 404 state */
+#not-found{
+  text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px;
+  position:relative;z-index:2;
+  animation:cardRise .9s cubic-bezier(0.22,1,0.36,1) both;
+}
+.nf-glyph{font-size:3rem;opacity:.3}
+.nf-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-style:italic;color:var(--parch3)}
+.nf-sub{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.2)}
+
+@media(max-width:600px){
+  .s-card{padding:28px 22px 26px;border-radius:18px}
+  .page{padding:20px 16px 40px}
+}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="glow"></div>
+
+<nav class="s-logo"><a href="/way.html">WAY</a></nav>
+
+<div class="page" id="page">
+  <!-- content rendered by JS -->
+</div>
+
+<script>
+/* ── STAR CANVAS ── */
+(function(){
+  const c=document.getElementById('bg'),cx=c.getContext('2d');
+  let W,H,stars=[];
+  const dunes=[[0,.72],[.07,.68],[.18,.74],[.28,.63],[.40,.70],[.50,.61],[.62,.69],[.72,.59],[.84,.67],[.93,.63],[1,.66]];
+  function init(){
+    W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];
+    const n=Math.floor(W*H/4200);
+    for(let i=0;i<n;i++) stars.push({x:Math.random()*W,y:Math.random()*H*.76,r:.1+Math.random()*1.4,ph:Math.random()*Math.PI*2,sp:.006+Math.random()*.02,br:.25+Math.random()*.75,col:Math.random()<.12?[255,210,140]:Math.random()<.1?[180,200,255]:[237,229,200]});
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    const sg=cx.createLinearGradient(0,0,0,H);
+    sg.addColorStop(0,'#05030a');sg.addColorStop(.6,'#090507');sg.addColorStop(1,'#0d0905');
+    cx.fillStyle=sg;cx.fillRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.ph+=s.sp;const a=s.br*(.45+.55*Math.sin(s.ph));if(a<.04)return;
+      cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a})`;cx.fill();
+    });
+    const hY=H*.7;const dg=cx.createLinearGradient(0,hY,0,H);
+    dg.addColorStop(0,'rgba(10,6,4,1)');dg.addColorStop(1,'rgba(4,2,1,1)');
+    cx.beginPath();
+    const dp=dunes.map(([fx,fy])=>[fx*W,hY+(fy-.62)*(H-hY)*.5+H*.04]);
+    cx.moveTo(dp[0][0],dp[0][1]);
+    for(let i=1;i<dp.length-1;i++){const mx=(dp[i][0]+dp[i+1][0])/2,my=(dp[i][1]+dp[i+1][1])/2;cx.quadraticCurveTo(dp[i][0],dp[i][1],mx,my);}
+    cx.lineTo(W,H);cx.lineTo(0,H);cx.fillStyle=dg;cx.fill();
+    requestAnimationFrame(draw);
+  }
+  init();window.addEventListener('resize',init);draw();
+})();
+
+/* ── DATA ── */
+const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
+const LABELS={arabic:'ARABIC',zen:'ZEN',stoic:'STOIC',ubuntu:'UBUNTU'};
+const ACCENTS={arabic:'140,27,53',zen:'26,107,88',stoic:'122,72,32',ubuntu:'122,48,16'};
+const HOOKS=[
+  'This wisdom found you for a reason.',
+  'Some things arrive exactly when needed.',
+  'The bearing you needed, delivered.',
+  'Ancient words. Your exact moment.',
+];
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* ── DECODE ── */
+let data = null;
+try {
+  const raw = new URLSearchParams(location.search).get('d');
+  if(raw){
+    const json = decodeURIComponent(escape(atob(raw)));
+    data = JSON.parse(json);
+  }
+} catch(e){}
+
+const page = document.getElementById('page');
+
+if(!data || !data.k || !data.q){
+  page.innerHTML = `
+    <div id="not-found">
+      <div class="nf-glyph">✦</div>
+      <div class="nf-title">No bearing found</div>
+      <div class="nf-sub">This link may have expired</div>
+      <a href="/way.html" class="s-cta-btn" style="margin-top:8px">Find My Way</a>
+    </div>`;
+} else {
+  const {k,q,t,c,co,r,p} = data;
+  const label = LABELS[k] || k.toUpperCase();
+  const glyph = GLYPHS[k] || '✦';
+  const accent = ACCENTS[k] || '140,27,53';
+  const hook = HOOKS[Math.floor(Math.random()*HOOKS.length)];
+
+  // Set culture class and accent colour
+  document.body.classList.add(`k-${k}`);
+  document.documentElement.style.setProperty('--accent', accent);
+
+  // Update meta
+  const shortT = t.length > 80 ? t.slice(0,77)+'…' : t;
+  document.getElementById('pt').textContent = `"${shortT}" — WAY`;
+  document.getElementById('ogt').content = `${label} wisdom — WAY`;
+  document.getElementById('ogd').content = `"${shortT}" · ${c}`;
+  document.getElementById('pd').content = `"${shortT}" · ${c}`;
+
+  const coord = [co,r].filter(Boolean).join(' · ');
+  const practiceHtml = p ? `
+    <div class="s-practice">
+      <div class="s-practice-label">✦ Practice Today</div>
+      <div class="s-practice-text">${esc(p)}</div>
+    </div>` : '';
+
+  page.innerHTML = `
+    <div class="card-wrap">
+      <div class="s-card">
+        <div class="s-head">
+          <span class="s-glyph">${glyph}</span>
+          <div>
+            <div class="s-culture">${label}</div>
+            ${coord ? `<div class="s-coord">${esc(coord)}</div>` : ''}
+          </div>
+        </div>
+        <div class="s-div"></div>
+        <div class="s-quote">${esc(q)}</div>
+        <div class="s-translation">${esc(t)}</div>
+        <span class="s-badge">${esc(c)}</span>
+        ${practiceHtml}
+      </div>
+      <div class="s-cta-wrap">
+        <div class="s-cta-line"></div>
+        <div class="s-cta-hook">${hook}</div>
+        <a href="/way.html" class="s-cta-btn">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+          Find My Way
+        </a>
+        <div class="s-cta-sub">Ancient wisdom · Four traditions · Free</div>
+      </div>
+    </div>`;
+}
+</script>
+</body>
+</html>

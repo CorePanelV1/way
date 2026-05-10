@@ -617,16 +617,9 @@ function toggleModalAudio(){
 function buildShareUrl(key){
   if(!lastWisdom) return window.location.origin+'/way.html';
   const d=lastWisdom[key];
-  const params=new URLSearchParams({
-    k:key,
-    q:d.quote||'',
-    t:d.translation||'',
-    c:d.concept||'',
-    co:d.coordinate||'',
-    r:d.region||'',
-    p:d.practice||'',
-  });
-  return window.location.origin+'/share.html?'+params.toString();
+  const payload={k:key,q:d.quote||'',t:d.translation||'',c:d.concept||'',co:d.coordinate||'',r:d.region||'',p:d.practice||''};
+  const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  return window.location.origin+'/s?d='+encoded;
 }
 
 function modalCopy(){
