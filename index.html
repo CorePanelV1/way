@@ -816,20 +816,20 @@ el.to(HUD,  {opacity:1,duration:1},1.4);
 const master = gsap.timeline({
   scrollTrigger:{
     trigger:'#hero-section', start:'top top', end:'bottom bottom',
-    scrub:0.5, invalidateOnRefresh:true,
+    scrub:0.15, invalidateOnRefresh:true,
     onUpdate(self){
       const p = self.progress;
       tp = p;
       HF.style.width = Math.round(p*100)+'%';
       HP.textContent = Math.round(p*100)+'%';
 
-      // Intro badge fades out as scroll begins
-      const introFade = p < 0.10 ? 1 : Math.max(0,1-(p-0.10)/0.08);
+      // Intro badge fades out fast — gone before proverb float appears
+      const introFade = p < 0.07 ? 1 : Math.max(0,1-(p-0.07)/0.06);
       HI.style.opacity = introFade;
       HI.style.pointerEvents = introFade > 0.05 ? 'auto' : 'none';
 
-      // Proverb float
-      const fadeIn  = p > 0.20 ? Math.min((p-0.20)/0.10,1) : 0;
+      // Proverb float — starts only after intro is fully gone (gap prevents overlap)
+      const fadeIn  = p > 0.28 ? Math.min((p-0.28)/0.08,1) : 0;
       const fadeOut = p < 0.80 ? 1 : Math.max(0,1-(p-0.80)/0.10);
       const pfAlpha = fadeIn * fadeOut;
       PF.style.opacity = pfAlpha;
@@ -847,9 +847,9 @@ const master = gsap.timeline({
         SB.style.opacity = 0;
       }
 
-      // Culture crossfade
-      if(p > .20 && p < .82){
-        const ci = Math.min(CULTURES.length-1, Math.floor((p-.20)/.62*CULTURES.length));
+      // Culture crossfade — window matches proverb float window
+      if(p > .28 && p < .82){
+        const ci = Math.min(CULTURES.length-1, Math.floor((p-.28)/.54*CULTURES.length));
         if(ci !== lastCI){
           lastCI = ci;
           const c = CULTURES[ci];
