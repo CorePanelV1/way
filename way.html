@@ -797,7 +797,7 @@ function buildShareUrl(key){
   const d=lastWisdom[key];
   const payload={k:key,q:d.quote||'',t:d.translation||'',c:d.concept||'',co:d.coordinate||'',r:d.region||'',p:d.practice||''};
   const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-  return window.location.origin+'/s?d='+encoded;
+  return window.location.origin+'/card?d='+encoded;
 }
 
 function modalCopy(){
