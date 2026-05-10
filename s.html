@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title id="pt">A Wisdom Bearing — WAY</title>
-<meta name="description" id="pd" content="Ancient wisdom for where you are today. Find your own bearing at WAY."/>
+<meta name="description" id="pd" content="Ancient wisdom, sent your way."/>
 <meta property="og:title" id="ogt" content="A Wisdom Bearing — WAY"/>
 <meta property="og:description" id="ogd" content="Ancient wisdom for where you are today."/>
 <meta property="og:image" content="/og.svg"/>
@@ -17,166 +17,193 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0a0608;
-  --parch:#f5e6d0;--parch2:rgba(245,230,208,.8);--parch3:rgba(245,230,208,.5);
+  --parch:#f5e6d0;--parch2:rgba(245,230,208,.8);--parch3:rgba(245,230,208,.48);
   --gold:#c9a84c;--gold2:#e0bc6a;--golddim:rgba(201,168,76,.5);
   --border:rgba(245,230,208,.08);
-  --accent:140,27,53;
+  --accent-rgb:140,27,53;
+  --accent:rgb(var(--accent-rgb));
 }
 html{background:var(--bg);min-height:100%}
-body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;overflow-x:hidden}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 20px 48px;overflow-x:hidden}
 
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* Cultural glow — colour set by JS */
-#glow{position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 70% 55% at 50% 25%, rgba(var(--accent),.22) 0%, transparent 68%);
-  transition:opacity 1.2s ease}
-
-/* Layout */
-.page{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px 48px}
-
-/* WAY wordmark at top */
-.s-logo{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:center;padding:20px;pointer-events:none}
-.s-logo a{font-family:'Cinzel',serif;font-size:.8rem;font-weight:700;letter-spacing:7px;color:rgba(245,230,208,.35);text-decoration:none;pointer-events:auto;transition:color .3s}
-.s-logo a:hover{color:rgba(245,230,208,.7)}
-
-/* Card wrapper — animates in */
-.card-wrap{
-  width:100%;max-width:560px;
-  animation:cardRise .9s cubic-bezier(0.22,1,0.36,1) both;
-  animation-delay:.15s;
-  opacity:0;
-}
-@keyframes cardRise{
-  from{opacity:0;transform:translateY(28px)}
-  to{opacity:1;transform:translateY(0)}
+/* Ambient cultural glow — tinted by JS */
+#glow{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 65% 50% at 50% 20%, rgba(var(--accent-rgb),.18) 0%, transparent 65%);
 }
 
-/* THE CARD */
+/* ── PAGE LAYOUT ── */
+.page{
+  position:relative;z-index:2;
+  width:100%;max-width:580px;
+  display:flex;flex-direction:column;align-items:center;
+  padding-top:72px;gap:0;
+}
+
+/* ── SENT-BY BANNER ── */
+.sent-banner{
+  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(245,230,208,.2);margin-bottom:24px;text-align:center;
+  animation:fadeUp .7s ease both;animation-delay:.1s;
+}
+
+/* ── THE CARD ── */
 .s-card{
+  width:100%;
   background:rgba(245,230,208,.03);
   border:.5px solid rgba(245,230,208,.1);
-  border-radius:22px;
-  padding:36px 36px 32px;
-  position:relative;overflow:hidden;
-  box-shadow:0 40px 100px rgba(0,0,0,.5), 0 0 0 .5px rgba(245,230,208,.06);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 48px 120px rgba(0,0,0,.55), 0 0 0 .5px rgba(245,230,208,.05) inset;
+  animation:fadeUp .9s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay:.2s;
+  position:relative;
 }
-.s-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0}
-.k-arabic  .s-card::before{background:linear-gradient(90deg,transparent,rgba(140,27,53,.9),transparent)}
-.k-zen     .s-card::before{background:linear-gradient(90deg,transparent,rgba(26,107,88,.9),transparent)}
-.k-stoic   .s-card::before{background:linear-gradient(90deg,transparent,rgba(122,72,32,.9),transparent)}
-.k-ubuntu  .s-card::before{background:linear-gradient(90deg,transparent,rgba(122,48,16,.9),transparent)}
-.s-card::after{content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 70% 50% at 20% 10%, rgba(var(--accent),.1) 0%, transparent 55%)}
 
-/* Culture header */
-.s-head{display:flex;align-items:center;gap:16px;margin-bottom:24px;position:relative;z-index:1}
-.s-glyph{font-size:2.4rem;line-height:1;filter:drop-shadow(0 0 14px currentColor)}
-.k-arabic  .s-glyph{color:rgb(140,27,53)}
-.k-zen     .s-glyph{color:rgb(26,107,88)}
-.k-stoic   .s-glyph{color:rgb(170,120,60)}
-.k-ubuntu  .s-glyph{color:rgb(180,90,40)}
+/* Culture accent top bar */
+.s-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;z-index:2;
+  background:linear-gradient(90deg, transparent, rgba(var(--accent-rgb),1), transparent);
+}
+
+/* Inner glow */
+.s-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 50% at 25% 10%, rgba(var(--accent-rgb),.1) 0%, transparent 60%);
+}
+
+.card-body{padding:36px 36px 0;position:relative;z-index:1}
+
+/* Header */
+.s-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.s-head-left{display:flex;align-items:center;gap:16px}
+.s-glyph{font-size:2.6rem;line-height:1;color:var(--accent);filter:drop-shadow(0 0 16px var(--accent))}
 .s-culture{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--parch2)}
 .s-coord{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-top:5px}
 
-.s-div{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);margin:0 0 28px;position:relative;z-index:1}
+/* Play button — in the header */
+.play-btn{
+  flex-shrink:0;
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(var(--accent-rgb),.12);
+  border:.5px solid rgba(var(--accent-rgb),.35);
+  color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .3s;
+  position:relative;
+}
+.play-btn:hover{background:rgba(var(--accent-rgb),.22);border-color:rgba(var(--accent-rgb),.6);transform:scale(1.05)}
+.play-btn.playing{
+  background:rgba(var(--accent-rgb),.18);
+  border-color:var(--accent);
+  animation:pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(var(--accent-rgb),.4)}
+  50%{box-shadow:0 0 0 12px rgba(var(--accent-rgb),0)}
+}
+.play-btn svg{transition:transform .2s}
+.play-btn:hover svg{transform:scale(1.15)}
 
-/* Quote — the hero element */
+/* Divider */
+.s-div{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.2),transparent);margin:0 0 28px}
+
+/* Quote */
 .s-quote{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.5rem,4vw,2rem);
-  font-style:italic;
-  color:var(--parch);
-  line-height:1.5;
-  margin-bottom:14px;
-  position:relative;z-index:1;
+  font-size:clamp(1.5rem,4vw,2.1rem);
+  font-style:italic;color:var(--parch);
+  line-height:1.5;margin-bottom:14px;
   letter-spacing:.01em;
 }
 .s-translation{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(1rem,2.2vw,1.25rem);
-  color:var(--parch3);
-  line-height:1.7;
-  margin-bottom:20px;
-  font-style:italic;
-  position:relative;z-index:1;
+  color:var(--parch3);line-height:1.7;
+  margin-bottom:20px;font-style:italic;
 }
 .s-badge{
-  display:inline-flex;align-items:center;
+  display:inline-flex;
   font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;
   border:.5px solid var(--border);border-radius:20px;padding:5px 14px;
-  color:var(--golddim);margin-bottom:22px;position:relative;z-index:1;
+  color:var(--golddim);margin-bottom:24px;
 }
 
-/* Practice — most important, most prominent */
+/* Practice */
 .s-practice{
-  background:rgba(201,168,76,.07);
-  border:.5px solid rgba(201,168,76,.2);
+  background:rgba(201,168,76,.06);
+  border:.5px solid rgba(201,168,76,.18);
   border-left:2.5px solid var(--gold);
   border-radius:12px;padding:18px 20px;
-  margin-bottom:22px;position:relative;z-index:1;
+  margin-bottom:22px;
 }
-.s-practice-label{
-  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:9px;display:flex;align-items:center;gap:6px;
-}
-.s-practice-text{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1rem,2vw,1.15rem);
-  line-height:1.75;color:var(--parch2);
-}
+.s-practice-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:9px}
+.s-practice-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2vw,1.15rem);line-height:1.75;color:var(--parch2)}
 
 /* Context */
 .s-context{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(.95rem,1.8vw,1.1rem);
-  line-height:1.8;color:var(--parch3);
-  font-style:italic;position:relative;z-index:1;
+  line-height:1.8;color:var(--parch3);font-style:italic;
+  padding-bottom:32px;
 }
 
-/* CTA section */
-.s-cta-wrap{
-  margin-top:28px;text-align:center;
-  animation:cardRise .9s cubic-bezier(0.22,1,0.36,1) both;
-  animation-delay:.35s;
-  opacity:0;
+/* ── CARD FOOTER (music strip) ── */
+.card-footer{
+  border-top:.5px solid rgba(245,230,208,.06);
+  padding:16px 36px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;z-index:1;
 }
-.s-cta-line{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.15),rgba(201,168,76,.15),transparent);margin-bottom:24px}
-.s-cta-hook{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1rem,2.5vw,1.25rem);
-  font-style:italic;color:var(--parch3);
-  margin-bottom:18px;line-height:1.6;
+.cf-playing-label{
+  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(245,230,208,.25);transition:color .4s;
 }
-.s-cta-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--parch);color:var(--bg);
-  border:none;border-radius:11px;
-  padding:16px 44px;
-  font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  text-decoration:none;transition:all .3s;
-  box-shadow:0 8px 40px rgba(0,0,0,.4);
-}
-.s-cta-btn:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 16px 50px rgba(0,0,0,.5)}
-.s-cta-sub{
-  margin-top:14px;
-  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;
-  text-transform:uppercase;color:rgba(245,230,208,.2);
-}
+.cf-playing-label.on{color:var(--golddim)}
+.cf-bars{display:flex;gap:3px;align-items:flex-end;height:14px;opacity:0;transition:opacity .4s}
+.cf-bars.on{opacity:1}
+.cf-bar{width:3px;border-radius:2px;background:var(--gold);transform-origin:bottom}
+.cf-bar:nth-child(1){animation:bar 1.0s ease-in-out infinite;height:6px}
+.cf-bar:nth-child(2){animation:bar 0.8s ease-in-out infinite .1s;height:10px}
+.cf-bar:nth-child(3){animation:bar 1.2s ease-in-out infinite .2s;height:7px}
+.cf-bar:nth-child(4){animation:bar 0.9s ease-in-out infinite .05s;height:12px}
+@keyframes bar{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.cf-wm{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.18)}
 
-/* 404 state */
+/* ── SITE WATERMARK ── */
+.way-watermark{
+  margin-top:28px;
+  animation:fadeUp .8s ease both;animation-delay:.5s;
+  text-align:center;
+}
+.way-watermark a{
+  font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(245,230,208,.18);text-decoration:none;
+  transition:color .3s;display:inline-flex;align-items:center;gap:8px;
+}
+.way-watermark a:hover{color:rgba(245,230,208,.45)}
+
+/* ── NOT FOUND ── */
 #not-found{
-  text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px;
   position:relative;z-index:2;
-  animation:cardRise .9s cubic-bezier(0.22,1,0.36,1) both;
+  text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px;
+  min-height:100svh;justify-content:center;
+  animation:fadeUp .8s ease both;
 }
-.nf-glyph{font-size:3rem;opacity:.3}
-.nf-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-style:italic;color:var(--parch3)}
-.nf-sub{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.2)}
+.nf-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-style:italic;color:var(--parch3)}
+.nf-sub{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.2)}
+.nf-btn{display:inline-flex;align-items:center;gap:10px;background:var(--parch);color:var(--bg);border:none;border-radius:10px;padding:15px 36px;font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all .3s;margin-top:8px}
+.nf-btn:hover{background:var(--gold2);transform:translateY(-2px)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:600px){
-  .s-card{padding:28px 22px 26px;border-radius:18px}
-  .page{padding:20px 16px 40px}
+  .s-card{border-radius:18px}
+  .card-body{padding:28px 22px 0}
+  .card-footer{padding:14px 22px}
+  .page{padding-top:56px}
 }
 </style>
 </head>
@@ -184,10 +211,8 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 <canvas id="bg"></canvas>
 <div id="glow"></div>
 
-<nav class="s-logo"><a href="/way.html">WAY</a></nav>
-
 <div class="page" id="page">
-  <!-- content rendered by JS -->
+  <!-- rendered by JS -->
 </div>
 
 <script>
@@ -199,7 +224,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   function init(){
     W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];
     const n=Math.floor(W*H/4200);
-    for(let i=0;i<n;i++) stars.push({x:Math.random()*W,y:Math.random()*H*.76,r:.1+Math.random()*1.4,ph:Math.random()*Math.PI*2,sp:.006+Math.random()*.02,br:.25+Math.random()*.75,col:Math.random()<.12?[255,210,140]:Math.random()<.1?[180,200,255]:[237,229,200]});
+    for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H*.76,r:.1+Math.random()*1.4,ph:Math.random()*Math.PI*2,sp:.006+Math.random()*.02,br:.25+Math.random()*.75,col:Math.random()<.12?[255,210,140]:Math.random()<.1?[180,200,255]:[237,229,200]});
   }
   function draw(){
     cx.clearRect(0,0,W,H);
@@ -211,7 +236,8 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
       cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);
       cx.fillStyle=`rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a})`;cx.fill();
     });
-    const hY=H*.7;const dg=cx.createLinearGradient(0,hY,0,H);
+    const hY=H*.7;
+    const dg=cx.createLinearGradient(0,hY,0,H);
     dg.addColorStop(0,'rgba(10,6,4,1)');dg.addColorStop(1,'rgba(4,2,1,1)');
     cx.beginPath();
     const dp=dunes.map(([fx,fy])=>[fx*W,hY+(fy-.62)*(H-hY)*.5+H*.04]);
@@ -223,58 +249,74 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   init();window.addEventListener('resize',init);draw();
 })();
 
+/* ── AUDIO ENGINE ── */
+const Audio = (() => {
+  let actx=null,master=null,alive=[],playing=false;
+  function ctx(){
+    if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=0;master.connect(actx.destination);}
+    return actx;
+  }
+  function rev(s){const ac=ctx(),len=ac.sampleRate*s,buf=ac.createBuffer(2,len,ac.sampleRate);for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.8);}const c=ac.createConvolver();c.buffer=buf;return c;}
+  function osc(f,type,g,dest,det){const ac=ctx(),o=ac.createOscillator(),gn=ac.createGain();o.type=type;o.frequency.value=f;if(det)o.detune.value=(Math.random()-.5)*det;gn.gain.value=g;o.connect(gn);gn.connect(dest);o.start();alive.push(o);return{o,gn};}
+  function lfo(n,rate,depth){const ac=ctx(),l=ac.createOscillator(),lg=ac.createGain();l.frequency.value=rate;lg.gain.value=depth;l.connect(lg);lg.connect(n.gn.gain);l.start();alive.push(l);}
+  const S={
+    arabic(){const rv=rev(5);rv.connect(master);const f=ctx().createBiquadFilter();f.type='lowpass';f.frequency.value=1100;f.connect(rv);[220,247,330,415].forEach((freq,i)=>{const n=osc(freq,'sine',.048,f,10);lfo(n,3+i*.4,.009);});},
+    zen(){const rv=rev(10);rv.connect(master);osc(432,'sine',.13,rv,3);osc(864,'sine',.04,rv,2);function bell(){if(!playing)return;const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=880+Math.random()*50;g.gain.setValueAtTime(.18,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+4.5);o.connect(g);g.connect(rv);o.start();o.stop(ac.currentTime+4.6);setTimeout(bell,7000+Math.random()*6000);}setTimeout(bell,2000);},
+    stoic(){const rv=rev(7);rv.connect(master);const f=ctx().createBiquadFilter();f.type='lowpass';f.frequency.value=460;f.connect(rv);[55,110,165].forEach(freq=>{const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.value=freq;g.gain.value=.055;o.connect(g);g.connect(f);o.start();alive.push(o);});},
+    ubuntu(){const rv=rev(4);rv.connect(master);[264,330,396,495].forEach((freq,i)=>{const n=osc(freq,'sine',.055,rv,7);lfo(n,4.5+i*.3,.007);}); },
+  };
+  return{
+    play(key){this.stop();const fn=S[key];if(!fn)return;const ac=ctx();if(ac.state==='suspended')ac.resume();fn();playing=true;master.gain.cancelScheduledValues(ac.currentTime);master.gain.setTargetAtTime(1,ac.currentTime,1.4);},
+    stop(){if(!actx)return;master.gain.setTargetAtTime(0,actx.currentTime,.5);const k=[...alive];setTimeout(()=>k.forEach(n=>{try{n.stop();}catch(e){}}),1800);alive=[];playing=false;},
+    toggle(key){if(playing){this.stop();return false;}this.play(key);return true;},
+    get playing(){return playing;}
+  };
+})();
+
 /* ── DATA ── */
-const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
-const LABELS={arabic:'ARABIC',zen:'ZEN',stoic:'STOIC',ubuntu:'UBUNTU'};
-const ACCENTS={arabic:'140,27,53',zen:'26,107,88',stoic:'122,72,32',ubuntu:'122,48,16'};
-const HOOKS=[
-  'This wisdom found you for a reason.',
-  'Some things arrive exactly when needed.',
-  'The bearing you needed, delivered.',
-  'Ancient words. Your exact moment.',
-];
+const GLYPHS  = {arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
+const LABELS  = {arabic:'ARABIC',zen:'ZEN',stoic:'STOIC',ubuntu:'UBUNTU'};
+const ACCENTS = {arabic:'140,27,53',zen:'26,107,88',stoic:'122,72,32',ubuntu:'122,48,16'};
+const MUSIC_LABEL = {arabic:'Arabic ambient',zen:'Zen ambient',stoic:'Stoic ambient',ubuntu:'Ubuntu ambient'};
 
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
 /* ── DECODE ── */
 let data = null;
-try {
+try{
   const raw = new URLSearchParams(location.search).get('d');
-  if(raw){
-    const json = decodeURIComponent(escape(atob(raw)));
-    data = JSON.parse(json);
-  }
-} catch(e){}
+  if(raw) data = JSON.parse(decodeURIComponent(escape(atob(raw))));
+}catch(e){}
 
 const page = document.getElementById('page');
 
 if(!data || !data.k || !data.q){
   page.innerHTML = `
     <div id="not-found">
-      <div class="nf-glyph">✦</div>
+      <div style="font-size:2.5rem;opacity:.25">✦</div>
       <div class="nf-title">No bearing found</div>
       <div class="nf-sub">This link may have expired</div>
-      <a href="/way.html" class="s-cta-btn" style="margin-top:8px">Find My Way</a>
+      <a href="/" class="nf-btn">Go to WAY</a>
     </div>`;
 } else {
   const {k,q,t,c,co,r,p} = data;
-  const label = LABELS[k] || k.toUpperCase();
-  const glyph = GLYPHS[k] || '✦';
-  const accent = ACCENTS[k] || '140,27,53';
-  const hook = HOOKS[Math.floor(Math.random()*HOOKS.length)];
+  const label   = LABELS[k]  || k.toUpperCase();
+  const glyph   = GLYPHS[k]  || '✦';
+  const accent  = ACCENTS[k] || '140,27,53';
+  const mLabel  = MUSIC_LABEL[k] || 'Ambient';
+  const coord   = [co,r].filter(Boolean).join(' · ');
 
-  // Set culture class and accent colour
-  document.body.classList.add(`k-${k}`);
-  document.documentElement.style.setProperty('--accent', accent);
+  // Set accent
+  document.documentElement.style.setProperty('--accent-rgb', accent);
+  document.documentElement.style.setProperty('--accent', `rgb(${accent})`);
 
-  // Update meta
-  const shortT = t.length > 80 ? t.slice(0,77)+'…' : t;
+  // Meta
+  const shortT = (t||'').length > 80 ? t.slice(0,77)+'…' : t;
   document.getElementById('pt').textContent = `"${shortT}" — WAY`;
-  document.getElementById('ogt').content = `${label} wisdom — WAY`;
-  document.getElementById('ogd').content = `"${shortT}" · ${c}`;
-  document.getElementById('pd').content = `"${shortT}" · ${c}`;
+  document.getElementById('ogt').content    = `${label} wisdom — WAY`;
+  document.getElementById('ogd').content    = `"${shortT}" · ${c}`;
+  document.getElementById('pd').content     = `"${shortT}" · ${c}`;
 
-  const coord = [co,r].filter(Boolean).join(' · ');
   const practiceHtml = p ? `
     <div class="s-practice">
       <div class="s-practice-label">✦ Practice Today</div>
@@ -282,31 +324,64 @@ if(!data || !data.k || !data.q){
     </div>` : '';
 
   page.innerHTML = `
-    <div class="card-wrap">
-      <div class="s-card">
+    <div class="sent-banner">A wisdom bearing</div>
+
+    <div class="s-card">
+      <div class="card-body">
         <div class="s-head">
-          <span class="s-glyph">${glyph}</span>
-          <div>
-            <div class="s-culture">${label}</div>
-            ${coord ? `<div class="s-coord">${esc(coord)}</div>` : ''}
+          <div class="s-head-left">
+            <span class="s-glyph">${glyph}</span>
+            <div>
+              <div class="s-culture">${label}</div>
+              ${coord ? `<div class="s-coord">${esc(coord)}</div>` : ''}
+            </div>
           </div>
+          <button class="play-btn" id="play-btn" onclick="toggleAudio()" title="Play ${mLabel}">
+            <svg id="play-icon" width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><polygon points="0,0 14,8 0,16"/></svg>
+          </button>
         </div>
+
         <div class="s-div"></div>
+
         <div class="s-quote">${esc(q)}</div>
         <div class="s-translation">${esc(t)}</div>
         <span class="s-badge">${esc(c)}</span>
+
         ${practiceHtml}
       </div>
-      <div class="s-cta-wrap">
-        <div class="s-cta-line"></div>
-        <div class="s-cta-hook">${hook}</div>
-        <a href="/way.html" class="s-cta-btn">
-          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
-          Find My Way
-        </a>
-        <div class="s-cta-sub">Ancient wisdom · Four traditions · Free</div>
+
+      <div class="card-footer">
+        <div class="cf-playing-label" id="cf-label">${mLabel}</div>
+        <div class="cf-bars" id="cf-bars">
+          <div class="cf-bar"></div><div class="cf-bar"></div>
+          <div class="cf-bar"></div><div class="cf-bar"></div>
+        </div>
+        <div class="cf-wm">✦ WAY</div>
       </div>
+    </div>
+
+    <div class="way-watermark">
+      <a href="/">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+        Find your own bearing at WAY
+      </a>
     </div>`;
+
+  /* Play toggle */
+  function toggleAudio(){
+    const btn   = document.getElementById('play-btn');
+    const icon  = document.getElementById('play-icon');
+    const label = document.getElementById('cf-label');
+    const bars  = document.getElementById('cf-bars');
+    const on = Audio.toggle(k);
+    btn.classList.toggle('playing', on);
+    label.classList.toggle('on', on);
+    bars.classList.toggle('on', on);
+    icon.innerHTML = on
+      ? '<rect x="1" y="0" width="4" height="16"/><rect x="9" y="0" width="4" height="16"/>'
+      : '<polygon points="0,0 14,8 0,16"/>';
+  }
+  window.toggleAudio = toggleAudio;
 }
 </script>
 </body>
