@@ -162,8 +162,9 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   color:rgba(245,230,208,.25);transition:color .4s;
 }
 .cf-playing-label.on{color:var(--golddim)}
-.cf-bars{display:flex;gap:3px;align-items:flex-end;height:14px;opacity:0;transition:opacity .4s}
+.cf-bars{display:flex;gap:3px;align-items:flex-end;height:14px;opacity:.2;transition:opacity .4s}
 .cf-bars.on{opacity:1}
+.cf-bars:not(.on) .cf-bar{animation:none!important;transform:scaleY(.3)}
 .cf-bar{width:3px;border-radius:2px;background:var(--gold);transform-origin:bottom}
 .cf-bar:nth-child(1){animation:bar 1.0s ease-in-out infinite;height:6px}
 .cf-bar:nth-child(2){animation:bar 0.8s ease-in-out infinite .1s;height:10px}
@@ -179,11 +180,15 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   text-align:center;
 }
 .way-watermark a{
-  font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;
-  color:rgba(245,230,208,.18);text-decoration:none;
-  transition:color .3s;display:inline-flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(245,230,208,.07);
+  border:.5px solid rgba(245,230,208,.2);
+  border-radius:10px;padding:13px 28px;
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(245,230,208,.7);text-decoration:none;
+  transition:all .3s;
 }
-.way-watermark a:hover{color:rgba(245,230,208,.45)}
+.way-watermark a:hover{background:rgba(245,230,208,.12);color:var(--parch);border-color:rgba(245,230,208,.4)}
 
 /* ── NOT FOUND ── */
 #not-found{
@@ -343,7 +348,7 @@ if(!data || !data.k || !data.q){
 
         <div class="s-div"></div>
 
-        <div class="s-quote">${esc(q)}</div>
+        <div class="s-quote"${k==='arabic'?' dir="rtl"':''}>${esc(q)}</div>
         <div class="s-translation">${esc(t)}</div>
         <span class="s-badge">${esc(c)}</span>
 

@@ -2,7 +2,7 @@ export const config = { runtime: 'edge' };
 
 const TRADITIONS = {
   arabic: { coord: '23°N 45°E', region: 'Arabia',           instruction: 'authentic Arabic/Islamic proverb — quote in Arabic script' },
-  zen:    { coord: '35°N 135°E', region: 'Kyoto',            instruction: 'authentic Japanese Zen saying — quote in Japanese script' },
+  zen:    { coord: '35°N 135°E', region: 'Kyoto',            instruction: 'authentic Japanese Zen saying — quote MUST be written in Japanese characters (kanji/hiragana), never romanized' },
   stoic:  { coord: '41°N 12°E',  region: 'Rome',             instruction: 'authentic Stoic quote — Greek, Latin, or English if originally so' },
   ubuntu: { coord: '26°S 28°E',  region: 'Sub-Saharan Africa', instruction: 'authentic Ubuntu/African wisdom — indigenous language or English' },
 };

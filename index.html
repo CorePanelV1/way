@@ -31,14 +31,21 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--golddim);border-radius:2px}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;transition:background .5s,backdrop-filter .5s,border-color .5s;border-bottom:.5px solid transparent}
-nav.scrolled{background:rgba(245,230,208,.94);backdrop-filter:blur(24px);border-color:rgba(140,27,53,.1)}
-.nav-logo{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;letter-spacing:8px;color:var(--red);text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;transition:background .5s,backdrop-filter .5s,border-color .5s,color .5s;border-bottom:.5px solid transparent}
+/* Hero: dark bg — light text */
+.nav-logo{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;letter-spacing:8px;color:rgba(245,230,208,.85);text-decoration:none;transition:color .5s}
 .nav-links{display:flex;gap:32px;align-items:center}
-.nav-link{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color .3s}
-.nav-link:hover{color:var(--red)}
-.nav-cta{background:transparent;border:.5px solid rgba(140,27,53,.35);color:var(--red);padding:9px 24px;border-radius:6px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
-.nav-cta:hover{background:var(--red);color:var(--bg)}
+.nav-link{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.65);text-decoration:none;transition:color .3s}
+.nav-link:hover{color:rgba(245,230,208,1)}
+.nav-cta{background:transparent;border:.5px solid rgba(245,230,208,.3);color:rgba(245,230,208,.7);padding:9px 24px;border-radius:6px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.nav-cta:hover{background:rgba(245,230,208,.1);color:rgba(245,230,208,1)}
+/* Scrolled: parchment bg — dark crimson text */
+nav.scrolled{background:rgba(245,230,208,.94);backdrop-filter:blur(24px);border-color:rgba(140,27,53,.1)}
+nav.scrolled .nav-logo{color:var(--red)}
+nav.scrolled .nav-link{color:var(--text2)}
+nav.scrolled .nav-link:hover{color:var(--red)}
+nav.scrolled .nav-cta{border-color:rgba(140,27,53,.35);color:var(--red)}
+nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 .nav-mobile-cta{display:none;align-items:center;gap:6px;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:9px 18px;font-family:'Cinzel',serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none}
 
 /* HERO */
