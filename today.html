@@ -86,8 +86,15 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 
 /* SHARE ROW */
 .share-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding-top:16px}
-.sh-btn{display:flex;align-items:center;gap:7px;background:transparent;border:.5px solid rgba(245,230,208,.12);color:rgba(245,230,208,.45);padding:10px 16px;border-radius:8px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none}
-.sh-btn:hover{border-color:rgba(245,230,208,.3);color:rgba(245,230,208,.75)}
+.sh-btn{display:flex;align-items:center;gap:7px;background:rgba(245,230,208,.07);border:.5px solid rgba(245,230,208,.25);color:rgba(245,230,208,.8);padding:11px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none}
+.sh-btn:hover{border-color:rgba(245,230,208,.5);color:var(--parch);background:rgba(245,230,208,.12)}
+
+/* AUDIO ROW */
+.audio-row{display:flex;justify-content:center;padding-top:12px}
+.play-day-btn{display:flex;align-items:center;gap:10px;background:transparent;border:.5px solid rgba(var(--accent-rgb,201,168,76),.35);color:rgba(var(--accent-rgb,201,168,76),1);padding:10px 20px;border-radius:30px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.play-day-btn:hover{background:rgba(var(--accent-rgb,201,168,76),.08);border-color:rgba(var(--accent-rgb,201,168,76),.6)}
+.play-day-btn.playing{animation:dayPulse 2s ease-in-out infinite}
+@keyframes dayPulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--accent-rgb,201,168,76),.35)}50%{box-shadow:0 0 0 10px rgba(var(--accent-rgb,201,168,76),0)}}
 
 /* FOOTER NOTE */
 .day-foot{position:relative;z-index:1;margin-top:56px;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.2);text-align:center}
@@ -141,6 +148,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   <div class="share-row">
     <button class="sh-btn" onclick="copyLink()">⎘ Copy Link</button>
     <a class="sh-btn" id="x-btn" href="#" target="_blank">𝕏 Share on X</a>
+  </div>
+  <div class="audio-row">
+    <button class="play-day-btn" id="play-day-btn" onclick="toggleDayAudio()">
+      <svg id="play-day-icon" width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
+      <span id="play-day-label">Play Ambient</span>
+    </button>
   </div>
 </div>
 
@@ -402,11 +415,48 @@ function dayOfYear(d){
   document.getElementById('og-desc').content = `"${short}" · ${card.concept}`;
   document.getElementById('pg-desc').content = `"${short}" · ${card.concept}`;
 
+  // Set audio key for today's tradition
+  _dayKey = card.key;
+
   // X share link
   const xText = `"${card.translation}"\n— ${card.concept}, ${card.culture} Wisdom · WAY of the Day`;
   document.getElementById('x-btn').href =
     'https://twitter.com/intent/tweet?text=' + encodeURIComponent(xText) + '&url=' + encodeURIComponent(location.href);
 })();
+
+/* ── AUDIO ENGINE ── */
+let _dayKey = 'arabic';
+const DayAudio = (() => {
+  let actx=null,master=null,alive=[],playing=false;
+  function ctx(){if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=0;master.connect(actx.destination);}return actx;}
+  function rev(s){const ac=ctx(),len=ac.sampleRate*s,buf=ac.createBuffer(2,len,ac.sampleRate);for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.8);}const c=ac.createConvolver();c.buffer=buf;return c;}
+  function osc(f,type,g,dest,det){const ac=ctx(),o=ac.createOscillator(),gn=ac.createGain();o.type=type;o.frequency.value=f;if(det)o.detune.value=(Math.random()-.5)*det;gn.gain.value=g;o.connect(gn);gn.connect(dest);o.start();alive.push(o);return{o,gn};}
+  function lfo(n,rate,depth){const ac=ctx(),l=ac.createOscillator(),lg=ac.createGain();l.frequency.value=rate;lg.gain.value=depth;l.connect(lg);lg.connect(n.gn.gain);l.start();alive.push(l);}
+  const S={
+    arabic(){const rv=rev(5);rv.connect(master);const f=ctx().createBiquadFilter();f.type='lowpass';f.frequency.value=1100;f.connect(rv);[220,247,330,415].forEach((freq,i)=>{const n=osc(freq,'sine',.048,f,10);lfo(n,3+i*.4,.009);});},
+    zen(){const rv=rev(10);rv.connect(master);osc(432,'sine',.13,rv,3);osc(864,'sine',.04,rv,2);function bell(){if(!playing)return;const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=880+Math.random()*50;g.gain.setValueAtTime(.18,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+4.5);o.connect(g);g.connect(rv);o.start();o.stop(ac.currentTime+4.6);setTimeout(bell,7000+Math.random()*6000);}setTimeout(bell,2000);},
+    stoic(){const rv=rev(7);rv.connect(master);const f=ctx().createBiquadFilter();f.type='lowpass';f.frequency.value=460;f.connect(rv);[55,110,165].forEach(freq=>{const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.value=freq;g.gain.value=.055;o.connect(g);g.connect(f);o.start();alive.push(o);});},
+    ubuntu(){const rv=rev(4);rv.connect(master);[264,330,396,495].forEach((freq,i)=>{const n=osc(freq,'sine',.055,rv,7);lfo(n,4.5+i*.3,.007);});}
+  };
+  return{
+    play(key){this.stop();const fn=S[key]||S.arabic;const ac=ctx();if(ac.state==='suspended')ac.resume();fn();playing=true;master.gain.cancelScheduledValues(ac.currentTime);master.gain.setTargetAtTime(1,ac.currentTime,1.4);},
+    stop(){if(!actx)return;master.gain.setTargetAtTime(0,actx.currentTime,.5);const k=[...alive];setTimeout(()=>k.forEach(n=>{try{n.stop();}catch(e){}}),1800);alive=[];playing=false;},
+    toggle(key){if(playing){this.stop();return false;}this.play(key);return true;},
+    get playing(){return playing;}
+  };
+})();
+
+function toggleDayAudio(){
+  const btn  = document.getElementById('play-day-btn');
+  const icon = document.getElementById('play-day-icon');
+  const lbl  = document.getElementById('play-day-label');
+  const on   = DayAudio.toggle(_dayKey);
+  btn.classList.toggle('playing', on);
+  icon.innerHTML = on
+    ? '<rect x="0" y="0" width="3.5" height="12"/><rect x="6.5" y="0" width="3.5" height="12"/>'
+    : '<polygon points="0,0 10,6 0,12"/>';
+  lbl.textContent = on ? 'Pause' : 'Play Ambient';
+}
 
 /* ── COPY LINK ── */
 function copyLink(){

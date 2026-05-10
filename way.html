@@ -54,24 +54,25 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 
 /* ── INPUT STATE ─────────────────────────── */
 #state-input .content{width:100%;max-width:680px;text-align:center}
-.input-eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--golddim);margin-bottom:24px}
-.input-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,7vw,5.5rem);font-weight:400;font-style:italic;line-height:1.05;color:var(--parch);margin-bottom:40px;letter-spacing:-.01em}
+.input-eyebrow{font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--golddim);margin-bottom:20px}
+.input-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,7vw,5.5rem);font-weight:400;font-style:italic;line-height:1.05;color:var(--parch);margin-bottom:28px;letter-spacing:-.01em}
+.trad-hint{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.2);margin-bottom:10px;text-align:center}
 #feeling{
-  width:100%;min-height:160px;max-height:280px;
+  width:100%;min-height:130px;max-height:200px;
   background:rgba(245,230,208,.04);
   border:.5px solid rgba(245,230,208,.15);
-  border-radius:16px;padding:24px 28px;
+  border-radius:16px;padding:20px 24px;
   color:var(--parch);font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.8;
   resize:none;outline:none;transition:border-color .3s,background .3s;
   caret-color:var(--gold);
 }
 #feeling::placeholder{color:rgba(245,230,208,.3)}
 #feeling:focus{border-color:rgba(201,168,76,.4);background:rgba(245,230,208,.06)}
-.input-meta{margin-top:14px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:rgba(245,230,208,.25);text-transform:uppercase}
+.input-meta{margin-top:12px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:rgba(245,230,208,.25);text-transform:uppercase}
 .seek-btn{
   display:inline-flex;align-items:center;gap:12px;
   background:var(--parch);color:var(--bg);
-  border:none;border-radius:10px;padding:17px 44px;margin-top:32px;
+  border:none;border-radius:10px;padding:17px 44px;margin-top:20px;
   font-family:'Cinzel',serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
   cursor:pointer;transition:all .3s;
   box-shadow:0 8px 32px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.3);
@@ -79,7 +80,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .seek-btn:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.5)}
 .seek-btn:disabled{opacity:.4;pointer-events:none}
 .input-coord-row{
-  margin-top:48px;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;
+  margin-top:32px;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;
   font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;
   color:rgba(245,230,208,.18);
 }
@@ -158,16 +159,16 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .bc-practice-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
 .bc-practice-text{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.6vw,1.1rem);line-height:1.7;color:var(--parch2)}
 
-.bc-share{display:flex;align-items:center;gap:8px;background:transparent;border:.5px solid rgba(245,230,208,.15);color:rgba(245,230,208,.5);padding:10px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;width:fit-content}
-.bc-share:hover{border-color:var(--golddim);color:var(--gold)}
+.bc-share{display:flex;align-items:center;gap:8px;background:rgba(245,230,208,.06);border:.5px solid rgba(245,230,208,.25);color:rgba(245,230,208,.85);padding:11px 20px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;width:fit-content}
+.bc-share:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08)}
 
 /* ── SHARE MODAL ─────────────────────────── */
 #share-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:24px}
 #share-modal.hidden{display:none!important}
 .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(12px)}
 .modal-inner{position:relative;z-index:1;width:100%;max-width:520px;display:flex;flex-direction:column;gap:20px}
-.modal-close{position:absolute;top:-16px;right:0;background:transparent;border:.5px solid rgba(245,230,208,.2);color:rgba(245,230,208,.5);width:32px;height:32px;border-radius:50%;font-size:.9rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
-.modal-close:hover{color:var(--parch);border-color:rgba(245,230,208,.5)}
+.modal-close{position:absolute;top:-20px;right:0;background:rgba(245,230,208,.1);border:.5px solid rgba(245,230,208,.3);color:rgba(245,230,208,.8);height:32px;border-radius:20px;padding:0 14px;font-size:8px;font-family:'Cinzel',serif;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:5px}
+.modal-close:hover{color:var(--parch);border-color:rgba(245,230,208,.6);background:rgba(245,230,208,.15)}
 
 /* Share card inside modal — same dark card design */
 .modal-card{background:#110608;border-radius:18px;padding:36px 40px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
@@ -239,15 +240,24 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .ob-skip{background:transparent;border:none;color:rgba(245,230,208,.2);font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:14px;transition:color .3s}
 .ob-skip:hover{color:rgba(245,230,208,.45)}
 
+/* ── TRY AGAIN ───────────────────────────── */
+.try-again-row{width:100%;max-width:1100px;display:flex;justify-content:center;padding:40px 0 20px;gap:12px;flex-wrap:wrap}
+.try-again-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:.5px solid rgba(245,230,208,.2);color:rgba(245,230,208,.55);padding:12px 24px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.try-again-btn:hover{border-color:rgba(245,230,208,.4);color:var(--parch)}
+
 /* ── RESPONSIVE ──────────────────────────── */
 @media(max-width:600px){
   #nav{padding:16px 20px}
   #state-input .content{text-align:left}
-  .input-title{font-size:2.4rem}
-  .seek-btn{width:100%;justify-content:center}
+  .input-title{font-size:2rem;margin-bottom:20px}
+  .trad-selector{gap:8px;margin-bottom:18px}
+  .trad-pill{padding:8px 12px;font-size:7.5px}
+  .mode-row{margin-bottom:16px}
+  .seek-btn{width:100%;justify-content:center;margin-top:16px}
   .modal-card{padding:24px 22px}
   .ob-inner{padding:36px 20px}
   .ob-trad{min-width:80px;padding:14px 12px}
+  .input-coord-row{display:none}
 }
 </style>
 </head>
@@ -269,6 +279,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
     <h1 class="input-title">Where are you<br>today?</h1>
 
     <!-- Tradition selector -->
+    <div class="trad-hint">Tap a tradition to include or remove it</div>
     <div class="trad-selector" id="trad-selector">
       <button class="trad-pill active" data-key="arabic" onclick="toggleTrad(this)"><span class="tp-glyph">☽</span> Arabic</button>
       <button class="trad-pill active" data-key="zen"    onclick="toggleTrad(this)"><span class="tp-glyph">⛩</span> Zen</button>
@@ -276,9 +287,8 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
       <button class="trad-pill active" data-key="ubuntu" onclick="toggleTrad(this)"><span class="tp-glyph">◉</span> Ubuntu</button>
     </div>
 
-    <textarea id="feeling" rows="5" placeholder="Write how you feel in plain language. Lost. Overwhelmed. At a crossroads. Afraid of what comes next. There is no wrong answer." maxlength="600"></textarea>
+    <textarea id="feeling" rows="4" placeholder="Write how you feel in plain language. Lost. Overwhelmed. At a crossroads. Afraid of what comes next. There is no wrong answer." maxlength="600"></textarea>
     <div class="input-meta"><span id="char-count">0</span> / 600</div>
-    <br>
 
     <!-- Mode toggle -->
     <div class="mode-row">
@@ -345,13 +355,21 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
     <div class="results-summary" id="results-summary"></div>
   </div>
   <div class="bearings-grid" id="bearings-grid"></div>
+  <div class="try-again-row">
+    <button class="try-again-btn" onclick="show('state-input');window.scrollTo({top:0,behavior:'instant'})">
+      ↺ Ask Again
+    </button>
+    <button class="try-again-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      ↑ Back to Top
+    </button>
+  </div>
 </div>
 
 <!-- ═══ SHARE MODAL ════════════════════════════════════════════════════ -->
 <div id="share-modal" class="hidden">
   <div class="modal-backdrop" onclick="closeShareModal()"></div>
   <div class="modal-inner">
-    <button class="modal-close" onclick="closeShareModal()" aria-label="Close">✕</button>
+    <button class="modal-close" onclick="closeShareModal()" aria-label="Close">✕ Close</button>
     <div class="modal-card">
       <div class="mc-top">
         <span class="mc-logo">WAY</span>
@@ -604,7 +622,11 @@ function finishLoadAnim(){
 let selectedTraditions = ['arabic','zen','stoic','ubuntu'];
 let currentMode = 'standard';
 
+let _tradDebounce = 0;
 function toggleTrad(btn){
+  const now = Date.now();
+  if(now - _tradDebounce < 300) return;
+  _tradDebounce = now;
   const key = btn.dataset.key;
   const active = selectedTraditions.includes(key);
   if(active && selectedTraditions.length === 1){ showToast('Keep at least one tradition'); return; }
