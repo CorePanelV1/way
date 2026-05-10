@@ -193,6 +193,52 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 #toast{position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(20px);z-index:1000;background:rgba(245,230,208,.95);color:#110608;padding:12px 26px;border-radius:30px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* ── TRADITION SELECTOR ──────────────────── */
+.trad-selector{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
+.trad-pill{display:flex;align-items:center;gap:7px;background:transparent;border:.5px solid rgba(245,230,208,.13);color:rgba(245,230,208,.4);padding:9px 16px;border-radius:30px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;-webkit-tap-highlight-color:transparent}
+.trad-pill:hover{border-color:rgba(245,230,208,.3);color:rgba(245,230,208,.7)}
+.trad-pill.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.07)}
+.tp-glyph{font-size:.95rem;line-height:1}
+
+/* ── MODE TOGGLE ─────────────────────────── */
+.mode-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px}
+.mode-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.25)}
+.mode-toggle{display:flex;border:.5px solid rgba(245,230,208,.12);border-radius:8px;overflow:hidden}
+.mode-btn{background:transparent;border:none;color:rgba(245,230,208,.35);padding:9px 18px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .25s}
+.mode-btn.active{background:rgba(245,230,208,.07);color:var(--gold)}
+
+/* ── DEEP DIVE NARRATIVE ─────────────────── */
+.bc-narrative{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.7vw,1.1rem);line-height:1.9;color:var(--parch2);margin-bottom:20px;padding-left:16px;border-left:1.5px solid rgba(245,230,208,.1)}
+
+/* ── ONBOARDING ──────────────────────────── */
+#onboard-modal{position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.88);backdrop-filter:blur(24px)}
+#onboard-modal.hidden{display:none!important}
+.ob-inner{width:100%;max-width:500px;background:#0f0810;border:.5px solid rgba(245,230,208,.1);border-radius:22px;padding:48px 44px;position:relative;overflow:hidden;text-align:center}
+.ob-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.35),transparent)}
+.ob-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(140,27,53,.07) 0%,transparent 70%);pointer-events:none}
+.ob-step{display:none;flex-direction:column;align-items:center;position:relative;z-index:1}
+.ob-step.active{display:flex}
+.ob-dots{display:flex;gap:7px;margin-bottom:36px}
+.ob-dot{width:5px;height:5px;border-radius:50%;background:rgba(245,230,208,.12);transition:all .3s}
+.ob-dot.on{background:var(--gold);width:14px;border-radius:3px}
+.ob-eyebrow{font-family:'Cinzel',serif;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--golddim);margin-bottom:14px}
+.ob-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.4rem);font-style:italic;color:var(--parch);line-height:1.2;margin-bottom:10px}
+.ob-sub{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--parch3);font-style:italic;line-height:1.7;margin-bottom:28px}
+.ob-trads{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
+.ob-trad{display:flex;flex-direction:column;align-items:center;gap:8px;background:transparent;border:.5px solid rgba(245,230,208,.12);border-radius:14px;padding:18px 16px;color:rgba(245,230,208,.4);cursor:pointer;transition:all .3s;min-width:100px}
+.ob-trad:hover{border-color:rgba(245,230,208,.3);color:rgba(245,230,208,.7)}
+.ob-trad.sel{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06)}
+.ob-trad-glyph{font-size:1.5rem}
+.ob-trad-name{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase}
+.ob-intents{display:flex;flex-direction:column;gap:8px;width:100%;margin-bottom:28px}
+.ob-intent{background:transparent;border:.5px solid rgba(245,230,208,.1);border-radius:10px;padding:13px 18px;color:rgba(245,230,208,.5);font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;text-align:left;cursor:pointer;transition:all .3s}
+.ob-intent:hover,.ob-intent.sel{border-color:rgba(201,168,76,.35);color:var(--parch2);background:rgba(245,230,208,.03)}
+.ob-glyphs{display:flex;gap:18px;justify-content:center;font-size:2.2rem;margin-bottom:28px;opacity:.85}
+.ob-btn{display:inline-flex;align-items:center;gap:10px;background:var(--parch);color:var(--bg);border:none;border-radius:10px;padding:15px 40px;font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.ob-btn:hover{background:var(--gold2);transform:translateY(-2px)}
+.ob-skip{background:transparent;border:none;color:rgba(245,230,208,.2);font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:14px;transition:color .3s}
+.ob-skip:hover{color:rgba(245,230,208,.45)}
+
 /* ── RESPONSIVE ──────────────────────────── */
 @media(max-width:600px){
   #nav{padding:16px 20px}
@@ -200,6 +246,8 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   .input-title{font-size:2.4rem}
   .seek-btn{width:100%;justify-content:center}
   .modal-card{padding:24px 22px}
+  .ob-inner{padding:36px 20px}
+  .ob-trad{min-width:80px;padding:14px 12px}
 }
 </style>
 </head>
@@ -219,9 +267,28 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   <div class="content">
     <div class="input-eyebrow">Find your bearing</div>
     <h1 class="input-title">Where are you<br>today?</h1>
+
+    <!-- Tradition selector -->
+    <div class="trad-selector" id="trad-selector">
+      <button class="trad-pill active" data-key="arabic" onclick="toggleTrad(this)"><span class="tp-glyph">☽</span> Arabic</button>
+      <button class="trad-pill active" data-key="zen"    onclick="toggleTrad(this)"><span class="tp-glyph">⛩</span> Zen</button>
+      <button class="trad-pill active" data-key="stoic"  onclick="toggleTrad(this)"><span class="tp-glyph">Φ</span> Stoic</button>
+      <button class="trad-pill active" data-key="ubuntu" onclick="toggleTrad(this)"><span class="tp-glyph">◉</span> Ubuntu</button>
+    </div>
+
     <textarea id="feeling" rows="5" placeholder="Write how you feel in plain language. Lost. Overwhelmed. At a crossroads. Afraid of what comes next. There is no wrong answer." maxlength="600"></textarea>
     <div class="input-meta"><span id="char-count">0</span> / 600</div>
     <br>
+
+    <!-- Mode toggle -->
+    <div class="mode-row">
+      <span class="mode-label">Mode</span>
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="mode-std" onclick="setMode('standard')">Standard</button>
+        <button class="mode-btn" id="mode-deep" onclick="setMode('deep')">Deep Dive</button>
+      </div>
+    </div>
+
     <button class="seek-btn" id="seek-btn" onclick="seek()">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
       Find My Way
@@ -306,13 +373,72 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
         <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
         Play Ambient
       </button>
-      <button class="modal-btn" onclick="modalCopy()">⎘ Copy</button>
+      <button class="modal-btn" onclick="saveImage()">↓ Save Image</button>
+      <button class="modal-btn" onclick="modalCopy()">⎘ Copy Link</button>
       <button class="modal-btn" onclick="modalX()">𝕏 Share</button>
       <button class="modal-btn" id="wa-btn" onclick="modalWhatsApp()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         WhatsApp
       </button>
     </div>
+  </div>
+</div>
+
+<!-- ═══ ONBOARDING MODAL ═══════════════════════════════════════════════ -->
+<div id="onboard-modal" class="hidden">
+  <div class="ob-inner">
+
+    <!-- Step 1: Choose traditions -->
+    <div class="ob-step active" id="ob-s1">
+      <div class="ob-dots">
+        <div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div>
+      </div>
+      <div class="ob-eyebrow">Your compass</div>
+      <div class="ob-title">Which traditions<br>call to you?</div>
+      <div class="ob-sub">Choose one or more. WAY will bring you bearings from each.</div>
+      <div class="ob-trads" id="ob-trads">
+        <button class="ob-trad sel" data-key="arabic" onclick="obToggleTrad(this)"><span class="ob-trad-glyph">☽</span><span class="ob-trad-name">Arabic</span></button>
+        <button class="ob-trad sel" data-key="zen"    onclick="obToggleTrad(this)"><span class="ob-trad-glyph">⛩</span><span class="ob-trad-name">Zen</span></button>
+        <button class="ob-trad sel" data-key="stoic"  onclick="obToggleTrad(this)"><span class="ob-trad-glyph">Φ</span><span class="ob-trad-name">Stoic</span></button>
+        <button class="ob-trad sel" data-key="ubuntu" onclick="obToggleTrad(this)"><span class="ob-trad-glyph">◉</span><span class="ob-trad-name">Ubuntu</span></button>
+      </div>
+      <button class="ob-btn" onclick="obNext(2)">Continue →</button>
+      <button class="ob-skip" onclick="obSkip()">Skip setup</button>
+    </div>
+
+    <!-- Step 2: Intention -->
+    <div class="ob-step" id="ob-s2">
+      <div class="ob-dots">
+        <div class="ob-dot on" style="width:14px;border-radius:3px"></div><div class="ob-dot on"></div><div class="ob-dot"></div>
+      </div>
+      <div class="ob-eyebrow">Your intention</div>
+      <div class="ob-title">Why are you<br>here today?</div>
+      <div class="ob-sub">This shapes how WAY speaks to you.</div>
+      <div class="ob-intents" id="ob-intents">
+        <button class="ob-intent" onclick="obSelectIntent(this)">Working through something hard</button>
+        <button class="ob-intent" onclick="obSelectIntent(this)">Seeking daily wisdom</button>
+        <button class="ob-intent" onclick="obSelectIntent(this)">At a crossroads</button>
+        <button class="ob-intent" onclick="obSelectIntent(this)">Just exploring</button>
+      </div>
+      <button class="ob-btn" onclick="obNext(3)">Continue →</button>
+      <button class="ob-skip" onclick="obNext(3)">Skip</button>
+    </div>
+
+    <!-- Step 3: Ready -->
+    <div class="ob-step" id="ob-s3">
+      <div class="ob-dots">
+        <div class="ob-dot on" style="width:14px;border-radius:3px"></div><div class="ob-dot on"></div><div class="ob-dot on"></div>
+      </div>
+      <div class="ob-eyebrow">Your compass is set</div>
+      <div class="ob-title">You are ready.</div>
+      <div class="ob-sub">Ancient wisdom is waiting for exactly where you are.</div>
+      <div class="ob-glyphs" id="ob-final-glyphs">☽ ⛩ Φ ◉</div>
+      <button class="ob-btn" onclick="obFinish()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+        Begin
+      </button>
+    </div>
+
   </div>
 </div>
 
@@ -474,8 +600,47 @@ function finishLoadAnim(){
   lcIds.forEach(id=>document.getElementById(id).classList.add('lit'));
 }
 
+/* ═══ TRADITION SELECTION ═══════════════════════════════════════════ */
+let selectedTraditions = ['arabic','zen','stoic','ubuntu'];
+let currentMode = 'standard';
+
+function toggleTrad(btn){
+  const key = btn.dataset.key;
+  const active = selectedTraditions.includes(key);
+  if(active && selectedTraditions.length === 1){ showToast('Keep at least one tradition'); return; }
+  if(active){
+    selectedTraditions = selectedTraditions.filter(t => t !== key);
+    btn.classList.remove('active');
+  } else {
+    selectedTraditions.push(key);
+    btn.classList.add('active');
+  }
+  saveTradPref();
+}
+
+function setMode(m){
+  currentMode = m;
+  document.getElementById('mode-std').classList.toggle('active', m === 'standard');
+  document.getElementById('mode-deep').classList.toggle('active', m === 'deep');
+}
+
+function saveTradPref(){ try{ localStorage.setItem('way_traditions', JSON.stringify(selectedTraditions)); }catch(e){} }
+function loadTradPref(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('way_traditions') || 'null');
+    if(Array.isArray(saved) && saved.length){
+      selectedTraditions = saved;
+      document.querySelectorAll('.trad-pill').forEach(btn => {
+        btn.classList.toggle('active', selectedTraditions.includes(btn.dataset.key));
+      });
+    }
+  }catch(e){}
+}
+
 /* ═══ SEEK — MAIN FLOW ══════════════════════════════════════════════ */
 let lastWisdom = null;
+let lastMode = 'standard';
+
 async function seek(){
   const feeling = feelingEl.value.trim();
   if(feeling.length < 3){ showToast('Share a little more…'); feelingEl.focus(); return; }
@@ -484,11 +649,20 @@ async function seek(){
   show('state-loading');
   startLoadAnim();
 
+  // Update loading culture labels to match selection
+  const ALL_LC = {arabic:'lc-arabic',zen:'lc-zen',stoic:'lc-stoic',ubuntu:'lc-ubuntu'};
+  Object.entries(ALL_LC).forEach(([k,id])=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display = selectedTraditions.includes(k) ? '' : 'none';
+  });
+
+  lastMode = currentMode;
+
   try {
     const res = await fetch('/api/way', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ feeling })
+      body: JSON.stringify({ feeling, traditions: selectedTraditions, mode: currentMode })
     });
 
     const data = await res.json();
@@ -524,9 +698,12 @@ function renderResults(data, feeling){
   const grid = document.getElementById('bearings-grid');
   grid.innerHTML = '';
 
+  const mode = lastMode;
   BEARINGS.forEach((b, i) => {
     const d = data[b.key];
     if(!d) return;
+    const narrativeHtml = (mode === 'deep' && d.narrative)
+      ? `<div class="bc-narrative">${escHtml(d.narrative)}</div>` : '';
     const card = document.createElement('div');
     card.className = `bc ${b.cls}`;
     card.dataset.delay = i * 120;
@@ -551,6 +728,7 @@ function renderResults(data, feeling){
         <div class="bc-practice-label">✦ Practice Today</div>
         <div class="bc-practice-text">${escHtml(d.practice)}</div>
       </div>
+      ${narrativeHtml}
       <div class="bc-context">${escHtml(d.context)}</div>
       <button class="bc-share" onclick="openShareModal('${b.key}')">Share this bearing ↗</button>
     `;
@@ -681,6 +859,79 @@ async function modalWhatsApp(){
   }
 }
 
+/* ═══ SAVE IMAGE ═════════════════════════════════════════════════════ */
+async function saveImage(){
+  const card = document.querySelector('.modal-card');
+  if(!card) return;
+  showToast('Generating image…');
+  try {
+    const canvas = await html2canvas(card, {
+      backgroundColor:'#110608', scale:3, useCORS:true, logging:false,
+    });
+    canvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'way-wisdom.png'; a.click();
+      URL.revokeObjectURL(url);
+      showToast('Image saved ✓');
+    }, 'image/png');
+  } catch(e){ showToast('Could not generate image'); }
+}
+
+/* ═══ ONBOARDING ═════════════════════════════════════════════════════ */
+const OB_GLYPHS = {arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
+let obSelections = ['arabic','zen','stoic','ubuntu'];
+
+function obToggleTrad(btn){
+  const key = btn.dataset.key;
+  if(obSelections.includes(key)){
+    if(obSelections.length === 1) return;
+    obSelections = obSelections.filter(t => t !== key);
+    btn.classList.remove('sel');
+  } else {
+    obSelections.push(key);
+    btn.classList.add('sel');
+  }
+}
+
+function obSelectIntent(btn){
+  document.querySelectorAll('.ob-intent').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function obNext(step){
+  document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('ob-s'+step);
+  if(el){ el.classList.add('active'); }
+  if(step === 3){
+    const g = document.getElementById('ob-final-glyphs');
+    if(g) g.textContent = obSelections.map(k => OB_GLYPHS[k]).join('  ');
+  }
+}
+
+function obFinish(){
+  // Apply selections to the main tradition selector
+  selectedTraditions = [...obSelections];
+  document.querySelectorAll('.trad-pill').forEach(btn => {
+    btn.classList.toggle('active', selectedTraditions.includes(btn.dataset.key));
+  });
+  saveTradPref();
+  try { localStorage.setItem('way_onboarded','1'); } catch(e){}
+  document.getElementById('onboard-modal').classList.add('hidden');
+}
+
+function obSkip(){
+  try { localStorage.setItem('way_onboarded','1'); } catch(e){}
+  document.getElementById('onboard-modal').classList.add('hidden');
+}
+
+function initOnboarding(){
+  try {
+    const done = localStorage.getItem('way_onboarded');
+    if(!done) document.getElementById('onboard-modal').classList.remove('hidden');
+  } catch(e){}
+}
+
 /* ═══ SCROLL NAV TINT ═══════════════════════════════════════════════ */
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
@@ -697,6 +948,10 @@ window.addEventListener('scroll',()=>{
   });
   btn.addEventListener('mouseleave',()=>{btn.style.transition='transform .5s ease';btn.style.transform='';});
 })();
+
+/* ═══ INIT ═══════════════════════════════════════════════════════════ */
+loadTradPref();
+initOnboarding();
 </script>
 </body>
 </html>
