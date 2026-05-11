@@ -305,12 +305,12 @@ if(!data || !data.k || !data.q){
       <a href="/" class="nf-btn">Go to WAY</a>
     </div>`;
 } else {
-  const {k,q,t,c,co,r,p} = data;
+  const {k,q,t,c,a,co,r,p} = data;
   const label   = LABELS[k]  || k.toUpperCase();
   const glyph   = GLYPHS[k]  || '✦';
   const accent  = ACCENTS[k] || '140,27,53';
   const mLabel  = MUSIC_LABEL[k] || 'Ambient';
-  const coord   = [co,r].filter(Boolean).join(' · ');
+  const coord   = a || [co,r].filter(Boolean).join(' · ');
 
   // Set accent
   document.documentElement.style.setProperty('--accent-rgb', accent);

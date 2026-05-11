@@ -163,10 +163,10 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .bc-share:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08)}
 
 /* ── SHARE MODAL ─────────────────────────── */
-#share-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:24px}
+#share-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
 #share-modal.hidden{display:none!important}
-.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(12px)}
-.modal-inner{position:relative;z-index:1;width:100%;max-width:520px;display:flex;flex-direction:column;gap:20px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(12px)}
+.modal-inner{position:relative;z-index:1;width:100%;max-width:520px;display:flex;flex-direction:column;gap:20px;margin:auto}
 .modal-close{position:absolute;top:-20px;right:0;background:rgba(245,230,208,.1);border:.5px solid rgba(245,230,208,.3);color:rgba(245,230,208,.8);height:32px;border-radius:20px;padding:0 14px;font-size:8px;font-family:'Cinzel',serif;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:5px}
 .modal-close:hover{color:var(--parch);border-color:rgba(245,230,208,.6);background:rgba(245,230,208,.15)}
 
@@ -292,7 +292,6 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 
     <!-- Mode toggle -->
     <div class="mode-row">
-      <span class="mode-label">Mode</span>
       <div class="mode-toggle">
         <button class="mode-btn active" id="mode-std" onclick="setMode('standard')">Standard</button>
         <button class="mode-btn" id="mode-deep" onclick="setMode('deep')">Deep Dive</button>
@@ -817,7 +816,7 @@ function toggleModalAudio(){
 function buildShareUrl(key){
   if(!lastWisdom) return window.location.origin+'/way.html';
   const d=lastWisdom[key];
-  const payload={k:key,q:d.quote||'',t:d.translation||'',c:d.concept||'',co:d.coordinate||'',r:d.region||'',p:d.practice||''};
+  const payload={k:key,q:d.quote||'',t:d.translation||'',c:d.concept||'',a:[(d.coordinate||''),(d.region||'')].filter(Boolean).join(' · ')};
   const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
   return window.location.origin+'/card?d='+encoded;
 }
