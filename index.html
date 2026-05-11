@@ -85,7 +85,7 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 
 /* PROVERB FLOAT */
 #proverb-float{position:absolute;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;opacity:0;width:min(72vw,640px);will-change:opacity,transform}
-#proverb-float .pf-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3.2vw,2.1rem);font-style:italic;color:#fff;line-height:1.75;white-space:pre-line;text-shadow:0 2px 40px rgba(0,0,0,.7),0 0 80px rgba(0,0,0,.5),0 1px 4px rgba(0,0,0,.9);letter-spacing:.02em}
+#proverb-float .pf-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4vw,2.6rem);font-style:italic;color:rgba(245,230,208,.9);line-height:1.4;text-shadow:0 2px 40px rgba(0,0,0,.7),0 0 80px rgba(0,0,0,.5),0 1px 4px rgba(0,0,0,.9);letter-spacing:.01em}
 #proverb-float .pf-culture{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;color:rgba(255,255,255,.7);text-transform:uppercase;margin-top:18px;text-shadow:0 1px 12px rgba(0,0,0,.8)}
 #proverb-float .pf-line{width:40px;height:.5px;background:rgba(255,255,255,.45);margin:14px auto}
 #star-burst{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:radial-gradient(circle,rgba(245,230,208,1) 0%,rgba(245,230,208,0) 70%);opacity:0;pointer-events:none;box-shadow:0 0 20px 8px rgba(245,230,208,.25),0 0 60px 20px rgba(245,230,208,.1)}
@@ -298,12 +298,8 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
     </div>
 
     <div id="proverb-float">
-      <div class="pf-line"></div>
-      <div class="pf-quote" id="ov-quote">"الصبر مفتاح الفرج"
-
-Patience is the key to relief.</div>
-      <div class="pf-line"></div>
-      <div class="pf-culture" id="ov-culture">Arabic Wisdom</div>
+      <div class="pf-quote" id="ov-quote">There must be a WAY</div>
+      <div class="pf-culture" id="ov-culture" style="display:none"></div>
     </div>
 
     <div id="star-burst"></div>
@@ -758,10 +754,12 @@ window.addEventListener('resize',()=>U.init(SC));
 
 /* ═══ GSAP SCROLL ══════════════════════════════════════════════════════ */
 const CULTURES=[
-  {q:'"الصبر مفتاح الفرج"\n\nPatience is the key to relief.',c:'Arabic Wisdom · Sabr',h:'ARABIC · 23°N 45°E'},
-  {q:'"七転び八起き"\n\nFall seven times. Rise eight.',c:'Japanese Zen · Nana Korobi Ya Oki',h:'JAPANESE ZEN · 35°N 136°E'},
-  {q:'"The impediment to action advances action."\n— Marcus Aurelius',c:'Stoic Philosophy · Amor Fati',h:'STOIC · 41°N 12°E'},
-  {q:'"Umuntu ngumuntu ngabantu."\n\nA person is a person through people.',c:'Ubuntu · African Philosophy',h:'UBUNTU · 26°S 28°E'},
+  {q:'There must be a WAY',c:''},
+  {q:'There\'s still a long WAY to go',c:''},
+  {q:'I can\'t find my WAY',c:''},
+  {q:'I\'m still feeling my WAY',c:''},
+  {q:'Which WAY is yours?',c:''},
+  {q:'Which WAY should you go?',c:''},
 ];
 let lastCI=-1;
 
@@ -826,10 +824,9 @@ const master = gsap.timeline({
         if(ci !== lastCI){
           lastCI = ci;
           const c = CULTURES[ci];
-          HCU.textContent = c.h;
+          HCU.textContent = '';
           gsap.to(PF,{opacity:0,duration:.18,onComplete:()=>{
             OQ.textContent = c.q;
-            OC.textContent = c.c;
             gsap.to(PF,{opacity:pfAlpha,duration:.28});
           }});
         }
