@@ -194,15 +194,6 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 .f-link:hover{color:var(--red)}
 .f-copy{font-size:10px;color:var(--text3);font-family:'Cormorant Garamond',serif}
 
-/* MARQUEE */
-#marquee-strip{background:var(--card-dark);border-top:.5px solid rgba(201,168,76,.12);border-bottom:.5px solid rgba(201,168,76,.12);overflow:hidden;padding:20px 0;position:relative;z-index:2}
-.marquee-track{display:flex;align-items:center;gap:0;width:max-content;animation:mq-scroll 38s linear infinite}
-#marquee-strip:hover .marquee-track{animation-play-state:paused}
-.mq-item{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.6vw,1.2rem);font-style:italic;color:rgba(245,230,208,.45);white-space:nowrap;padding:0 36px;letter-spacing:.02em}
-.mq-item .mw{color:var(--gold);font-style:normal;font-weight:600;font-family:'Cinzel',serif;letter-spacing:2px;font-size:.9em}
-.mq-sep{color:rgba(201,168,76,.3);font-size:.7rem;flex-shrink:0}
-@keyframes mq-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
 /* CUSTOM CURSOR — desktop only */
 @media(hover:hover){
   *{cursor:none!important}
@@ -304,7 +295,6 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
     <!-- VALUE PROP — visible before scrolling begins -->
     <div id="hero-intro">
       <p class="hi-sub">Ancient wisdom for exactly where you are.</p>
-      <a href="way.html" class="hi-btn">Find My Way →</a>
     </div>
 
     <div id="proverb-float">
@@ -318,7 +308,7 @@ Patience is the key to relief.</div>
 
     <div id="star-burst"></div>
 
-    <h1 class="hero-title" id="title-bottom">ARE YOU</h1>
+    <h1 class="hero-title" id="title-bottom">ARE YOU?</h1>
 
     <div id="scroll-cue">
       <div class="sc-text">Scroll to find your way</div>
@@ -335,24 +325,6 @@ Patience is the key to relief.</div>
   </div>
 </section>
 
-<!-- ═══ MARQUEE ════════════════════════════════════════════════════════ -->
-<div id="marquee-strip" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="mq-item">There must be a <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
-    <span class="mq-item">There's still a long <span class="mw">WAY</span> to go</span><span class="mq-sep">✦</span>
-    <span class="mq-item">I can't find my <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
-    <span class="mq-item">I'm still feeling my <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
-    <span class="mq-item">Which <span class="mw">WAY</span> is yours?</span><span class="mq-sep">✦</span>
-    <span class="mq-item">Which <span class="mw">WAY</span> should you go?</span><span class="mq-sep">✦</span>
-    <!-- duplicate for seamless loop -->
-    <span class="mq-item">There must be a <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
-    <span class="mq-item">There's still a long <span class="mw">WAY</span> to go</span><span class="mq-sep">✦</span>
-    <span class="mq-item">I can't find my <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
-    <span class="mq-item">I'm still feeling my <span class="mw">WAY</span></span><span class="mq-sep">✦</span>
-    <span class="mq-item">Which <span class="mw">WAY</span> is yours?</span><span class="mq-sep">✦</span>
-    <span class="mq-item">Which <span class="mw">WAY</span> should you go?</span><span class="mq-sep">✦</span>
-  </div>
-</div>
 
 <!-- ═══ SCROLL GRID ════════════════════════════════════════════════════ -->
 <section id="scroll-grid">
@@ -391,12 +363,40 @@ Patience is the key to relief.</div>
   </div>
 </section>
 
+<!-- ═══ HOW IT WORKS ════════════════════════════════════════════════════ -->
+<section id="how-section">
+  <div class="section-wrap">
+    <div class="eyebrow"><div class="ey-line"></div>How It Works<div class="ey-line"></div></div>
+    <div class="big-hl" style="font-size:clamp(1.9rem,4.5vw,3.8rem)">Three steps.<br>Four traditions.</div>
+    <div class="steps">
+      <div class="step" data-d="0">
+        <div class="step-num">I</div>
+        <div class="step-ln"></div>
+        <div class="step-title">Mark Your Position</div>
+        <div class="step-desc">Write how you feel in plain language. Lost. Burnt out. At a crossroads. WAY listens with the patience of centuries.</div>
+      </div>
+      <div class="step" data-d="160">
+        <div class="step-num">II</div>
+        <div class="step-ln"></div>
+        <div class="step-title">Four Bearings</div>
+        <div class="step-desc">Four traditions respond: Arabic, Zen, Stoic, Ubuntu. Each offers a distinct compass point rooted in its culture.</div>
+      </div>
+      <div class="step" data-d="300">
+        <div class="step-num">III</div>
+        <div class="step-ln"></div>
+        <div class="step-title">Choose Your Direction</div>
+        <div class="step-desc">Save the card that resonates. Share the one that moves you. Return tomorrow, you're always somewhere new.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ PHILOSOPHY ══════════════════════════════════════════════════════ -->
 <section id="why">
   <div class="section-wrap">
     <div class="eyebrow"><div class="ey-line"></div>The Philosophy<div class="ey-line"></div></div>
-    <div class="big-hl">Ancient bearings.<br>Modern soul.</div>
-    <div class="body-t">For thousands of years, every culture has held wisdom for the questions you're asking now. WAY hands you a compass and you choose the bearing that feels true.</div>
+    <div class="big-hl">Four traditions.<br>One question.</div>
+    <div class="body-t">For thousands of years every culture has held wisdom for the questions you're asking now. WAY hands you a compass and you choose the bearing that feels true.</div>
     <div class="pillars">
       <div class="pillar" data-d="0">
         <span class="p-glyph" style="color:#8c1b35">☽</span>
@@ -422,34 +422,6 @@ Patience is the key to relief.</div>
   </div>
 </section>
 
-<!-- ═══ HOW IT WORKS ════════════════════════════════════════════════════ -->
-<section id="how-section">
-  <div class="section-wrap">
-    <div class="eyebrow"><div class="ey-line"></div>How It Works<div class="ey-line"></div></div>
-    <div class="big-hl" style="font-size:clamp(1.9rem,4.5vw,3.8rem)">Three steps.<br>Four traditions.</div>
-    <div class="steps">
-      <div class="step" data-d="0">
-        <div class="step-num">I</div>
-        <div class="step-ln"></div>
-        <div class="step-title">Mark Your Position</div>
-        <div class="step-desc">Write how you feel in plain language. Lost. Burnt out. At a crossroads. WAY listens with the patience of centuries.</div>
-      </div>
-      <div class="step" data-d="160">
-        <div class="step-num">II</div>
-        <div class="step-ln"></div>
-        <div class="step-title">Four Bearings</div>
-        <div class="step-desc">Four traditions respond — Arabic, Zen, Stoic, Ubuntu — each with a distinct compass bearing and coordinate rooted in its culture.</div>
-      </div>
-      <div class="step" data-d="300">
-        <div class="step-num">III</div>
-        <div class="step-ln"></div>
-        <div class="step-title">Choose Your Direction</div>
-        <div class="step-desc">Save the card that resonates. Share the one that moves you. Return tomorrow, you're always somewhere new.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ SHARE SECTION ═══════════════════════════════════════════════════ -->
 <section id="share-section">
   <div class="section-wrap">
@@ -458,7 +430,7 @@ Patience is the key to relief.</div>
       <div>
         <div class="eyebrow"><div class="ey-line"></div>Share a Bearing</div>
         <div class="big-hl" style="font-size:clamp(2rem,5vw,4.2rem)">Send a friend<br>their compass.</div>
-        <p class="body-t" style="margin-bottom:0">Sometimes the right wisdom finds a friend exactly when they need it. Share a bearing from any of the four traditions — a small gift of direction.</p>
+        <p class="body-t" style="margin-bottom:0">Sometimes the right wisdom finds a friend exactly when they need it. Share a bearing from any of the four traditions. A small gift of direction.</p>
         <div class="share-actions">
           <button class="share-btn primary" onclick="WAY.copyLink()">⎘ &nbsp;Copy Link</button>
           <button class="share-btn" onclick="WAY.shareX()">𝕏 &nbsp;Share on X</button>
@@ -1175,13 +1147,13 @@ const AudioEngine = (() => {
     function update(){
       const rect=sec.getBoundingClientRect();
       const wh=window.innerHeight;
-      // progress 0→1 as section scrolls through viewport
       const prog=1-(rect.bottom/(rect.height+wh));
       const clamped=Math.max(-0.1,Math.min(1.1,prog));
       const drift=clamped*180;
-      r1.style.transform=`translateX(${-drift}px)`;
-      r2.style.transform=`translateX(${drift*0.7}px)`;
-      r3.style.transform=`translateX(${-drift*0.5}px)`;
+      const base=window.innerWidth<680?-80:0;
+      r1.style.transform=`translateX(${base-drift}px)`;
+      r2.style.transform=`translateX(${-base+drift*0.7}px)`;
+      r3.style.transform=`translateX(${base*0.6-drift*0.5}px)`;
       ticking=false;
     }
     window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(update);ticking=true;}},{passive:true});
