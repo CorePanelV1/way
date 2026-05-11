@@ -350,7 +350,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 <!-- ═══ RESULTS ═══════════════════════════════════════════════════════ -->
 <div class="state hidden" id="state-results">
   <div class="results-header">
-    <div class="results-eyebrow">Your four bearings</div>
+    <div class="results-eyebrow" id="results-eyebrow">Your bearings</div>
     <div class="results-summary" id="results-summary"></div>
   </div>
   <div class="bearings-grid" id="bearings-grid"></div>
@@ -715,6 +715,11 @@ const BEARINGS = [
 
 function renderResults(data, feeling){
   document.getElementById('results-summary').textContent = data.summary || '';
+
+  const count = ['arabic','zen','stoic','ubuntu'].filter(k => !!data[k]).length;
+  const nums = ['','one','two','three','four'];
+  document.getElementById('results-eyebrow').textContent =
+    count && count < 4 ? `Your ${nums[count]} bearing${count===1?'':'s'}` : 'Your bearings';
 
   const grid = document.getElementById('bearings-grid');
   grid.innerHTML = '';

@@ -69,8 +69,8 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 
 /* HERO TITLES */
 .hero-title{position:relative;z-index:7;font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,12vw,10rem);font-weight:600;line-height:.85;letter-spacing:-.02em;will-change:transform,opacity;user-select:none}
-#title-top{color:var(--red)}
-#title-bottom{color:var(--red)}
+#title-top{color:var(--red);opacity:1}
+#title-bottom{color:var(--red);opacity:1}
 
 /* HERO INTRO — value prop visible before scrolling */
 #hero-intro{
@@ -112,7 +112,7 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 .body-t{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2vw,1.45rem);line-height:1.9;color:var(--text2);font-style:italic;max-width:680px;margin-bottom:52px}
 
 /* PHILOSOPHY PILLARS */
-.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .pillar{border:.5px solid rgba(140,27,53,.1);border-radius:16px;padding:28px 24px;background:linear-gradient(145deg,rgba(238,220,192,.88) 0%,rgba(229,207,166,.65) 100%);position:relative;overflow:hidden;opacity:0;transform:translateY(18px);transition:border-color .3s,transform .3s}
 .pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
 .pillar.vis{opacity:1;transform:translateY(0);transition:opacity .7s ease,transform .7s ease,border-color .3s}
@@ -197,9 +197,9 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 /* CUSTOM CURSOR — desktop only */
 @media(hover:hover){
   *{cursor:none!important}
-  #cursor{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(140,27,53,.32);pointer-events:none;z-index:9998;top:0;left:0;will-change:transform;transition:width .22s ease,height .22s ease,border-color .22s,background .22s}
+  #cursor{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(140,27,53,.32);pointer-events:none;z-index:9998;top:0;left:0;will-change:transform;transition:width .22s ease,height .22s ease,border-color .22s,background .22s,opacity .3s;opacity:0}
   #cursor.hov{width:54px;height:54px;border-color:var(--red);background:rgba(140,27,53,.06)}
-  #cursor-dot{position:fixed;width:5px;height:5px;border-radius:50%;background:var(--red);pointer-events:none;z-index:9999;top:0;left:0;will-change:transform}
+  #cursor-dot{position:fixed;width:5px;height:5px;border-radius:50%;background:var(--red);pointer-events:none;z-index:9999;top:0;left:0;will-change:transform;opacity:0;transition:opacity .3s}
 }
 /* SHARE CARD AUDIO BTN */
 .sc-audio-btn{background:transparent;border:.5px solid rgba(201,168,76,.25);color:rgba(201,168,76,.55);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;flex-shrink:0;padding:0;position:relative}
@@ -221,6 +221,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
   #hud{right:16px}
   #share-card{padding:28px 24px}
   .share-actions{justify-content:center}
+  .pillars{grid-template-columns:1fr}
 }
 
 /* ═══ SCROLL GRID ══════════════════════════════════════════════════════ */
@@ -474,7 +475,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
     <div class="cta-hl">Where are<br>you today?</div>
     <div class="cta-sub">Let WAY guide you, one feeling at a time.</div>
     <a href="way.html" class="cta-btn"><span>✦</span>Find My Way<span>✦</span></a>
-    <div class="cta-foot">Powered by AI · Rooted in culture · Free to start</div>
+    <div class="cta-foot">Four traditions · Thousands of years · One question</div>
   </div>
 </section>
 
@@ -777,10 +778,10 @@ const HUD = document.getElementById('hud');
 
 // Entrance animation
 const el = gsap.timeline({delay:.4});
-el.from('#hero-bg',{opacity:0,duration:1.8,ease:'power2.out'});
-el.from(TT, {opacity:0,y:28,duration:1.1,ease:'expo.out'},.65);
-el.from(HI, {opacity:0,y:16,duration:1.0,ease:'expo.out'},.80);
-el.from(TB, {opacity:0,y:-28,duration:1.1,ease:'expo.out'},.78);
+el.from('#hero-bg',{opacity:0,duration:1.2,ease:'power2.out'});
+el.from(TT, {opacity:0,y:20,duration:.8,ease:'expo.out'},.1);
+el.from(HI, {opacity:0,y:12,duration:.8,ease:'expo.out'},.25);
+el.from(TB, {opacity:0,y:-20,duration:.8,ease:'expo.out'},.18);
 el.to(HUD,  {opacity:1,duration:1},1.4);
 
 // Scroll-scrubbed master timeline
@@ -1084,8 +1085,11 @@ const AudioEngine = (() => {
   const ring = document.getElementById('cursor');
   const dot  = document.getElementById('cursor-dot');
   if (!ring || !dot) return;
-  let rx=0,ry=0,tx=0,ty=0;
-  window.addEventListener('mousemove', e => { tx=e.clientX; ty=e.clientY; });
+  let rx=0,ry=0,tx=0,ty=0,moved=false;
+  window.addEventListener('mousemove', e => {
+    tx=e.clientX; ty=e.clientY;
+    if(!moved){ moved=true; ring.style.opacity='1'; dot.style.opacity='1'; }
+  });
   (function tick(){
     rx += (tx-rx)*.12; ry += (ty-ry)*.12;
     ring.style.transform = `translate(${rx-18}px,${ry-18}px)`;
