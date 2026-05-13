@@ -9,7 +9,8 @@ const TRADITIONS = {
 
 function buildSystem(traditions, mode) {
   const deepField = mode === 'deep'
-    ? `"narrative": "4 sentences: what the philosopher was facing when they wrote this, why this quote survived millennia, how it mirrors exactly what this person shared, and one image or metaphor that makes the wisdom visceral and personal",`
+    ? `"narrative": "4 sentences: what the philosopher was facing when they wrote this, why this quote survived millennia, how it mirrors exactly what this person shared, and one image or metaphor that makes the wisdom visceral and personal",
+    "genZ": "1 sentence: the same wisdom rewritten in Gen Z slang — brutally honest, funny, no filter (examples: 'stfu and move on', 'touch grass fr', 'main character syndrome much?', 'it is what it is bestie', 'no cap this hits different') — must be specific to what they shared, never generic",`
     : '';
 
   const blocks = traditions.map(t => {

@@ -79,7 +79,7 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
   max-width:min(600px,88vw);
   will-change:opacity,transform;
 }
-.hi-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.2vw,1.5rem);font-style:italic;line-height:1.8;color:var(--text2);font-weight:300;margin-bottom:28px}
+.hi-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.2vw,1.5rem);font-style:italic;line-height:1.8;color:rgba(245,230,208,.75);font-weight:300;margin-bottom:28px;text-align:center}
 .hi-btn{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:var(--bg);border-radius:8px;padding:14px 36px;font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-decoration:none;box-shadow:0 8px 32px rgba(140,27,53,.22);transition:all .3s}
 .hi-btn:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 14px 44px rgba(140,27,53,.32)}
 
@@ -117,10 +117,24 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 .pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
 .pillar.vis{opacity:1;transform:translateY(0);transition:opacity .7s ease,transform .7s ease,border-color .3s}
 .pillar:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px)!important;box-shadow:0 12px 40px rgba(140,27,53,.08)}
+@media(hover:none){.pillar:hover{transform:none!important;box-shadow:none}}
+.pillars-dots{display:none;justify-content:center;gap:8px;margin-top:16px}
+.pd{width:6px;height:6px;border-radius:50%;background:rgba(140,27,53,.2);cursor:pointer;transition:background .3s,transform .3s}
+.pd.active{background:var(--red);transform:scale(1.3)}
+@media(max-width:680px){.pillars-dots{display:flex}}
 .p-glyph{font-size:2rem;margin-bottom:16px;display:block}
 .p-culture{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
 .p-quote{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;line-height:1.65;color:var(--text2);margin-bottom:10px}
 .p-concept{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase}
+
+/* WEEKLY CULTURE BANNER */
+.weekly-culture-banner{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding:12px 20px;border-radius:12px;background:linear-gradient(135deg,rgba(201,168,76,.1) 0%,rgba(201,168,76,.04) 100%);border:.5px solid rgba(201,168,76,.25)}
+.wcb-week{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--golddim)}
+.wcb-dot{width:3px;height:3px;border-radius:50%;background:var(--golddim)}
+.wcb-name{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);font-weight:600}
+.wcb-glyph{font-size:1.1rem}
+.wcb-cta{margin-left:auto;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:7px 16px;font-family:'Cinzel',serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .3s}
+.wcb-cta:hover{background:var(--red2);transform:translateY(-1px)}
 
 /* HOW IT WORKS */
 #how-section{background:rgba(229,207,166,.45);border-top:.5px solid rgba(140,27,53,.07);border-bottom:.5px solid rgba(140,27,53,.07)}
@@ -221,7 +235,9 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
   #hud{right:16px}
   #share-card{padding:28px 24px}
   .share-actions{justify-content:center}
-  .pillars{grid-template-columns:1fr}
+  .pillars{display:flex;flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:14px;padding:4px 20px 20px;margin:0 -20px;scrollbar-width:none}
+  .pillars::-webkit-scrollbar{display:none}
+  .pillar{flex:0 0 78vw;max-width:300px;scroll-snap-align:center}
 }
 
 /* ═══ SCROLL GRID ══════════════════════════════════════════════════════ */
@@ -393,8 +409,9 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
   <div class="section-wrap">
     <div class="eyebrow"><div class="ey-line"></div>The Philosophy<div class="ey-line"></div></div>
     <div class="big-hl">Four traditions.<br>One question.</div>
+    <div class="weekly-culture-banner" id="weekly-banner"></div>
     <div class="body-t">For thousands of years every culture has held wisdom for the questions you're asking now. WAY hands you a compass and you choose the bearing that feels true.</div>
-    <div class="pillars">
+    <div class="pillars" id="pillars-grid">
       <div class="pillar" data-d="0">
         <span class="p-glyph" style="color:#8c1b35">☽</span>
         <div class="p-culture" style="color:#8c1b35">Arabic</div>
@@ -415,6 +432,12 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
         <div class="p-culture" style="color:#7a4020">Ubuntu</div>
         <div class="p-quote"><em>"Umuntu ngumuntu ngabantu."</em><br>A person is a person through people.</div>
       </div>
+    </div>
+    <div class="pillars-dots" id="pillars-dots">
+      <span class="pd active" data-i="0"></span>
+      <span class="pd" data-i="1"></span>
+      <span class="pd" data-i="2"></span>
+      <span class="pd" data-i="3"></span>
     </div>
   </div>
 </section>
@@ -860,6 +883,63 @@ const io = new IntersectionObserver(entries => {
   });
 },{threshold:.15});
 document.querySelectorAll('.pillar,.step').forEach(el => io.observe(el));
+
+/* ═══ WEEKLY CULTURE ══════════════════════════════════════════════════ */
+(function(){
+  const ORDER = ['arabic','zen','stoic','ubuntu'];
+  const META = {
+    arabic:  {glyph:'☽', label:'Arabic',       color:'#8c1b35'},
+    zen:     {glyph:'⛩', label:'Japanese Zen', color:'#2a7a6a'},
+    stoic:   {glyph:'Φ', label:'Stoic',         color:'#6b4020'},
+    ubuntu:  {glyph:'◉', label:'Ubuntu',        color:'#7a4020'},
+  };
+  const weekIdx = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000)) % 4;
+  const key = ORDER[weekIdx];
+  const m = META[key];
+  const banner = document.getElementById('weekly-banner');
+  if(banner){
+    banner.innerHTML = `<span class="wcb-week">This Week</span><span class="wcb-dot"></span><span class="wcb-glyph" style="color:${m.color}">${m.glyph}</span><span class="wcb-name" style="color:${m.color}">${m.label}</span><a href="way.html?culture=${key}" class="wcb-cta">Seek This Bearing →</a>`;
+  }
+  // Highlight the active pillar
+  const pillars = document.querySelectorAll('#pillars-grid .pillar');
+  const pillarOrder = ['arabic','zen','stoic','ubuntu'];
+  pillars.forEach((p, i) => {
+    if(i === weekIdx){
+      p.style.border = `.5px solid ${m.color}`;
+      p.style.boxShadow = `0 0 0 2px ${m.color}22, 0 8px 32px ${m.color}18`;
+    }
+  });
+  window.__weeklyKey = key;
+})();
+
+/* ═══ PILLARS CAROUSEL DOTS ═══════════════════════════════════════════ */
+(function(){
+  const grid = document.getElementById('pillars-grid');
+  const dots = document.querySelectorAll('.pd');
+  if(!grid || !dots.length) return;
+  let ticking = false;
+  grid.addEventListener('scroll', () => {
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const cards = grid.querySelectorAll('.pillar');
+      const cx = grid.scrollLeft + grid.clientWidth / 2;
+      let closest = 0, minDist = Infinity;
+      cards.forEach((c, i) => {
+        const dist = Math.abs(c.offsetLeft + c.offsetWidth / 2 - cx);
+        if(dist < minDist){ minDist = dist; closest = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+      ticking = false;
+    });
+  }, {passive: true});
+  dots.forEach((d, i) => {
+    d.addEventListener('click', () => {
+      const cards = grid.querySelectorAll('.pillar');
+      if(cards[i]) cards[i].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+    });
+  });
+})();
 
 /* ═══ SHARE CARD ══════════════════════════════════════════════════════ */
 const SHARE_QUOTES = [
