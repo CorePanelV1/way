@@ -744,7 +744,7 @@ function renderResults(data, feeling){
     if(!d) return;
     const narrativeHtml = (mode === 'deep' && d.narrative)
       ? `<div class="bc-narrative">${escHtml(d.narrative)}</div>` : '';
-    const genZHtml = (mode === 'deep' && d.genZ)
+    const genZHtml = d.genZ
       ? `<div class="bc-genz"><span class="bc-genz-label">or in Gen Z terms</span><span class="bc-genz-text">${escHtml(d.genZ)}</span></div>` : '';
     const card = document.createElement('div');
     card.className = `bc ${b.cls}`;
