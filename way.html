@@ -163,47 +163,93 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .bc-share:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08)}
 
 /* ── SHARE MODAL ─────────────────────────── */
-#share-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
+#share-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}
 #share-modal.hidden{display:none!important}
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(12px)}
-.modal-inner{position:relative;z-index:1;width:100%;max-width:520px;display:flex;flex-direction:column;gap:16px;margin:auto}
-.modal-close{position:absolute;top:-20px;right:0;background:rgba(245,230,208,.1);border:.5px solid rgba(245,230,208,.3);color:rgba(245,230,208,.8);height:32px;border-radius:20px;padding:0 14px;font-size:8px;font-family:'Cinzel',serif;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:5px}
-.modal-close:hover{color:var(--parch);border-color:rgba(245,230,208,.6);background:rgba(245,230,208,.15)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(20px)}
+.modal-inner{position:relative;z-index:1;width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px;align-items:center}
+.modal-close{align-self:flex-end;background:rgba(245,230,208,.08);border:.5px solid rgba(245,230,208,.2);color:rgba(245,230,208,.6);height:30px;border-radius:20px;padding:0 14px;font-size:7.5px;font-family:'Cinzel',serif;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:5px}
+.modal-close:hover{color:var(--parch);border-color:rgba(245,230,208,.5)}
 
-/* Flip card */
-.flip-card{perspective:1100px;width:100%;cursor:pointer}
-.flip-card-inner{position:relative;width:100%;transition:transform .65s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+/* ── ECARD FLIP ──────────────────────────── */
+.flip-card{perspective:1200px;width:100%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.flip-card-inner{position:relative;width:100%;aspect-ratio:3/4;transition:transform .7s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
 .flip-card.flipped .flip-card-inner{transform:rotateY(180deg)}
-.flip-face{backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;overflow:hidden}
-.flip-back{position:absolute;inset:0;transform:rotateY(180deg)}
-.flip-hint{text-align:center;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.2);margin-top:8px;cursor:pointer;transition:color .3s;user-select:none}
-.flip-hint:hover{color:rgba(245,230,208,.4)}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7)}
+.flip-back{transform:rotateY(180deg)}
 
-/* Shared face card style */
-.mc-face{padding:32px 36px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
-.mc-face::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent)}
-.mc-front{background:#110608}
-.mc-front::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 25% 20%,rgba(140,27,53,.18) 0%,transparent 65%);pointer-events:none}
-.mc-back{background:#080f0d}
-.mc-back::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 75% 20%,rgba(26,107,88,.15) 0%,transparent 65%);pointer-events:none}
+/* ── ECARD BASE ──────────────────────────── */
+.ecard{width:100%;height:100%;position:relative;display:flex;flex-direction:column}
 
-.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:1}
-.mc-logo{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:6px;color:rgba(245,230,208,.9);font-weight:700}
-.mc-pill{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold2);border:.5px solid rgba(201,168,76,.3);border-radius:20px;padding:5px 12px}
-.mc-back-pill{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.5);border:.5px solid rgba(245,230,208,.15);border-radius:20px;padding:5px 12px}
-.mc-div{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);margin:14px 0;position:relative;z-index:1}
-.mc-quote-block{position:relative;z-index:1;text-align:center;padding:8px 0;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.mc-original{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);font-style:italic;color:rgba(245,230,208,.95);line-height:1.5}
-.mc-english{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,1.8vw,1.1rem);font-style:italic;color:rgba(245,230,208,.65)}
-.mc-genz-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.2vw,1.35rem);font-style:italic;color:rgba(245,230,208,.9);line-height:1.6;text-align:center}
-.mc-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:16px;position:relative;z-index:1}
-.mc-attr{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3)}
-.mc-wm{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.3)}
+/* Culture backgrounds */
+.ecard.arabic  {background:linear-gradient(160deg,#0e0105 0%,#1c0610 50%,#0a0208 100%)}
+.ecard.zen     {background:linear-gradient(160deg,#02080a 0%,#041510 50%,#010605 100%)}
+.ecard.stoic   {background:linear-gradient(160deg,#080605 0%,#130e06 50%,#070504 100%)}
+.ecard.ubuntu  {background:linear-gradient(160deg,#0c0600 0%,#1a0d02 50%,#080400 100%)}
 
-.modal-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.modal-btn{display:flex;align-items:center;gap:7px;background:transparent;border:.5px solid rgba(245,230,208,.15);color:rgba(245,230,208,.6);padding:11px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
-.modal-btn:hover{border-color:rgba(245,230,208,.35);color:var(--parch)}
-.modal-btn.primary{background:rgba(245,230,208,.08);border-color:rgba(245,230,208,.25)}
+/* SVG decorative pattern per culture — Islamic star, Enso, Meander, Ubuntu sun */
+.ecard.arabic  .ecard-pattern{background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c9a84c' stroke-width='.4' opacity='.35'%3E%3Cpolygon points='40,4 47,22 64,16 58,33 76,40 58,47 64,64 47,58 40,76 33,58 16,64 22,47 4,40 22,33 16,16 33,22'/%3E%3Ccircle cx='40' cy='40' r='18'/%3E%3C/g%3E%3C/svg%3E");background-size:80px 80px;opacity:.18}
+.ecard.zen     .ecard-pattern{background-image:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%231a6b58' stroke-width='.6' opacity='.5'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%231a6b58' stroke-width='.4' opacity='.3'/%3E%3C/svg%3E");background-size:100px 100px;opacity:.2}
+.ecard.stoic   .ecard-pattern{background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L10,0 L10,4 L4,4 L4,10 L0,10 Z M50,0 L60,0 L60,10 L56,10 L56,4 L50,4 Z M0,50 L4,50 L4,56 L10,56 L10,60 L0,60 Z M56,50 L60,50 L60,60 L50,60 L50,56 L56,56 Z' fill='%237a4820' opacity='.45'/%3E%3C/svg%3E");background-size:60px 60px;opacity:.25}
+.ecard.ubuntu  .ecard-pattern{background-image:url("data:image/svg+xml,%3Csvg width='90' height='90' viewBox='0 0 90 90' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='45' cy='45' r='40' fill='none' stroke='%237a3010' stroke-width='.5' opacity='.4'/%3E%3Ccircle cx='45' cy='45' r='28' fill='none' stroke='%237a3010' stroke-width='.4' opacity='.3'/%3E%3Ccircle cx='45' cy='45' r='16' fill='none' stroke='%23c9a84c' stroke-width='.4' opacity='.3'/%3E%3C/svg%3E");background-size:90px 90px;opacity:.2}
+
+.ecard-pattern{position:absolute;inset:0;z-index:0}
+
+/* Ambient glow */
+.ecard.arabic  .ecard-glow{background:radial-gradient(ellipse 70% 55% at 30% 25%,rgba(140,27,53,.28) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 70% 80%,rgba(80,10,25,.2) 0%,transparent 60%)}
+.ecard.zen     .ecard-glow{background:radial-gradient(ellipse 70% 55% at 70% 20%,rgba(26,107,88,.22) 0%,transparent 65%),radial-gradient(ellipse 40% 35% at 30% 80%,rgba(10,50,35,.15) 0%,transparent 60%)}
+.ecard.stoic   .ecard-glow{background:radial-gradient(ellipse 70% 55% at 50% 20%,rgba(122,72,32,.25) 0%,transparent 65%)}
+.ecard.ubuntu  .ecard-glow{background:radial-gradient(ellipse 70% 55% at 35% 30%,rgba(122,48,16,.3) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 65% 75%,rgba(80,30,5,.2) 0%,transparent 60%)}
+.ecard-glow{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+/* Card content layout */
+.ecard-inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:28px 30px}
+
+/* Top bar */
+.ecard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0}
+.ecard-logo{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:7px;font-weight:700;color:rgba(245,230,208,.5)}
+.ecard-culture-badge{display:flex;align-items:center;gap:6px;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase}
+.ecard-culture-glyph{font-size:1rem;line-height:1}
+.ecard-culture-name{color:rgba(245,230,208,.55)}
+
+/* Gold accent line */
+.ecard-rule{height:.5px;margin:18px 0;background:linear-gradient(90deg,transparent,rgba(201,168,76,.45),transparent)}
+
+/* Central quote area */
+.ecard-quote-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:10px 0}
+.ecard-deco{font-size:3.5rem;line-height:1;opacity:.18;margin-bottom:4px;display:block}
+.ecard.arabic  .ecard-deco{color:#c9a84c}
+.ecard.zen     .ecard-deco{color:#1a6b58}
+.ecard.stoic   .ecard-deco{color:#7a4820}
+.ecard.ubuntu  .ecard-deco{color:#c9a84c}
+.ecard-original{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,5vw,1.85rem);font-style:italic;color:rgba(245,230,208,.97);line-height:1.45;text-align:center;letter-spacing:.01em}
+.ecard-translation{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,3vw,1.1rem);color:rgba(245,230,208,.55);line-height:1.6;font-style:italic;text-align:center}
+
+/* Footer */
+.ecard-footer{display:flex;align-items:center;justify-content:space-between}
+.ecard-concept{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,.5)}
+.ecard-coord{font-family:'Cinzel',serif;font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,230,208,.2);text-align:right}
+
+/* ── BACK FACE (Gen Z) ───────────────────── */
+.ecard-back{background:var(--gb-bg,#0f0608)}
+.ecard.arabic-back  {--gb-bg:#0e0105;--gb-acc:rgba(140,27,53,.35)}
+.ecard.zen-back     {--gb-bg:#02080a;--gb-acc:rgba(26,107,88,.3)}
+.ecard.stoic-back   {--gb-bg:#090706;--gb-acc:rgba(122,72,32,.3)}
+.ecard.ubuntu-back  {--gb-bg:#0c0600;--gb-acc:rgba(122,48,16,.35)}
+.ecard-back .ecard-glow{background:radial-gradient(ellipse 80% 60% at 60% 70%,var(--gb-acc,rgba(140,27,53,.25)) 0%,transparent 65%)}
+.ecard-back .ecard-deco{font-size:2.8rem;opacity:.25}
+.ecard-gz-eyebrow{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.28);text-align:center;margin-bottom:6px}
+.ecard-gz-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,4.5vw,1.6rem);font-style:italic;color:rgba(245,230,208,.95);line-height:1.55;text-align:center}
+.ecard-gz-sub{font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.2);text-align:center;margin-top:8px}
+
+/* Flip hint */
+.flip-hint{text-align:center;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.22);cursor:pointer;transition:color .3s;user-select:none;display:flex;align-items:center;justify-content:center;gap:8px}
+.flip-hint::before,.flip-hint::after{content:'';flex:1;max-width:40px;height:.5px;background:rgba(245,230,208,.1)}
+.flip-hint:hover{color:rgba(245,230,208,.45)}
+
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%}
+.modal-btn{display:flex;align-items:center;gap:6px;background:rgba(245,230,208,.06);border:.5px solid rgba(245,230,208,.12);color:rgba(245,230,208,.6);padding:10px 16px;border-radius:8px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.modal-btn:hover{border-color:rgba(245,230,208,.3);color:var(--parch);background:rgba(245,230,208,.1)}
+.modal-btn.primary{background:rgba(245,230,208,.1);border-color:rgba(245,230,208,.22);color:rgba(245,230,208,.8)}
 
 /* ── ERROR TOAST ─────────────────────────── */
 #toast{position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(20px);z-index:1000;background:rgba(245,230,208,.95);color:#110608;padding:12px 26px;border-radius:30px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
@@ -438,42 +484,64 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
     <button class="modal-close" onclick="closeShareModal()" aria-label="Close">✕ Close</button>
     <div class="flip-card" id="flip-card" onclick="toggleFlip()">
       <div class="flip-card-inner">
-        <!-- Front: Wisdom -->
-        <div class="flip-face flip-front mc-face mc-front">
-          <div class="mc-top">
-            <span class="mc-logo">WAY</span>
-            <span class="mc-pill" id="mc-pill"></span>
-          </div>
-          <div class="mc-div"></div>
-          <div class="mc-quote-block">
-            <div class="mc-original" id="mc-original"></div>
-            <div class="mc-english" id="mc-english"></div>
-          </div>
-          <div class="mc-div"></div>
-          <div class="mc-bottom">
-            <span class="mc-attr" id="mc-attr"></span>
-            <span class="mc-wm">✦ WAY</span>
+        <!-- Front: Cultural wisdom -->
+        <div class="flip-face flip-front">
+          <div class="ecard" id="ecard-front">
+            <div class="ecard-pattern"></div>
+            <div class="ecard-glow"></div>
+            <div class="ecard-inner">
+              <div class="ecard-top">
+                <span class="ecard-logo">WAY</span>
+                <div class="ecard-culture-badge">
+                  <span class="ecard-culture-glyph" id="ec-glyph"></span>
+                  <span class="ecard-culture-name" id="ec-culture"></span>
+                </div>
+              </div>
+              <div class="ecard-rule"></div>
+              <div class="ecard-quote-area">
+                <span class="ecard-deco" id="ec-deco-glyph"></span>
+                <div class="ecard-original" id="ec-original"></div>
+                <div class="ecard-translation" id="ec-translation"></div>
+              </div>
+              <div class="ecard-rule"></div>
+              <div class="ecard-footer">
+                <span class="ecard-concept" id="ec-concept"></span>
+                <span class="ecard-coord" id="ec-coord"></span>
+              </div>
+            </div>
           </div>
         </div>
         <!-- Back: Gen Z -->
-        <div class="flip-face flip-back mc-face mc-back">
-          <div class="mc-top">
-            <span class="mc-logo">WAY</span>
-            <span class="mc-back-pill">💬 Gen Z Take</span>
-          </div>
-          <div class="mc-div"></div>
-          <div class="mc-quote-block">
-            <div class="mc-genz-text" id="mc-genz"></div>
-          </div>
-          <div class="mc-div"></div>
-          <div class="mc-bottom">
-            <span class="mc-attr" id="mc-attr-2"></span>
-            <span class="mc-wm">✦ WAY</span>
+        <div class="flip-face flip-back">
+          <div class="ecard ecard-back" id="ecard-back">
+            <div class="ecard-pattern"></div>
+            <div class="ecard-glow"></div>
+            <div class="ecard-inner">
+              <div class="ecard-top">
+                <span class="ecard-logo">WAY</span>
+                <div class="ecard-culture-badge">
+                  <span style="font-size:.9rem">💬</span>
+                  <span class="ecard-culture-name">Gen Z</span>
+                </div>
+              </div>
+              <div class="ecard-rule"></div>
+              <div class="ecard-quote-area">
+                <span class="ecard-deco" id="ec-back-deco"></span>
+                <div class="ecard-gz-eyebrow">or in gen z terms</div>
+                <div class="ecard-gz-text" id="ec-genz"></div>
+                <div class="ecard-gz-sub" id="ec-back-concept"></div>
+              </div>
+              <div class="ecard-rule"></div>
+              <div class="ecard-footer">
+                <span class="ecard-concept">way.so</span>
+                <span class="ecard-coord" id="ec-back-coord"></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="flip-hint" onclick="toggleFlip()">↩ Tap to flip</div>
+    <div class="flip-hint" onclick="toggleFlip()">tap to flip</div>
     <div class="modal-actions">
       <button class="modal-btn primary" id="modal-audio-btn" onclick="toggleModalAudio()">
         <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
@@ -852,14 +920,31 @@ function openShareModal(){
   activeShareKey = weeklyKey;
   const d = lastWisdom[weeklyKey];
   const m = weeklyMeta;
-  const attr = (d.coordinate || m.coord) + ' · ' + (d.region || m.region);
-  document.getElementById('mc-pill').textContent = m.glyph + '  ' + m.label;
-  document.getElementById('mc-original').textContent = d.quote || '';
-  document.getElementById('mc-english').textContent = d.translation || '';
-  document.getElementById('mc-attr').textContent = attr;
-  document.getElementById('mc-genz').textContent = d.genZ || '';
-  document.getElementById('mc-attr-2').textContent = attr;
-  // Reset flip to front face
+  const coord = (d.coordinate || m.coord) + ' · ' + (d.region || m.region);
+
+  // Front face
+  const front = document.getElementById('ecard-front');
+  front.className = `ecard ${weeklyKey}`;
+  document.getElementById('ec-glyph').textContent = m.glyph;
+  document.getElementById('ec-culture').textContent = m.label;
+  document.getElementById('ec-deco-glyph').textContent = m.glyph;
+  const origEl = document.getElementById('ec-original');
+  origEl.textContent = d.quote || '';
+  origEl.dir = weeklyKey === 'arabic' ? 'rtl' : 'ltr';
+  document.getElementById('ec-translation').textContent = d.translation || '';
+  document.getElementById('ec-concept').textContent = (d.concept || '').toUpperCase();
+  document.getElementById('ec-coord').textContent = coord;
+
+  // Back face
+  const back = document.getElementById('ecard-back');
+  back.className = `ecard ecard-back ${weeklyKey}-back`;
+  back.style.setProperty('--gb-bg', ({arabic:'#0e0105',zen:'#02080a',stoic:'#090706',ubuntu:'#0c0600'})[weeklyKey]||'#0f0608');
+  back.style.setProperty('--gb-acc', ({arabic:'rgba(140,27,53,.35)',zen:'rgba(26,107,88,.3)',stoic:'rgba(122,72,32,.3)',ubuntu:'rgba(122,48,16,.35)'})[weeklyKey]||'rgba(140,27,53,.25)');
+  document.getElementById('ec-back-deco').textContent = m.glyph;
+  document.getElementById('ec-genz').textContent = d.genZ || '';
+  document.getElementById('ec-back-concept').textContent = (d.concept || '').toUpperCase();
+  document.getElementById('ec-back-coord').textContent = coord;
+
   document.getElementById('flip-card').classList.remove('flipped');
   document.getElementById('share-modal').classList.remove('hidden');
   document.getElementById('modal-audio-btn').classList.remove('active');
