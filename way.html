@@ -166,22 +166,37 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 #share-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
 #share-modal.hidden{display:none!important}
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(12px)}
-.modal-inner{position:relative;z-index:1;width:100%;max-width:520px;display:flex;flex-direction:column;gap:20px;margin:auto}
+.modal-inner{position:relative;z-index:1;width:100%;max-width:520px;display:flex;flex-direction:column;gap:16px;margin:auto}
 .modal-close{position:absolute;top:-20px;right:0;background:rgba(245,230,208,.1);border:.5px solid rgba(245,230,208,.3);color:rgba(245,230,208,.8);height:32px;border-radius:20px;padding:0 14px;font-size:8px;font-family:'Cinzel',serif;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:5px}
 .modal-close:hover{color:var(--parch);border-color:rgba(245,230,208,.6);background:rgba(245,230,208,.15)}
 
-/* Share card inside modal — same dark card design */
-.modal-card{background:#110608;border-radius:18px;padding:36px 40px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
-.modal-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 25% 20%,rgba(140,27,53,.18) 0%,transparent 65%);pointer-events:none}
-.modal-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent)}
-.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;position:relative;z-index:1}
+/* Flip card */
+.flip-card{perspective:1100px;width:100%;cursor:pointer}
+.flip-card-inner{position:relative;width:100%;transition:transform .65s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.flip-card.flipped .flip-card-inner{transform:rotateY(180deg)}
+.flip-face{backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;overflow:hidden}
+.flip-back{position:absolute;inset:0;transform:rotateY(180deg)}
+.flip-hint{text-align:center;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.2);margin-top:8px;cursor:pointer;transition:color .3s;user-select:none}
+.flip-hint:hover{color:rgba(245,230,208,.4)}
+
+/* Shared face card style */
+.mc-face{padding:32px 36px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.mc-face::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent)}
+.mc-front{background:#110608}
+.mc-front::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 25% 20%,rgba(140,27,53,.18) 0%,transparent 65%);pointer-events:none}
+.mc-back{background:#080f0d}
+.mc-back::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 75% 20%,rgba(26,107,88,.15) 0%,transparent 65%);pointer-events:none}
+
+.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:1}
 .mc-logo{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:6px;color:rgba(245,230,208,.9);font-weight:700}
 .mc-pill{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold2);border:.5px solid rgba(201,168,76,.3);border-radius:20px;padding:5px 12px}
-.mc-div{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent);margin:16px 0;position:relative;z-index:1}
-.mc-quote-block{position:relative;z-index:1;text-align:center;padding:8px 0;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.mc-original{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,2.5vw,1.6rem);font-style:italic;color:rgba(245,230,208,.95);line-height:1.5}
-.mc-english{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,1.8vw,1.15rem);font-style:italic;color:rgba(245,230,208,.7)}
-.mc-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:20px;position:relative;z-index:1}
+.mc-back-pill{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.5);border:.5px solid rgba(245,230,208,.15);border-radius:20px;padding:5px 12px}
+.mc-div{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);margin:14px 0;position:relative;z-index:1}
+.mc-quote-block{position:relative;z-index:1;text-align:center;padding:8px 0;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.mc-original{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);font-style:italic;color:rgba(245,230,208,.95);line-height:1.5}
+.mc-english{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,1.8vw,1.1rem);font-style:italic;color:rgba(245,230,208,.65)}
+.mc-genz-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.2vw,1.35rem);font-style:italic;color:rgba(245,230,208,.9);line-height:1.6;text-align:center}
+.mc-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:16px;position:relative;z-index:1}
 .mc-attr{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3)}
 .mc-wm{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.3)}
 
@@ -302,20 +317,13 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .sp-gz-eyebrow::after{content:'';flex:1;height:.5px;background:var(--border)}
 .sp-gz-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.2vw,1.5rem);font-style:italic;color:var(--parch);line-height:1.6;margin-bottom:24px;position:relative;z-index:1;flex:1}
 
-/* synthesis */
-.synthesis-block{width:100%;max-width:960px;margin-top:12px;padding:24px 32px;border:.5px solid rgba(201,168,76,.15);border-radius:16px;background:rgba(201,168,76,.04);text-align:center;position:relative;opacity:0;transform:translateY(16px);transition:opacity .7s .2s ease,transform .7s .2s ease}
-.synthesis-block.vis{opacity:1;transform:translateY(0)}
-.synthesis-block::before{content:'✦ The Wisdom of Two Languages ✦';position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 14px;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--golddim);white-space:nowrap}
-.syn-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.8vw,1.2rem);font-style:italic;color:var(--parch2);line-height:1.8}
-
 .split-share-row{width:100%;max-width:960px;display:flex;justify-content:center;gap:12px;padding:20px 0 0;flex-wrap:wrap}
 
 @media(max-width:680px){
   .split-card{grid-template-columns:1fr}
   .split-wisdom{border-right:none;border-bottom:.5px solid var(--border)}
   .split-panel{padding:24px 20px}
-  .synthesis-block{padding:18px 20px;margin-top:10px}
-  .synthesis-block::before{font-size:7px;letter-spacing:2px;white-space:normal;text-align:center;width:80%;left:50%;transform:translateX(-50%);top:-18px;line-height:1.4}
+  .mc-face{padding:24px 20px}
 }
 
 /* ── RESPONSIVE ──────────────────────────── */
@@ -408,7 +416,6 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
     <div class="split-panel split-wisdom" id="split-wisdom"></div>
     <div class="split-panel split-genz" id="split-genz"></div>
   </div>
-  <div class="synthesis-block" id="synthesis-block"></div>
   <div class="split-share-row">
     <button class="try-again-btn" onclick="openShareModal()">Share this bearing ↗</button>
     <button class="try-again-btn" onclick="show('state-input');window.scrollTo({top:0,behavior:'instant'})">↺ Ask Again</button>
@@ -420,22 +427,44 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   <div class="modal-backdrop" onclick="closeShareModal()"></div>
   <div class="modal-inner">
     <button class="modal-close" onclick="closeShareModal()" aria-label="Close">✕ Close</button>
-    <div class="modal-card">
-      <div class="mc-top">
-        <span class="mc-logo">WAY</span>
-        <span class="mc-pill" id="mc-pill"></span>
-      </div>
-      <div class="mc-div"></div>
-      <div class="mc-quote-block">
-        <div class="mc-original" id="mc-original"></div>
-        <div class="mc-english" id="mc-english"></div>
-      </div>
-      <div class="mc-div"></div>
-      <div class="mc-bottom">
-        <span class="mc-attr" id="mc-attr"></span>
-        <span class="mc-wm">✦ WAY</span>
+    <div class="flip-card" id="flip-card" onclick="toggleFlip()">
+      <div class="flip-card-inner">
+        <!-- Front: Wisdom -->
+        <div class="flip-face flip-front mc-face mc-front">
+          <div class="mc-top">
+            <span class="mc-logo">WAY</span>
+            <span class="mc-pill" id="mc-pill"></span>
+          </div>
+          <div class="mc-div"></div>
+          <div class="mc-quote-block">
+            <div class="mc-original" id="mc-original"></div>
+            <div class="mc-english" id="mc-english"></div>
+          </div>
+          <div class="mc-div"></div>
+          <div class="mc-bottom">
+            <span class="mc-attr" id="mc-attr"></span>
+            <span class="mc-wm">✦ WAY</span>
+          </div>
+        </div>
+        <!-- Back: Gen Z -->
+        <div class="flip-face flip-back mc-face mc-back">
+          <div class="mc-top">
+            <span class="mc-logo">WAY</span>
+            <span class="mc-back-pill">💬 Gen Z Take</span>
+          </div>
+          <div class="mc-div"></div>
+          <div class="mc-quote-block">
+            <div class="mc-genz-text" id="mc-genz"></div>
+          </div>
+          <div class="mc-div"></div>
+          <div class="mc-bottom">
+            <span class="mc-attr" id="mc-attr-2"></span>
+            <span class="mc-wm">✦ WAY</span>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="flip-hint" onclick="toggleFlip()">↩ Tap to flip</div>
     <div class="modal-actions">
       <button class="modal-btn primary" id="modal-audio-btn" onclick="toggleModalAudio()">
         <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
@@ -764,11 +793,11 @@ function renderResults(data){
     <div class="sp-quote"${isArabic?' dir="rtl"':''}>${escHtml(d.quote)}</div>
     <div class="sp-translation">${escHtml(d.translation)}</div>
     <span class="sp-badge">${escHtml(d.concept)}</span>
+    <div class="sp-context">${escHtml(d.context)}</div>
     <div class="sp-practice">
       <div class="sp-practice-label">✦ Practice Today</div>
       <div class="sp-practice-text">${escHtml(d.practice)}</div>
     </div>
-    <div class="sp-context">${escHtml(d.context)}</div>
   `;
 
   // ── GenZ panel (right) ───────────────────────────────────────────
@@ -784,18 +813,9 @@ function renderResults(data){
   const splitCard = document.getElementById('split-card');
   splitCard.className = `split-card ${weeklyKey}`;
 
-  // ── Synthesis ────────────────────────────────────────────────────
-  const synEl = document.getElementById('synthesis-block');
-  if(d.synthesis){
-    synEl.innerHTML = `<div class="syn-text">${escHtml(d.synthesis)}</div>`;
-    synEl.style.display = '';
-  } else {
-    synEl.style.display = 'none';
-  }
-
   // Reveal with animation
   requestAnimationFrame(()=>{
-    setTimeout(()=>{ splitCard.classList.add('vis'); synEl.classList.add('vis'); }, 80);
+    setTimeout(()=>splitCard.classList.add('vis'), 80);
   });
 }
 
@@ -815,14 +835,23 @@ function openShareModal(){
   activeShareKey = weeklyKey;
   const d = lastWisdom[weeklyKey];
   const m = weeklyMeta;
+  const attr = (d.coordinate || m.coord) + ' · ' + (d.region || m.region);
   document.getElementById('mc-pill').textContent = m.glyph + '  ' + m.label;
   document.getElementById('mc-original').textContent = d.quote || '';
   document.getElementById('mc-english').textContent = d.translation || '';
-  document.getElementById('mc-attr').textContent = (d.coordinate || m.coord) + ' · ' + (d.region || m.region);
+  document.getElementById('mc-attr').textContent = attr;
+  document.getElementById('mc-genz').textContent = d.genZ || '';
+  document.getElementById('mc-attr-2').textContent = attr;
+  // Reset flip to front face
+  document.getElementById('flip-card').classList.remove('flipped');
   document.getElementById('share-modal').classList.remove('hidden');
   document.getElementById('modal-audio-btn').classList.remove('active');
   AudioEngine.stop();
   setTimeout(()=>{ AudioEngine.play(weeklyKey); updateModalAudioBtn(true); }, 400);
+}
+
+function toggleFlip(){
+  document.getElementById('flip-card').classList.toggle('flipped');
 }
 
 function closeShareModal(){

@@ -34,10 +34,9 @@ function buildSystem(traditions, mode) {
     "quote": "${c.instruction}",
     "translation": "faithful English translation (repeat quote if already English)",
     "concept": "concept name in 1-4 words",
-    "context": "2 sentences — why this wisdom meets them exactly here, not generic",
-    "practice": "one concrete action they can take before tonight",
-    "genZ": "${c.genZVoice} — rewrite the same wisdom but as a funny, brutally honest reaction to exactly what this person shared. Must be specific to their situation, never generic",
-    "synthesis": "2 sentences: show that the ancient proverb and the Gen Z take are saying the exact same thing — a poetic bridge between old soul and new voice, specific to what they shared",
+    "context": "1 sentence — why this wisdom meets them exactly here, specific not generic",
+    "practice": "one short, concrete action for today",
+    "genZ": "${c.genZVoice} — 1-2 sentences max, funny, specific to what they shared",
     ${narrativeField}
     "coordinate": "${c.coord}",
     "region": "${c.region}"
@@ -49,8 +48,9 @@ function buildSystem(traditions, mode) {
 Rules:
 - Quotes must be AUTHENTIC — real proverbs or sayings from that tradition, never invented
 - Original-language quotes must be in the actual script of that culture
-- Context, practice, genZ and synthesis must all feel personal to what they shared — never generic
-- The genZ field must be genuinely funny and culturally flavored — not just a bland paraphrase
+- Context, practice and genZ must feel personal to what they shared — never generic
+- The genZ field must be genuinely funny and culturally flavored — not a bland paraphrase
+- Keep all fields concise — no padding, no filler
 - Respond ONLY with the JSON object below. No preamble, no explanation.
 
 {
