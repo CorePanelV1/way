@@ -326,6 +326,14 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   .mc-face{padding:24px 20px}
 }
 
+/* ── AI TRADITION BACKGROUNDS (Higgsfield Cinema Studio 2.5) ─────── */
+#trad-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 2.2s ease;background-size:cover;background-position:center;background-repeat:no-repeat}
+#trad-bg.vis{opacity:1}
+#trad-bg.arabic{background-image:linear-gradient(rgba(10,6,8,.78),rgba(10,6,8,.78)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142445_64617657-09d2-41b4-9455-00749545e0b0_min.webp')}
+#trad-bg.zen{background-image:linear-gradient(rgba(10,6,8,.78),rgba(10,6,8,.78)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142555_98a1ae9c-cff0-44ad-9d7d-c0f40166f3b9_min.webp')}
+#trad-bg.stoic{background-image:linear-gradient(rgba(10,6,8,.78),rgba(10,6,8,.78)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142654_7a64490f-0c5f-400f-bbda-60f0e632fb15_min.webp')}
+#trad-bg.ubuntu{background-image:linear-gradient(rgba(10,6,8,.78),rgba(10,6,8,.78)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
+
 /* ── RESPONSIVE ──────────────────────────── */
 @media(max-width:600px){
   #nav{padding:16px 20px}
@@ -344,6 +352,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 </head>
 <body>
 <canvas id="bg"></canvas>
+<div id="trad-bg" aria-hidden="true"></div>
 <div id="cursor" aria-hidden="true"></div>
 <div id="cursor-dot" aria-hidden="true"></div>
 <div id="toast"></div>
@@ -674,6 +683,14 @@ function show(id){
   ['state-input','state-loading','state-results'].forEach(s=>{
     document.getElementById(s).classList.toggle('hidden',s!==id);
   });
+  const tb = document.getElementById('trad-bg');
+  if(id === 'state-results'){
+    tb.className = weeklyKey;
+    requestAnimationFrame(() => tb.classList.add('vis'));
+  } else {
+    tb.classList.remove('vis');
+    setTimeout(() => { if(!tb.classList.contains('vis')) tb.className = ''; }, 2400);
+  }
 }
 
 /* ═══ LOADING ANIMATION ════════════════════════════════════════════ */
