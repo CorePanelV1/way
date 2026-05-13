@@ -1003,7 +1003,8 @@ async function modalWhatsApp(){
   waBtn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="31.4" stroke-dashoffset="10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite"/></circle></svg> Generating…';
   waBtn.disabled=true;
   try {
-    const canvas=await buildWisdomCanvas();
+    const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
+    const canvas=await buildWisdomCanvas(isFlipped?'genz':'wisdom');
     const fallbackText=`${m.glyph} *WAY · ${m.label}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${buildShareUrl(weeklyKey)}`;
     canvas.toBlob(async(blob)=>{
       const file=new File([blob],'way-wisdom.png',{type:'image/png'});
@@ -1033,50 +1034,133 @@ function _rr(ctx,x,y,w,h,r){
   ctx.closePath();
 }
 
-async function buildWisdomCanvas(){
+async function buildWisdomCanvas(side){
   const d=lastWisdom[weeklyKey];
   const b=weeklyMeta;
   if(!d||!b) throw new Error('no data');
   await document.fonts.ready;
 
-  const W=640,PAD=48,dpr=2,IW=640-48*2;
-  const tmp=document.createElement('canvas').getContext('2d');
-  function wrap(text,font,maxW){
-    tmp.font=font;
-    const words=text.split(' ');const lines=[];let line='';
-    for(const w of words){
-      const t=line?line+' '+w:w;
-      if(tmp.measureText(t).width>maxW&&line){lines.push(line);line=w;}else line=t;
-    }
-    if(line)lines.push(line);return lines;
-  }
-  const isAr=weeklyKey==='arabic';
-  const qFont=`italic 400 ${isAr?'20':'22'}px "Cormorant Garamond",serif`;
-  const tFont='400 17px "Cormorant Garamond",serif';
-  const qLines=wrap(d.quote,qFont,IW);
-  const tLines=(d.translation&&d.translation!==d.quote)?wrap(d.translation,tFont,IW):[];
-  const H=PAD+36+qLines.length*30+14+tLines.length*26+(tLines.length?14:0)+32+PAD;
+  const W=480,H=640,PAD=40,dpr=2; // portrait 3:4
+  const IW=W-PAD*2;
 
   const canvas=document.createElement('canvas');
   canvas.width=W*dpr;canvas.height=H*dpr;
   const ctx=canvas.getContext('2d');
   ctx.scale(dpr,dpr);
 
+  // Culture accent colours
+  const ACCENT={arabic:'#8c1b35',zen:'#1a6b58',stoic:'#7a4820',ubuntu:'#7a3010'};
+  const BG={arabic:'#0e0105',zen:'#02080a',stoic:'#090706',ubuntu:'#0c0600'};
+  const GLOW={arabic:'rgba(140,27,53,.28)',zen:'rgba(26,107,88,.22)',stoic:'rgba(122,72,32,.25)',ubuntu:'rgba(122,48,16,.28)'};
+  const accent=ACCENT[weeklyKey]||'#8c1b35';
+  const bgCol=BG[weeklyKey]||'#0f0608';
+  const glowCol=GLOW[weeklyKey]||'rgba(140,27,53,.2)';
+
+  // Background
   const bg=ctx.createLinearGradient(0,0,0,H);
-  bg.addColorStop(0,'#14080b');bg.addColorStop(1,'#0d0508');
+  bg.addColorStop(0,bgCol);bg.addColorStop(1,'#040104');
   ctx.fillStyle=bg;_rr(ctx,0,0,W,H,20);ctx.fill();
 
-  const glow=ctx.createRadialGradient(W*.18,H*.18,0,W*.18,H*.18,W*.55);
-  glow.addColorStop(0,'rgba(140,27,53,.20)');glow.addColorStop(1,'rgba(0,0,0,0)');
+  // Ambient glow
+  const glow=ctx.createRadialGradient(W*.25,H*.25,0,W*.25,H*.25,W*.65);
+  glow.addColorStop(0,glowCol);glow.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=glow;_rr(ctx,0,0,W,H,20);ctx.fill();
 
-  const gl=ctx.createLinearGradient(PAD,0,W-PAD,0);
-  gl.addColorStop(0,'rgba(201,168,76,0)');gl.addColorStop(.5,'rgba(201,168,76,.55)');gl.addColorStop(1,'rgba(201,168,76,0)');
-  ctx.fillStyle=gl;ctx.fillRect(PAD,0,IW,1);
+  function goldRule(y){
+    const gl=ctx.createLinearGradient(PAD,y,W-PAD,y);
+    gl.addColorStop(0,'rgba(201,168,76,0)');gl.addColorStop(.5,'rgba(201,168,76,.45)');gl.addColorStop(1,'rgba(201,168,76,0)');
+    ctx.fillStyle=gl;ctx.fillRect(PAD,y,.5,1);
+    ctx.fillStyle=gl;ctx.fillRect(PAD,y,IW,1);
+  }
+  function wrap(text,font,maxW){
+    const tc=document.createElement('canvas').getContext('2d');tc.font=font;
+    const words=text.split(' ');const lines=[];let line='';
+    for(const w of words){const t=line?line+' '+w:w;if(tc.measureText(t).width>maxW&&line){lines.push(line);line=w;}else line=t;}
+    if(line)lines.push(line);return lines;
+  }
 
-  let y=PAD;
-  ctx.font='600 10px "Cinzel",serif';ctx.fillStyle='rgba(201,168,76,.75)';ctx.letterSpacing='3px';
-  ctx.fillText(b.glyph+'  '+b.label,PAD,y+14);y+=36;
+  if(side==='genz'){
+    // ── GEN Z FACE ─────────────────────────────────────────────────
+    // Second glow from bottom
+    const glow2=ctx.createRadialGradient(W*.7,H*.75,0,W*.7,H*.75,W*.5);
+    glow2.addColorStop(0,glowCol);glow2.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=glow2;_rr(ctx,0,0,W,H,20);ctx.fill();
+
+    // Top: WAY + Gen Z badge
+    let y=PAD;
+    ctx.font='700 9px "Cinzel",serif';ctx.letterSpacing='6px';ctx.fillStyle='rgba(245,230,208,.45)';
+    ctx.fillText('WAY',PAD,y+13);
+    ctx.font='400 7px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(245,230,208,.4)';
+    ctx.textAlign='right';ctx.fillText('💬  GEN Z TAKE',W-PAD,y+13);ctx.textAlign='left';
+    y+=32;goldRule(y);y+=18;
+
+    // Eyebrow
+    ctx.font='400 8px "Cinzel",serif';ctx.letterSpacing='3px';ctx.fillStyle='rgba(245,230,208,.28)';
+    ctx.textAlign='center';ctx.fillText('or in gen z terms',W/2,y+12);ctx.textAlign='left';
+    y+=36;
+
+    // GenZ text — large, centered
+    const gzFont=`italic 400 19px "Cormorant Garamond",serif`;
+    const gzLines=wrap(d.genZ||'',gzFont,IW-10);
+    ctx.font=gzFont;ctx.fillStyle='rgba(245,230,208,.95)';ctx.textAlign='center';
+    const totalH=gzLines.length*30;
+    let ty=H/2-totalH/2;
+    if(ty<y) ty=y;
+    for(const l of gzLines){ctx.fillText(l,W/2,ty);ty+=30;}
+    ctx.textAlign='left';
+
+    // Bottom
+    const bY=H-PAD-4;
+    goldRule(bY-14);
+    ctx.font='400 7.5px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.45)';
+    ctx.fillText((d.concept||'').toUpperCase(),PAD,bY);
+    ctx.textAlign='right';ctx.fillStyle='rgba(245,230,208,.2)';
+    ctx.fillText('✦ WAY',W-PAD,bY);ctx.textAlign='left';ctx.letterSpacing='0';
+
+  } else {
+    // ── WISDOM FACE ─────────────────────────────────────────────────
+    // Top: WAY + culture badge
+    let y=PAD;
+    ctx.font='700 9px "Cinzel",serif';ctx.letterSpacing='6px';ctx.fillStyle='rgba(245,230,208,.45)';
+    ctx.fillText('WAY',PAD,y+13);
+    ctx.font='400 8px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.65)';
+    ctx.textAlign='right';ctx.fillText(b.glyph+'  '+b.label,W-PAD,y+13);ctx.textAlign='left';
+    y+=32;goldRule(y);y+=24;
+
+    // Deco glyph watermark
+    ctx.font='52px "Cormorant Garamond",serif';ctx.fillStyle='rgba(245,230,208,.05)';
+    ctx.textAlign='center';ctx.fillText(b.glyph,W/2,y+48);ctx.textAlign='left';
+
+    // Quote
+    const isAr=weeklyKey==='arabic';
+    const qFont=`italic 400 ${isAr?'19':'21'}px "Cormorant Garamond",serif`;
+    const qLines=wrap(d.quote||'',qFont,IW);
+    ctx.font=qFont;ctx.fillStyle='rgba(245,230,208,.95)';
+    const qH=qLines.length*30;
+    let qy=H/2-qH/2-10;if(qy<y+10)qy=y+10;
+    if(isAr){ctx.direction='rtl';ctx.textAlign='right';for(const l of qLines){ctx.fillText(l,W-PAD,qy);qy+=30;}ctx.direction='ltr';ctx.textAlign='left';}
+    else{ctx.textAlign='center';for(const l of qLines){ctx.fillText(l,W/2,qy);qy+=30;}ctx.textAlign='left';}
+    qy+=12;
+
+    // Translation
+    const tFont=`italic 400 14px "Cormorant Garamond",serif`;
+    const tLines=(d.translation&&d.translation!==d.quote)?wrap(d.translation,tFont,IW):[];
+    ctx.font=tFont;ctx.fillStyle='rgba(245,230,208,.5)';ctx.textAlign='center';
+    for(const l of tLines){ctx.fillText(l,W/2,qy);qy+=22;}
+    ctx.textAlign='left';
+
+    // Bottom
+    const bY=H-PAD-4;
+    goldRule(bY-14);
+    ctx.font='400 7.5px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.45)';
+    ctx.fillText((d.concept||'').toUpperCase(),PAD,bY);
+    ctx.font='400 7px "Cinzel",serif';ctx.letterSpacing='1px';ctx.fillStyle='rgba(245,230,208,.2)';
+    ctx.textAlign='right';ctx.fillText((d.coordinate||b.coord)+' · '+(d.region||b.region),W-PAD,bY);
+    ctx.textAlign='left';ctx.letterSpacing='0';
+  }
+
+  return canvas;
+}
 
   ctx.font=qFont;ctx.fillStyle='rgba(245,230,208,.92)';
   if(isAr){
@@ -1106,7 +1190,8 @@ async function saveImage(){
   if(!lastWisdom) return;
   showToast('Generating image…');
   try{
-    const canvas=await buildWisdomCanvas();
+    const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
+    const canvas=await buildWisdomCanvas(isFlipped?'genz':'wisdom');
     canvas.toBlob(blob=>{
       if(!blob){showToast('Could not save image');return;}
       const url=URL.createObjectURL(blob);
