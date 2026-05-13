@@ -210,6 +210,9 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 
 /* ── DEEP DIVE NARRATIVE ─────────────────── */
 .bc-narrative{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.7vw,1.1rem);line-height:1.9;color:var(--parch2);margin-bottom:20px;padding-left:16px;border-left:1.5px solid rgba(245,230,208,.1)}
+.bc-genz{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:20px;background:rgba(245,230,208,.04);border:.5px solid rgba(245,230,208,.08);border-radius:10px;padding:12px 16px}
+.bc-genz-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.35);flex-shrink:0}
+.bc-genz-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.8vw,1.15rem);font-style:italic;color:rgba(245,230,208,.75);line-height:1.5}
 
 /* ── ONBOARDING ──────────────────────────── */
 #onboard-modal{position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.88);backdrop-filter:blur(24px)}
@@ -647,6 +650,17 @@ function setMode(m){
 
 function saveTradPref(){ try{ localStorage.setItem('way_traditions', JSON.stringify(selectedTraditions)); }catch(e){} }
 function loadTradPref(){
+  // Check URL param for weekly culture pre-selection
+  const urlParams = new URLSearchParams(location.search);
+  const cultureParam = urlParams.get('culture');
+  const validKeys = ['arabic','zen','stoic','ubuntu'];
+  if(cultureParam && validKeys.includes(cultureParam)){
+    selectedTraditions = [cultureParam];
+    document.querySelectorAll('.trad-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.key === cultureParam);
+    });
+    return;
+  }
   try{
     const saved = JSON.parse(localStorage.getItem('way_traditions') || 'null');
     if(Array.isArray(saved) && saved.length){
@@ -730,6 +744,8 @@ function renderResults(data, feeling){
     if(!d) return;
     const narrativeHtml = (mode === 'deep' && d.narrative)
       ? `<div class="bc-narrative">${escHtml(d.narrative)}</div>` : '';
+    const genZHtml = (mode === 'deep' && d.genZ)
+      ? `<div class="bc-genz"><span class="bc-genz-label">or in Gen Z terms</span><span class="bc-genz-text">${escHtml(d.genZ)}</span></div>` : '';
     const card = document.createElement('div');
     card.className = `bc ${b.cls}`;
     card.dataset.delay = i * 120;
@@ -755,6 +771,7 @@ function renderResults(data, feeling){
         <div class="bc-practice-text">${escHtml(d.practice)}</div>
       </div>
       ${narrativeHtml}
+      ${genZHtml}
       <div class="bc-context">${escHtml(d.context)}</div>
       <button class="bc-share" onclick="openShareModal('${b.key}')">Share this bearing ↗</button>
     `;
