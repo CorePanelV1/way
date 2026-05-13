@@ -248,6 +248,76 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .try-again-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:.5px solid rgba(245,230,208,.2);color:rgba(245,230,208,.55);padding:12px 24px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .try-again-btn:hover{border-color:rgba(245,230,208,.4);color:var(--parch)}
 
+/* ── WEEKLY CHIP ─────────────────────────── */
+.weekly-chip{display:inline-flex;align-items:center;gap:10px;background:rgba(201,168,76,.07);border:.5px solid rgba(201,168,76,.25);border-radius:30px;padding:10px 20px;margin-bottom:22px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase}
+.wc-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;animation:wcp 2s ease-in-out infinite}
+.wc-glyph{font-size:1.05rem;line-height:1}
+.wc-week{color:rgba(245,230,208,.35)}
+.wc-sep{color:rgba(245,230,208,.15)}
+.wc-name{color:var(--parch2)}
+@keyframes wcp{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* ── SPLIT RESULT CARD ───────────────────── */
+.split-card{
+  width:100%;max-width:960px;
+  display:grid;grid-template-columns:1fr 1fr;
+  border:.5px solid var(--border);
+  border-radius:20px;overflow:hidden;
+  position:relative;opacity:0;transform:translateY(28px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.split-card.vis{opacity:1;transform:translateY(0)}
+.split-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;z-index:1;border-radius:2px 2px 0 0}
+.split-card.arabic::before{background:linear-gradient(90deg,transparent,var(--arabic),transparent)}
+.split-card.zen::before{background:linear-gradient(90deg,transparent,var(--zen),transparent)}
+.split-card.stoic::before{background:linear-gradient(90deg,transparent,var(--stoic),transparent)}
+.split-card.ubuntu::before{background:linear-gradient(90deg,transparent,var(--ubuntu),transparent)}
+
+.split-panel{padding:36px 32px;display:flex;flex-direction:column}
+.split-wisdom{background:rgba(245,230,208,.02);border-right:.5px solid var(--border)}
+.split-genz{background:rgba(245,230,208,.035);position:relative;overflow:hidden}
+.split-genz::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 60% at 50% 10%,rgba(201,168,76,.05) 0%,transparent 65%);pointer-events:none}
+
+.sp-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,230,208,.25);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sp-label-line{flex:1;height:.5px;background:var(--border)}
+
+.sp-header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.sp-glyph{font-size:1.8rem;line-height:1;filter:drop-shadow(0 0 10px currentColor)}
+.sp-meta-culture{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--parch2)}
+.sp-meta-coord{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-top:4px}
+.sp-audio{background:transparent;border:.5px solid rgba(245,230,208,.15);color:rgba(245,230,208,.4);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;flex-shrink:0;padding:0;margin-left:auto}
+.sp-audio:hover,.sp-audio.playing{border-color:var(--golddim);color:var(--gold)}
+.sp-audio.playing{animation:apl 2s ease-in-out infinite}
+
+.sp-divider{height:.5px;background:var(--border);margin:0 0 18px}
+.sp-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,2.2vw,1.55rem);font-style:italic;color:var(--parch);line-height:1.5;margin-bottom:10px}
+.sp-translation{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,1.6vw,1.1rem);color:var(--parch3);line-height:1.6;margin-bottom:14px}
+.sp-badge{display:inline-flex;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;border:.5px solid var(--border);border-radius:20px;padding:5px 12px;color:var(--golddim);margin-bottom:18px}
+.sp-practice{background:rgba(201,168,76,.06);border:.5px solid rgba(201,168,76,.18);border-left:2px solid var(--gold);border-radius:10px;padding:14px 16px;margin-bottom:18px}
+.sp-practice-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.sp-practice-text{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,1.5vw,1.05rem);line-height:1.7;color:var(--parch2)}
+.sp-context{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,1.7vw,1.1rem);line-height:1.75;color:var(--parch3);font-style:italic;flex:1;margin-bottom:20px}
+
+.sp-gz-eyebrow{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.25);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.sp-gz-eyebrow::after{content:'';flex:1;height:.5px;background:var(--border)}
+.sp-gz-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.2vw,1.5rem);font-style:italic;color:var(--parch);line-height:1.6;margin-bottom:24px;position:relative;z-index:1;flex:1}
+
+/* synthesis */
+.synthesis-block{width:100%;max-width:960px;margin-top:12px;padding:24px 32px;border:.5px solid rgba(201,168,76,.15);border-radius:16px;background:rgba(201,168,76,.04);text-align:center;position:relative;opacity:0;transform:translateY(16px);transition:opacity .7s .2s ease,transform .7s .2s ease}
+.synthesis-block.vis{opacity:1;transform:translateY(0)}
+.synthesis-block::before{content:'✦ The Wisdom of Two Languages ✦';position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 14px;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--golddim);white-space:nowrap}
+.syn-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.8vw,1.2rem);font-style:italic;color:var(--parch2);line-height:1.8}
+
+.split-share-row{width:100%;max-width:960px;display:flex;justify-content:center;gap:12px;padding:20px 0 0;flex-wrap:wrap}
+
+@media(max-width:680px){
+  .split-card{grid-template-columns:1fr}
+  .split-wisdom{border-right:none;border-bottom:.5px solid var(--border)}
+  .split-panel{padding:24px 20px}
+  .synthesis-block{padding:18px 20px;margin-top:10px}
+  .synthesis-block::before{font-size:7px;letter-spacing:2px;white-space:normal;text-align:center;width:80%;left:50%;transform:translateX(-50%);top:-18px;line-height:1.4}
+}
+
 /* ── RESPONSIVE ──────────────────────────── */
 @media(max-width:600px){
   #nav{padding:16px 20px}
@@ -281,36 +351,17 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
     <div class="input-eyebrow">Find your bearing</div>
     <h1 class="input-title">Where are you<br>today?</h1>
 
-    <!-- Tradition selector -->
-    <div class="trad-hint">Tap a tradition to include or remove it</div>
-    <div class="trad-selector" id="trad-selector">
-      <button class="trad-pill active" data-key="arabic" onclick="toggleTrad(this)"><span class="tp-glyph">☽</span> Arabic</button>
-      <button class="trad-pill active" data-key="zen"    onclick="toggleTrad(this)"><span class="tp-glyph">⛩</span> Zen</button>
-      <button class="trad-pill active" data-key="stoic"  onclick="toggleTrad(this)"><span class="tp-glyph">Φ</span> Stoic</button>
-      <button class="trad-pill active" data-key="ubuntu" onclick="toggleTrad(this)"><span class="tp-glyph">◉</span> Ubuntu</button>
-    </div>
+    <!-- Weekly culture chip -->
+    <div class="weekly-chip" id="weekly-chip"></div>
 
     <textarea id="feeling" rows="4" placeholder="Write how you feel in plain language. Lost. Overwhelmed. At a crossroads. Afraid of what comes next. There is no wrong answer." maxlength="600"></textarea>
     <div class="input-meta"><span id="char-count">0</span> / 600</div>
-
-    <!-- Mode toggle -->
-    <div class="mode-row">
-      <div class="mode-toggle">
-        <button class="mode-btn active" id="mode-std" onclick="setMode('standard')">Standard</button>
-        <button class="mode-btn" id="mode-deep" onclick="setMode('deep')">Deep Dive</button>
-      </div>
-    </div>
 
     <button class="seek-btn" id="seek-btn" onclick="seek()">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1"/><line x1="7" y1="1" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
       Find My Way
     </button>
-    <div class="input-coord-row">
-      <span>ARABIC · 23°N 45°E</span><span class="coord-sep">✦</span>
-      <span>ZEN · 35°N 135°E</span><span class="coord-sep">✦</span>
-      <span>STOIC · 41°N 12°E</span><span class="coord-sep">✦</span>
-      <span>UBUNTU · 26°S 28°E</span>
-    </div>
+    <div class="input-coord-row" id="input-coord-row"></div>
   </div>
 </div>
 
@@ -339,12 +390,9 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
         <circle cx="50" cy="50" r="7" stroke="rgba(201,168,76,.2)" stroke-width=".5" fill="none"/>
       </svg>
     </div>
-    <div class="load-label">Reading your bearing</div>
+    <div class="load-label" id="load-label">Reading your bearing</div>
     <div class="load-cultures">
-      <span class="lc" id="lc-arabic">ARABIC</span>
-      <span class="lc" id="lc-zen">ZEN</span>
-      <span class="lc" id="lc-stoic">STOIC</span>
-      <span class="lc" id="lc-ubuntu">UBUNTU</span>
+      <span class="lc" id="lc-weekly"></span>
     </div>
     <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
   </div>
@@ -353,17 +401,17 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 <!-- ═══ RESULTS ═══════════════════════════════════════════════════════ -->
 <div class="state hidden" id="state-results">
   <div class="results-header">
-    <div class="results-eyebrow" id="results-eyebrow">Your bearings</div>
+    <div class="results-eyebrow" id="results-eyebrow">Your bearing</div>
     <div class="results-summary" id="results-summary"></div>
   </div>
-  <div class="bearings-grid" id="bearings-grid"></div>
-  <div class="try-again-row">
-    <button class="try-again-btn" onclick="show('state-input');window.scrollTo({top:0,behavior:'instant'})">
-      ↺ Ask Again
-    </button>
-    <button class="try-again-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-      ↑ Back to Top
-    </button>
+  <div class="split-card" id="split-card">
+    <div class="split-panel split-wisdom" id="split-wisdom"></div>
+    <div class="split-panel split-genz" id="split-genz"></div>
+  </div>
+  <div class="synthesis-block" id="synthesis-block"></div>
+  <div class="split-share-row">
+    <button class="try-again-btn" onclick="openShareModal()">Share this bearing ↗</button>
+    <button class="try-again-btn" onclick="show('state-input');window.scrollTo({top:0,behavior:'instant'})">↺ Ask Again</button>
   </div>
 </div>
 
@@ -601,80 +649,51 @@ function show(id){
 
 /* ═══ LOADING ANIMATION ════════════════════════════════════════════ */
 let loadTimer = null;
-const lcIds = ['lc-arabic','lc-zen','lc-stoic','lc-ubuntu'];
 function startLoadAnim(){
   const bar = document.getElementById('load-bar');
+  const lc = document.getElementById('lc-weekly');
   bar.style.width='0%';
-  lcIds.forEach(id=>document.getElementById(id).classList.remove('lit'));
+  if(lc) lc.classList.remove('lit');
   let pct=0;
   loadTimer = setInterval(()=>{
-    pct = Math.min(pct + (Math.random()*2.5 + 0.5), 88);
+    pct = Math.min(pct + (Math.random()*3 + 0.8), 88);
     bar.style.width = pct+'%';
-    const lit = Math.floor(pct/25);
-    lcIds.slice(0,lit).forEach(id=>document.getElementById(id).classList.add('lit'));
+    if(pct > 40 && lc) lc.classList.add('lit');
   }, 220);
 }
 function finishLoadAnim(){
   clearInterval(loadTimer);
   document.getElementById('load-bar').style.width='100%';
-  lcIds.forEach(id=>document.getElementById(id).classList.add('lit'));
+  const lc = document.getElementById('lc-weekly');
+  if(lc) lc.classList.add('lit');
 }
 
-/* ═══ TRADITION SELECTION ═══════════════════════════════════════════ */
-let selectedTraditions = ['arabic','zen','stoic','ubuntu'];
-let currentMode = 'standard';
+/* ═══ WEEKLY CULTURE ════════════════════════════════════════════════ */
+const WEEKLY_ORDER = ['arabic','zen','stoic','ubuntu'];
+const WEEKLY_META = {
+  arabic: {glyph:'☽', label:'ARABIC',  cls:'arabic', coord:'23°N 45°E', region:'Arabia',    color:'#8c1b35', loadLabel:'Consulting the ancient Arabic sages…'},
+  zen:    {glyph:'⛩', label:'ZEN',     cls:'zen',    coord:'35°N 135°E', region:'Kyoto',    color:'#1a6b58', loadLabel:'Asking the Kyoto monks…'},
+  stoic:  {glyph:'Φ',  label:'STOIC',  cls:'stoic',  coord:'41°N 12°E', region:'Rome',      color:'#7a4820', loadLabel:'Consulting the Roman philosophers…'},
+  ubuntu: {glyph:'◉', label:'UBUNTU',  cls:'ubuntu', coord:'26°S 28°E', region:'Africa',    color:'#7a3010', loadLabel:'Listening to African wisdom…'},
+};
+const weeklyKey = WEEKLY_ORDER[Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000)) % 4];
+const weeklyMeta = WEEKLY_META[weeklyKey];
 
-let _tradDebounce = 0;
-function toggleTrad(btn){
-  const now = Date.now();
-  if(now - _tradDebounce < 300) return;
-  _tradDebounce = now;
-  const key = btn.dataset.key;
-  const active = selectedTraditions.includes(key);
-  if(active && selectedTraditions.length === 1){ showToast('Keep at least one tradition'); return; }
-  if(active){
-    selectedTraditions = selectedTraditions.filter(t => t !== key);
-    btn.classList.remove('active');
-  } else {
-    selectedTraditions.push(key);
-    btn.classList.add('active');
+(function initWeeklyUI(){
+  const chip = document.getElementById('weekly-chip');
+  if(chip){
+    chip.innerHTML = `<span class="wc-dot" style="background:${weeklyMeta.color}"></span><span class="wc-glyph" style="color:${weeklyMeta.color}">${weeklyMeta.glyph}</span><span class="wc-week">This Week</span><span class="wc-sep">·</span><span class="wc-name">${weeklyMeta.label}</span>`;
   }
-  saveTradPref();
-}
-
-function setMode(m){
-  currentMode = m;
-  document.getElementById('mode-std').classList.toggle('active', m === 'standard');
-  document.getElementById('mode-deep').classList.toggle('active', m === 'deep');
-}
-
-function saveTradPref(){ try{ localStorage.setItem('way_traditions', JSON.stringify(selectedTraditions)); }catch(e){} }
-function loadTradPref(){
-  // Check URL param for weekly culture pre-selection
-  const urlParams = new URLSearchParams(location.search);
-  const cultureParam = urlParams.get('culture');
-  const validKeys = ['arabic','zen','stoic','ubuntu'];
-  if(cultureParam && validKeys.includes(cultureParam)){
-    selectedTraditions = [cultureParam];
-    document.querySelectorAll('.trad-pill').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.key === cultureParam);
-    });
-    return;
+  const coordRow = document.getElementById('input-coord-row');
+  if(coordRow){
+    coordRow.textContent = `${weeklyMeta.label} · ${weeklyMeta.coord} · ${weeklyMeta.region}`;
   }
-  try{
-    const saved = JSON.parse(localStorage.getItem('way_traditions') || 'null');
-    if(Array.isArray(saved) && saved.length){
-      selectedTraditions = saved;
-      document.querySelectorAll('.trad-pill').forEach(btn => {
-        btn.classList.toggle('active', selectedTraditions.includes(btn.dataset.key));
-      });
-    }
-  }catch(e){}
-}
+  const lcEl = document.getElementById('lc-weekly');
+  if(lcEl) lcEl.textContent = weeklyMeta.label;
+})();
 
 /* ═══ SEEK — MAIN FLOW ══════════════════════════════════════════════ */
 let lastWisdom = null;
-let lastMode = 'standard';
 
 async function seek(){
   const feeling = feelingEl.value.trim();
@@ -682,22 +701,19 @@ async function seek(){
 
   AudioEngine.stop();
   show('state-loading');
+
+  const loadLbl = document.getElementById('load-label');
+  if(loadLbl) loadLbl.textContent = weeklyMeta.loadLabel;
+  const lcEl = document.getElementById('lc-weekly');
+  if(lcEl){ lcEl.textContent = weeklyMeta.label; lcEl.classList.remove('lit'); }
+
   startLoadAnim();
-
-  // Update loading culture labels to match selection
-  const ALL_LC = {arabic:'lc-arabic',zen:'lc-zen',stoic:'lc-stoic',ubuntu:'lc-ubuntu'};
-  Object.entries(ALL_LC).forEach(([k,id])=>{
-    const el = document.getElementById(id);
-    if(el) el.style.display = selectedTraditions.includes(k) ? '' : 'none';
-  });
-
-  lastMode = currentMode;
 
   try {
     const res = await fetch('/api/way', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ feeling, traditions: selectedTraditions, mode: currentMode })
+      body: JSON.stringify({ feeling, traditions: [weeklyKey], mode: 'standard' })
     });
 
     const data = await res.json();
@@ -708,7 +724,7 @@ async function seek(){
 
     finishLoadAnim();
     lastWisdom = data;
-    renderResults(data, feeling);
+    renderResults(data);
     show('state-results');
     window.scrollTo({top:0,behavior:'instant'});
 
@@ -720,74 +736,67 @@ async function seek(){
 }
 
 /* ═══ RENDER RESULTS ════════════════════════════════════════════════ */
-const BEARINGS = [
-  {key:'arabic', glyph:'☽', label:'ARABIC',  cls:'arabic', coord:'23°N 45°E · Arabia'},
-  {key:'zen',    glyph:'⛩', label:'ZEN',     cls:'zen',    coord:'35°N 135°E · Kyoto'},
-  {key:'stoic',  glyph:'Φ', label:'STOIC',   cls:'stoic',  coord:'41°N 12°E · Rome'},
-  {key:'ubuntu', glyph:'◉', label:'UBUNTU',  cls:'ubuntu', coord:'26°S 28°E · Africa'},
-];
-
-function renderResults(data, feeling){
+function renderResults(data){
   document.getElementById('results-summary').textContent = data.summary || '';
+  document.getElementById('results-eyebrow').textContent = `Your ${weeklyMeta.label.toLowerCase()} bearing`;
 
-  const count = ['arabic','zen','stoic','ubuntu'].filter(k => !!data[k]).length;
-  const nums = ['','one','two','three','four'];
-  document.getElementById('results-eyebrow').textContent =
-    count && count < 4 ? `Your ${nums[count]} bearing${count===1?'':'s'}` : 'Your bearings';
+  const d = data[weeklyKey];
+  if(!d){ showToast('Could not read bearing. Try again.'); show('state-input'); return; }
 
-  const grid = document.getElementById('bearings-grid');
-  grid.innerHTML = '';
+  const m = weeklyMeta;
 
-  const mode = lastMode;
-  BEARINGS.forEach((b, i) => {
-    const d = data[b.key];
-    if(!d) return;
-    const narrativeHtml = (mode === 'deep' && d.narrative)
-      ? `<div class="bc-narrative">${escHtml(d.narrative)}</div>` : '';
-    const genZHtml = d.genZ
-      ? `<div class="bc-genz"><span class="bc-genz-label">or in Gen Z terms</span><span class="bc-genz-text">${escHtml(d.genZ)}</span></div>` : '';
-    const card = document.createElement('div');
-    card.className = `bc ${b.cls}`;
-    card.dataset.delay = i * 120;
-    card.innerHTML = `
-      <div class="bc-header">
-        <div class="bc-left">
-          <span class="bc-glyph bc-${b.cls}">${b.glyph}</span>
-          <div class="bc-meta">
-            <div class="bc-culture">${b.label}</div>
-            <div class="bc-coord">${d.coordinate || b.coord} · ${d.region || ''}</div>
-          </div>
-        </div>
-        <button class="bc-audio" onclick="toggleCardAudio(this,'${b.key}')" title="Play ambient sound">
-          <svg width="9" height="11" viewBox="0 0 9 11" fill="currentColor"><polygon points="0,0 9,5.5 0,11"/></svg>
-        </button>
+  // ── Wisdom panel (left) ──────────────────────────────────────────
+  const wisdomEl = document.getElementById('split-wisdom');
+  const isArabic = weeklyKey === 'arabic';
+  wisdomEl.innerHTML = `
+    <div class="sp-label"><span class="sp-label-line"></span>Ancient Wisdom<span class="sp-label-line"></span></div>
+    <div class="sp-header">
+      <span class="sp-glyph" style="color:${m.color}">${m.glyph}</span>
+      <div>
+        <div class="sp-meta-culture">${m.label}</div>
+        <div class="sp-meta-coord">${d.coordinate || m.coord} · ${d.region || m.region}</div>
       </div>
-      <div class="bc-divider"></div>
-      <div class="bc-quote">${escHtml(d.quote)}</div>
-      <div class="bc-translation">${escHtml(d.translation)}</div>
-      <span class="bc-concept-badge">${escHtml(d.concept)}</span>
-      <div class="bc-practice">
-        <div class="bc-practice-label">✦ Practice Today</div>
-        <div class="bc-practice-text">${escHtml(d.practice)}</div>
-      </div>
-      ${narrativeHtml}
-      ${genZHtml}
-      <div class="bc-context">${escHtml(d.context)}</div>
-      <button class="bc-share" onclick="openShareModal('${b.key}')">Share this bearing ↗</button>
-    `;
-    grid.appendChild(card);
+      <button class="sp-audio" id="sp-audio-btn" onclick="toggleCardAudio(this,'${weeklyKey}')" title="Play ambient sound">
+        <svg width="9" height="11" viewBox="0 0 9 11" fill="currentColor"><polygon points="0,0 9,5.5 0,11"/></svg>
+      </button>
+    </div>
+    <div class="sp-divider"></div>
+    <div class="sp-quote"${isArabic?' dir="rtl"':''}>${escHtml(d.quote)}</div>
+    <div class="sp-translation">${escHtml(d.translation)}</div>
+    <span class="sp-badge">${escHtml(d.concept)}</span>
+    <div class="sp-practice">
+      <div class="sp-practice-label">✦ Practice Today</div>
+      <div class="sp-practice-text">${escHtml(d.practice)}</div>
+    </div>
+    <div class="sp-context">${escHtml(d.context)}</div>
+  `;
+
+  // ── GenZ panel (right) ───────────────────────────────────────────
+  const genzEl = document.getElementById('split-genz');
+  genzEl.innerHTML = `
+    <div class="sp-label"><span class="sp-label-line"></span>Gen Z Translation<span class="sp-label-line"></span></div>
+    <div style="font-size:2.2rem;margin-bottom:16px;opacity:.7">💬</div>
+    <div class="sp-gz-eyebrow">or in Gen Z terms</div>
+    <div class="sp-gz-text">${escHtml(d.genZ)}</div>
+  `;
+
+  // ── Split card class ─────────────────────────────────────────────
+  const splitCard = document.getElementById('split-card');
+  splitCard.className = `split-card ${weeklyKey}`;
+
+  // ── Synthesis ────────────────────────────────────────────────────
+  const synEl = document.getElementById('synthesis-block');
+  if(d.synthesis){
+    synEl.innerHTML = `<div class="syn-text">${escHtml(d.synthesis)}</div>`;
+    synEl.style.display = '';
+  } else {
+    synEl.style.display = 'none';
+  }
+
+  // Reveal with animation
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{ splitCard.classList.add('vis'); synEl.classList.add('vis'); }, 80);
   });
-
-  // Staggered reveal
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        setTimeout(()=>e.target.classList.add('vis'), parseInt(e.target.dataset.delay||0));
-        io.unobserve(e.target);
-      }
-    });
-  },{threshold:.1});
-  grid.querySelectorAll('.bc').forEach(c=>io.observe(c));
 }
 
 function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -800,21 +809,20 @@ function toggleCardAudio(btn, key){
 }
 
 /* ═══ SHARE MODAL ════════════════════════════════════════════════════ */
-let activeShareKey = null;
-function openShareModal(key){
+let activeShareKey = weeklyKey;
+function openShareModal(){
   if(!lastWisdom) return;
-  activeShareKey = key;
-  const d = lastWisdom[key];
-  const b = BEARINGS.find(b=>b.key===key);
-  document.getElementById('mc-pill').textContent = b ? b.glyph + '  ' + b.label : '';
+  activeShareKey = weeklyKey;
+  const d = lastWisdom[weeklyKey];
+  const m = weeklyMeta;
+  document.getElementById('mc-pill').textContent = m.glyph + '  ' + m.label;
   document.getElementById('mc-original').textContent = d.quote || '';
   document.getElementById('mc-english').textContent = d.translation || '';
-  document.getElementById('mc-attr').textContent = (d.coordinate||'') + ' · ' + (d.region||'');
+  document.getElementById('mc-attr').textContent = (d.coordinate || m.coord) + ' · ' + (d.region || m.region);
   document.getElementById('share-modal').classList.remove('hidden');
   document.getElementById('modal-audio-btn').classList.remove('active');
   AudioEngine.stop();
-  // Auto-play ambient for the culture
-  setTimeout(()=>{ AudioEngine.play(key); updateModalAudioBtn(true); }, 400);
+  setTimeout(()=>{ AudioEngine.play(weeklyKey); updateModalAudioBtn(true); }, 400);
 }
 
 function closeShareModal(){
@@ -849,40 +857,36 @@ function modalCopy(){
 }
 
 function modalX(){
-  if(!lastWisdom||!activeShareKey) return;
-  const d=lastWisdom[activeShareKey];
-  const text='"'+d.translation+'"\n— '+d.concept+', '+(BEARINGS.find(b=>b.key===activeShareKey)?.label||'');
-  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(buildShareUrl(activeShareKey)),'_blank');
+  if(!lastWisdom) return;
+  const d=lastWisdom[weeklyKey];
+  const text='"'+d.translation+'"\n— '+d.concept+', '+weeklyMeta.label;
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(buildShareUrl(weeklyKey)),'_blank');
 }
 
 async function modalWhatsApp(){
-  if(!lastWisdom||!activeShareKey) return;
-  const d=lastWisdom[activeShareKey];
-  const b=BEARINGS.find(b=>b.key===activeShareKey);
+  if(!lastWisdom) return;
+  const d=lastWisdom[weeklyKey];
+  const m=weeklyMeta;
   const waBtn=document.getElementById('wa-btn');
-
-  // Show loading state
   const orig=waBtn.innerHTML;
   waBtn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="31.4" stroke-dashoffset="10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite"/></circle></svg> Generating…';
   waBtn.disabled=true;
-
   try {
     const canvas=await buildWisdomCanvas();
-    const fallbackText=`${b?.glyph||'✦'} *WAY · ${b?.label||''}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${buildShareUrl(activeShareKey)}`;
+    const fallbackText=`${m.glyph} *WAY · ${m.label}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${buildShareUrl(weeklyKey)}`;
     canvas.toBlob(async(blob)=>{
       const file=new File([blob],'way-wisdom.png',{type:'image/png'});
       if(navigator.canShare&&navigator.canShare({files:[file]})){
         await navigator.share({files:[file],text:fallbackText});
       } else {
-        const url=URL.createObjectURL(blob);
-        const a=document.createElement('a');a.href=url;a.download='way-wisdom.png';a.click();
+        const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='way-wisdom.png';a.click();
         setTimeout(()=>URL.revokeObjectURL(url),3000);
         setTimeout(()=>window.open('https://wa.me/?text='+encodeURIComponent(fallbackText),'_blank'),400);
       }
       waBtn.innerHTML=orig;waBtn.disabled=false;
     },'image/png');
   } catch(e){
-    const text=`${b?.glyph||'✦'} *WAY · ${b?.label||''}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${buildShareUrl(activeShareKey)}`;
+    const text=`${m.glyph} *WAY · ${m.label}*\n\n${d.quote}\n\n*"${d.translation}"*\n_${d.concept}_\n\n${buildShareUrl(weeklyKey)}`;
     window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
     waBtn.innerHTML=orig;waBtn.disabled=false;
   }
@@ -899,8 +903,8 @@ function _rr(ctx,x,y,w,h,r){
 }
 
 async function buildWisdomCanvas(){
-  const d=lastWisdom[activeShareKey];
-  const b=BEARINGS.find(b=>b.key===activeShareKey);
+  const d=lastWisdom[weeklyKey];
+  const b=weeklyMeta;
   if(!d||!b) throw new Error('no data');
   await document.fonts.ready;
 
@@ -915,7 +919,8 @@ async function buildWisdomCanvas(){
     }
     if(line)lines.push(line);return lines;
   }
-  const qFont=`italic 400 ${b.key==='arabic'?'20':'22'}px "Cormorant Garamond",serif`;
+  const isAr=weeklyKey==='arabic';
+  const qFont=`italic 400 ${isAr?'20':'22'}px "Cormorant Garamond",serif`;
   const tFont='400 17px "Cormorant Garamond",serif';
   const qLines=wrap(d.quote,qFont,IW);
   const tLines=(d.translation&&d.translation!==d.quote)?wrap(d.translation,tFont,IW):[];
@@ -943,7 +948,7 @@ async function buildWisdomCanvas(){
   ctx.fillText(b.glyph+'  '+b.label,PAD,y+14);y+=36;
 
   ctx.font=qFont;ctx.fillStyle='rgba(245,230,208,.92)';
-  if(b.key==='arabic'){
+  if(isAr){
     ctx.direction='rtl';ctx.textAlign='right';
     for(const l of qLines){ctx.fillText(l,W-PAD,y);y+=30;}
     ctx.direction='ltr';ctx.textAlign='left';
@@ -967,7 +972,7 @@ async function buildWisdomCanvas(){
 }
 
 async function saveImage(){
-  if(!lastWisdom||!activeShareKey) return;
+  if(!lastWisdom) return;
   showToast('Generating image…');
   try{
     const canvas=await buildWisdomCanvas();
@@ -1014,12 +1019,6 @@ function obNext(step){
 }
 
 function obFinish(){
-  // Apply selections to the main tradition selector
-  selectedTraditions = [...obSelections];
-  document.querySelectorAll('.trad-pill').forEach(btn => {
-    btn.classList.toggle('active', selectedTraditions.includes(btn.dataset.key));
-  });
-  saveTradPref();
   try { localStorage.setItem('way_onboarded','1'); } catch(e){}
   document.getElementById('onboard-modal').classList.add('hidden');
 }
@@ -1054,7 +1053,6 @@ window.addEventListener('scroll',()=>{
 })();
 
 /* ═══ INIT ═══════════════════════════════════════════════════════════ */
-loadTradPref();
 initOnboarding();
 </script>
 </body>

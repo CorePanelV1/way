@@ -1,10 +1,26 @@
 export const config = { runtime: 'edge' };
 
 const TRADITIONS = {
-  arabic: { coord: '23°N 45°E', region: 'Arabia',           instruction: 'authentic Arabic/Islamic proverb — quote in Arabic script' },
-  zen:    { coord: '35°N 135°E', region: 'Kyoto',            instruction: 'authentic Japanese Zen saying — quote MUST be written in Japanese characters (kanji/hiragana), never romanized' },
-  stoic:  { coord: '41°N 12°E',  region: 'Rome',             instruction: 'authentic Stoic quote — Greek, Latin, or English if originally so' },
-  ubuntu: { coord: '26°S 28°E',  region: 'Sub-Saharan Africa', instruction: 'authentic Ubuntu/African wisdom — indigenous language or English' },
+  arabic: {
+    coord: '23°N 45°E', region: 'Arabia',
+    instruction: 'authentic Arabic/Islamic proverb — quote in Arabic script',
+    genZVoice: 'sound like a hilarious Arab bestie who uses "habibi", "wallah", "yalla", "inshallah" and gives advice like a blunt khala who loves you — funny, warm, zero filter, 2-3 sentences',
+  },
+  zen: {
+    coord: '35°N 135°E', region: 'Kyoto',
+    instruction: 'authentic Japanese Zen saying — quote MUST be written in Japanese characters (kanji/hiragana), never romanized',
+    genZVoice: 'sound like a deadpan Zen monk who secretly has a TikTok — absurdist, peaceful chaos energy, uses "no thoughts head empty", "vibe check failed", "the void said", 2-3 sentences',
+  },
+  stoic: {
+    coord: '41°N 12°E', region: 'Rome',
+    instruction: 'authentic Stoic quote — Greek, Latin, or English if originally so',
+    genZVoice: 'sound like a gym bro who read Marcus Aurelius once and won\'t shut up about it — "bro", "lowkey", "no cap", "it is what it is", sigma grindset energy but self-aware, 2-3 sentences',
+  },
+  ubuntu: {
+    coord: '26°S 28°E', region: 'Sub-Saharan Africa',
+    instruction: 'authentic Ubuntu/African wisdom — indigenous language or English',
+    genZVoice: 'sound like the most wholesome, community-obsessed bestie — "fr fr", "we ate", "the village said", warm collective energy, 2-3 sentences',
+  },
 };
 
 function buildSystem(traditions, mode) {
@@ -20,7 +36,8 @@ function buildSystem(traditions, mode) {
     "concept": "concept name in 1-4 words",
     "context": "2 sentences — why this wisdom meets them exactly here, not generic",
     "practice": "one concrete action they can take before tonight",
-    "genZ": "1 sentence: the same wisdom rewritten in Gen Z slang — brutally honest, funny, no filter (examples: 'stfu and move on', 'touch grass fr', 'main character syndrome much?', 'it is what it is bestie', 'no cap this hits different') — must be specific to what they shared, never generic",
+    "genZ": "${c.genZVoice} — rewrite the same wisdom but as a funny, brutally honest reaction to exactly what this person shared. Must be specific to their situation, never generic",
+    "synthesis": "2 sentences: show that the ancient proverb and the Gen Z take are saying the exact same thing — a poetic bridge between old soul and new voice, specific to what they shared",
     ${narrativeField}
     "coordinate": "${c.coord}",
     "region": "${c.region}"
@@ -32,7 +49,8 @@ function buildSystem(traditions, mode) {
 Rules:
 - Quotes must be AUTHENTIC — real proverbs or sayings from that tradition, never invented
 - Original-language quotes must be in the actual script of that culture
-- Context and practice must feel personal to what they shared — not generic
+- Context, practice, genZ and synthesis must all feel personal to what they shared — never generic
+- The genZ field must be genuinely funny and culturally flavored — not just a bland paraphrase
 - Respond ONLY with the JSON object below. No preamble, no explanation.
 
 {
@@ -85,7 +103,7 @@ export default async function handler(req) {
           { role: 'system', content: buildSystem(traditions, mode) },
           { role: 'user', content: feeling },
         ],
-        max_tokens: mode === 'deep' ? 3500 : 2000,
+        max_tokens: mode === 'deep' ? 3500 : 2500,
         temperature: 0.9,
       }),
     });
