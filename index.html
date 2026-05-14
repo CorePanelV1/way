@@ -56,22 +56,10 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 .nav-mobile-cta{display:none;align-items:center;gap:6px;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:9px 18px;font-family:'Cinzel',serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none}
 
 /* HERO */
-#hero-section{position:relative;height:500vh;z-index:1;contain:layout}
-#hero-sticky{position:sticky;top:0;height:100svh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;contain:strict}
-#hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(rgba(10,6,8,.62),rgba(10,6,8,.62)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142334_507e796b-98e2-4b73-91a2-c377a778eca0_min.webp') center/cover no-repeat;background-color:#0a0608}
+#hero-section{position:relative;height:500vh;z-index:1}
+#hero-sticky{position:sticky;top:0;height:100svh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
 #scrub-canvas{position:absolute;inset:0;z-index:1;width:100%;height:100%}
-#parallax-wrap{position:absolute;inset:0;z-index:2;pointer-events:none;perspective:600px;overflow:hidden}
-.plx-layer{position:absolute;inset:-6% -4%;will-change:transform;transition:opacity .4s}
-#frame-canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:auto;opacity:0;transition:opacity .35s}
-#plx-mid-el{background:radial-gradient(ellipse 140% 60% at 60% 40%,rgba(140,27,53,.06) 0%,transparent 70%);mix-blend-mode:multiply}
-#plx-fore-el{background:radial-gradient(ellipse 80% 30% at 30% 80%,rgba(245,230,208,.35) 0%,transparent 70%),radial-gradient(ellipse 60% 20% at 70% 90%,rgba(238,220,192,.25) 0%,transparent 60%)}
-#plx-shimmer{position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(140,27,53,.005) 3px,rgba(140,27,53,.005) 4px);opacity:0;transition:opacity .6s}
-#plx-shimmer.vis{opacity:1}
-#frame-loader{position:absolute;bottom:0;left:0;right:0;height:1px;z-index:10;background:rgba(140,27,53,.08)}
-#frame-loader-fill{height:100%;background:var(--gold);width:0%;transition:width .1s linear}
-#frame-loader.done{opacity:0;pointer-events:none;transition:opacity 1s .5s}
-#vid-overlay-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}
-#vignette{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.5) 100%)}
+#vignette{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.45) 100%)}
 
 /* HERO TITLES */
 .hero-title{position:relative;z-index:7;font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,12vw,10rem);font-weight:600;line-height:.85;letter-spacing:-.02em;will-change:transform,opacity;user-select:none}
@@ -221,14 +209,6 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 .f-link:hover{color:var(--red)}
 .f-copy{font-size:10px;color:var(--text3);font-family:'Cormorant Garamond',serif}
 
-/* CUSTOM CURSOR — desktop only */
-@media(hover:hover){
-  *{cursor:none!important}
-  #cursor{position:fixed;width:28px;height:28px;pointer-events:none;z-index:9998;top:0;left:0;will-change:transform;opacity:0;transition:opacity .3s}
-  #cursor.hov #cursor-h,#cursor.hov #cursor-v{stroke:var(--red);opacity:.9}
-  #cursor.hov #cursor-diamond{fill:var(--red);opacity:.7}
-  #cursor-dot{display:none}
-}
 /* SHARE CARD AUDIO BTN */
 .sc-audio-btn{background:transparent;border:.5px solid rgba(201,168,76,.25);color:rgba(201,168,76,.55);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;flex-shrink:0;padding:0;position:relative}
 .sc-audio-btn:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.55);color:var(--gold2)}
@@ -293,15 +273,6 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 <body>
 <div id="scroll-progress"></div>
 <div class="grain"></div>
-<div id="cursor" aria-hidden="true">
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line id="cursor-h" x1="0" y1="14" x2="10" y2="14" stroke="rgba(140,27,53,.7)" stroke-width="1"/>
-    <line id="cursor-h" x1="18" y1="14" x2="28" y2="14" stroke="rgba(140,27,53,.7)" stroke-width="1"/>
-    <line id="cursor-v" x1="14" y1="0" x2="14" y2="10" stroke="rgba(140,27,53,.7)" stroke-width="1"/>
-    <line id="cursor-v" x1="14" y1="18" x2="14" y2="28" stroke="rgba(140,27,53,.7)" stroke-width="1"/>
-    <rect id="cursor-diamond" x="11.5" y="11.5" width="5" height="5" transform="rotate(45 14 14)" fill="rgba(140,27,53,.6)"/>
-  </svg>
-</div>
 <div id="toast"></div>
 
 <nav id="nav">
@@ -319,21 +290,8 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 <!-- ═══ HERO ═══════════════════════════════════════════════════════════ -->
 <section id="hero-section">
   <div id="hero-sticky">
-    <div id="hero-bg"></div>
     <canvas id="scrub-canvas"></canvas>
-
-    <div id="parallax-wrap">
-      <div class="plx-layer" id="plx-sky-el">
-        <canvas id="frame-canvas"></canvas>
-      </div>
-      <div class="plx-layer" id="plx-mid-el"></div>
-      <div class="plx-layer" id="plx-fore-el"></div>
-      <div id="plx-shimmer"></div>
-      <canvas id="vid-overlay-canvas"></canvas>
-    </div>
-
     <div id="vignette"></div>
-    <div id="frame-loader"><div id="frame-loader-fill"></div></div>
 
     <h1 class="hero-title" id="title-top">WHERE</h1>
 
@@ -547,192 +505,11 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-/* ═══════════════════════════════════════════════════════
-   FRAME SEQUENCE — frames are in the same directory as this HTML
-   frame_0001.jpg → frame_0300.jpg
-═══════════════════════════════════════════════════════ */
-const FRAME_DIR   = '';      // frames live in same folder as HTML
-const FRAME_COUNT = 300;
-const FRAME_EXT   = 'jpg';
-const FRAME_PAD   = 4;
-const FRAME_PREFIX= 'frame_';
-
-const PLX = {
-  sky:  { x: 0.012, y: 0.008 },
-  mid:  { x: 0.032, y: 0.018 },
-  fore: { x: 0.055, y: 0.028 },
-};
-const TILT = {
-  sky:  { x: 0.6,  y: 0.35 },
-  mid:  { x: 1.8,  y: 0.9  },
-  fore: { x: 3.2,  y: 1.6  },
-};
-
-const FC       = document.getElementById('frame-canvas');
-const PLX_SKY  = document.getElementById('plx-sky-el');
-const PLX_MID  = document.getElementById('plx-mid-el');
-const PLX_FORE = document.getElementById('plx-fore-el');
-const PLX_SHIM = document.getElementById('plx-shimmer');
-const LOADER   = document.getElementById('frame-loader');
-const LOADER_F = document.getElementById('frame-loader-fill');
-const VOC      = document.getElementById('vid-overlay-canvas');
-
-/* Cache VOC dimensions — never read offsetWidth/Height in RAF */
-let vocW = 0, vocH = 0;
-function sizeVOC(){ vocW = VOC.offsetWidth; vocH = VOC.offsetHeight; if(vocW&&vocH){VOC.width=vocW;VOC.height=vocH;} }
-sizeVOC();
-window.addEventListener('resize', sizeVOC, {passive:true});
-
-const frames     = new Array(FRAME_COUNT).fill(null);
-let framesLoaded = 0;
-let frameReady   = false;
-let currentFrame = -1;
-let mouseX = 0, mouseY = 0, tMouseX = 0, tMouseY = 0;
-
-function pad(n, len){ return String(n).padStart(len, '0'); }
-function framePath(i){ return `${FRAME_DIR}${FRAME_PREFIX}${pad(i + 1, FRAME_PAD)}.${FRAME_EXT}`; }
-
-function sizeFC(){
-  FC.width  = window.innerWidth;
-  FC.height = window.innerHeight;
-}
-sizeFC();
-window.addEventListener('resize', sizeFC);
-
-function drawFrame(idx){
-  const img = frames[idx];
-  if(!img || !img.complete || !img.naturalWidth) return;
-  if(idx === currentFrame) return;
-  currentFrame = idx;
-  const ctx = FC.getContext('2d');
-  const W = FC.width, H = FC.height;
-  const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
-  const dW = img.naturalWidth * scale, dH = img.naturalHeight * scale;
-  ctx.clearRect(0, 0, W, H);
-  ctx.drawImage(img, (W - dW) / 2, (H - dH) / 2, dW, dH);
-}
-
-function buildLoadOrder(){
-  const order = [], set = new Set();
-  const add = i => { if(i >= 0 && i < FRAME_COUNT && !set.has(i)){ order.push(i); set.add(i); }};
-  for(let i = 0; i < Math.min(20, FRAME_COUNT); i++) add(i);
-  for(let i = FRAME_COUNT - 1; i >= Math.max(0, FRAME_COUNT - 20); i--) add(i);
-  for(let i = 0; i < FRAME_COUNT; i += 10) add(i);
-  for(let i = 0; i < FRAME_COUNT; i += 3) add(i);
-  for(let i = 0; i < FRAME_COUNT; i++) add(i);
-  return order;
-}
-
-function preloadFrames(){
-  const order = buildLoadOrder();
-  let qi = 0;
-  function next(){
-    if(qi >= order.length) return;
-    const idx = order[qi++];
-    const img = new Image();
-    img.decoding = 'async';
-    img.onload = () => {
-      frames[idx] = img;
-      framesLoaded++;
-      LOADER_F.style.width = Math.round((framesLoaded / FRAME_COUNT) * 100) + '%';
-      if(framesLoaded >= FRAME_COUNT){
-        frameReady = true;
-        LOADER.classList.add('done');
-        FC.style.opacity = '1';
-        PLX_SHIM.classList.add('vis');
-      } else if(!frameReady && framesLoaded >= 20){
-        frameReady = true;
-        FC.style.opacity = '1';
-      }
-      next();
-    };
-    img.onerror = () => { framesLoaded++; next(); };
-    img.src = framePath(idx);
-  }
-  for(let i = 0; i < 6; i++) next();
-}
-preloadFrames();
-
-function progressToFrame(p){
-  const normP = Math.max(0, Math.min(1, (p - 0.17) / (0.85 - 0.17)));
-  return Math.min(FRAME_COUNT - 1, Math.floor(normP * FRAME_COUNT));
-}
-
-function getLayerTransform(scrollP, mX, mY, plx, tilt){
-  const x = (scrollP-.5)*200*plx.x + mX*100*tilt.x;
-  const y = (scrollP-.5)*80*plx.y + mY*100*tilt.y;
-  return `translate3d(${x}px,${y}px,0)`;
-}
-
-window.addEventListener('mousemove', e => {
-  tMouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
-  tMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-});
-
-/* ── Overlay: vignette + twinkling stars drawn on top of frames ── */
-const OV_STARS = Array.from({length:70}, () => ({
-  x:Math.random(), y:Math.random()*.72, r:.15+Math.random()*1.2,
-  ph:Math.random()*Math.PI*2, sp:.006+Math.random()*.014, br:.35+Math.random()*.65,
-  col:Math.random()<.15?[255,210,140]:Math.random()<.1?[180,200,255]:[237,229,200]
-}));
-const OV_SHOOTS = [];
-
-function drawVidOverlay(p) {
-  const W2 = vocW, H2 = vocH;
-  if(!W2||!H2) return;
-  const ctx2 = VOC.getContext('2d');
-  ctx2.clearRect(0,0,W2,H2);
-  const fadeIn  = p > 0.17 ? Math.min((p-0.17)/0.10,1) : 0;
-  const fadeOut = p < 0.85 ? 1 : Math.max(0,1-(p-0.85)/0.10);
-  const alpha   = fadeIn * fadeOut;
-  if(alpha > 0.02){
-    const vg = ctx2.createRadialGradient(W2/2,H2/2,W2*.1,W2/2,H2/2,W2*.65);
-    vg.addColorStop(0,'rgba(0,0,0,0)');
-    vg.addColorStop(1,`rgba(0,0,0,${.5*alpha})`);
-    ctx2.fillStyle=vg; ctx2.fillRect(0,0,W2,H2);
-  }
-  OV_STARS.forEach(s => {
-    s.ph += s.sp;
-    const a = s.br * (.4 + .6*Math.sin(s.ph));
-    if(a < .03) return;
-    const sx = s.x*W2, sy = s.y*H2;
-    ctx2.beginPath(); ctx2.arc(sx,sy,s.r,0,Math.PI*2);
-    ctx2.fillStyle=`rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a})`; ctx2.fill();
-    if(s.r > .9){
-      const g = ctx2.createRadialGradient(sx,sy,0,sx,sy,s.r*3.5);
-      g.addColorStop(0,`rgba(255,248,238,${a*.12})`); g.addColorStop(1,'rgba(0,0,0,0)');
-      ctx2.fillStyle=g; ctx2.beginPath(); ctx2.arc(sx,sy,s.r*3.5,0,Math.PI*2); ctx2.fill();
-    }
-  });
-  if(Math.random()<.004&&p>.04&&p<.95)
-    OV_SHOOTS.push({x:.05+Math.random()*.88,y:.02+Math.random()*.36,vx:(-3-Math.random()*5)/W2,vy:(.8+Math.random()*2)/H2,life:1});
-  for(let i=OV_SHOOTS.length-1;i>=0;i--){
-    const s=OV_SHOOTS[i]; s.x+=s.vx; s.y+=s.vy; s.life-=.038;
-    if(s.life<=0){OV_SHOOTS.splice(i,1);continue}
-    const sx=s.x*W2,sy=s.y*H2,ex=(s.x-s.vx*12)*W2,ey=(s.y-s.vy*12)*H2;
-    const sg=ctx2.createLinearGradient(sx,sy,ex,ey);
-    sg.addColorStop(0,`rgba(255,245,220,${s.life*.8})`); sg.addColorStop(1,'rgba(255,245,220,0)');
-    ctx2.beginPath(); ctx2.moveTo(sx,sy); ctx2.lineTo(ex,ey);
-    ctx2.strokeStyle=sg; ctx2.lineWidth=.9; ctx2.stroke();
-  }
-}
-
-function updateFrameParallax(p) {
-  const fadeIn  = p > 0.17 ? Math.min((p-0.17)/0.10,1) : 0;
-  const fadeOut = p < 0.85 ? 1 : Math.max(0,1-(p-0.85)/0.10);
-  const alpha   = fadeIn * fadeOut;
-  PLX_SKY.style.opacity  = frameReady ? String(alpha) : '0';
-  SC.style.opacity       = String(1 - alpha);
-  if(frameReady && alpha > 0.02) drawFrame(progressToFrame(p));
-  mouseX += (tMouseX - mouseX) * 0.06;
-  mouseY += (tMouseY - mouseY) * 0.06;
-  PLX_SKY.style.transform  = getLayerTransform(p,mouseX,mouseY,PLX.sky, TILT.sky);
-  PLX_MID.style.transform  = getLayerTransform(p,mouseX,mouseY,PLX.mid, TILT.mid);
-  PLX_FORE.style.transform = getLayerTransform(p,mouseX,mouseY,PLX.fore,TILT.fore);
-  PLX_MID.style.opacity  = String(Math.min(alpha,.6));
-  PLX_FORE.style.opacity = String(alpha*.7);
-  if(alpha > 0.01) drawVidOverlay(p); else VOC.getContext('2d').clearRect(0,0,vocW,vocH);
-}
+/* ═══ LENIS SMOOTH SCROLL ════════════════════════════════════════════ */
+const lenis = new Lenis({duration:1.1,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+lenis.on('scroll',ScrollTrigger.update);
+gsap.ticker.add(time=>lenis.raf(time*1000));
+gsap.ticker.lagSmoothing(0);
 
 /* ═══ GENERATIVE UNIVERSE RENDERER ═══════════════════════════════════ */
 const U = (function(){
@@ -803,25 +580,13 @@ const U = (function(){
 })();
 
 const SC=document.getElementById('scrub-canvas');
-let sp=0,tp=0,AT=0,lastDrawSp=-1,lastDrawAT=0,heroVis=true;
+let tp=0,AT=0;
 U.init(SC);
-window.addEventListener('resize',()=>{U.init(SC);sizeVOC();},{passive:true});
-
-/* Pause heavy rendering when hero is fully scrolled past */
-const heroObserver=new IntersectionObserver(([e])=>{heroVis=e.isIntersecting;},{threshold:0,rootMargin:'200px'});
-heroObserver.observe(document.getElementById('hero-section'));
+window.addEventListener('resize',()=>U.init(SC),{passive:true});
 
 (function loop(){
   AT+=.016;
-  sp+=(tp-sp)*.028;
-  /* Only redraw when something actually changed or stars need to twinkle (~24fps for idle) */
-  const spMoved=Math.abs(sp-lastDrawSp)>0.00005;
-  const timeTick=AT-lastDrawAT>0.042; /* ~24fps max for idle twinkling */
-  if(heroVis&&(spMoved||timeTick)){
-    U.draw(SC,sp,AT);
-    updateFrameParallax(sp);
-    lastDrawSp=sp; lastDrawAT=AT;
-  }
+  U.draw(SC,tp,AT);
   requestAnimationFrame(loop);
 })();
 
@@ -850,8 +615,7 @@ const HUD = document.getElementById('hud');
 
 // Entrance animation
 const el = gsap.timeline({delay:.4});
-el.from('#hero-bg',{opacity:0,duration:1.2,ease:'power2.out'});
-el.from(TT, {opacity:0,y:20,duration:.8,ease:'expo.out'},.1);
+el.from(TT, {opacity:0,y:20,duration:.8,ease:'expo.out'},0);
 el.from(HI, {opacity:0,y:12,duration:.8,ease:'expo.out'},.25);
 el.from(TB, {opacity:0,y:-20,duration:.8,ease:'expo.out'},.18);
 el.to(HUD,  {opacity:1,duration:1},1.4);
@@ -1208,26 +972,6 @@ const AudioEngine = (() => {
   };
 })();
 
-/* ═══ CUSTOM CURSOR ══════════════════════════════════════════════════ */
-(function(){
-  if (!window.matchMedia('(hover:hover)').matches) return;
-  const ring = document.getElementById('cursor');
-  if (!ring) return;
-  let rx=0,ry=0,tx=0,ty=0,moved=false;
-  window.addEventListener('mousemove', e => {
-    tx=e.clientX; ty=e.clientY;
-    if(!moved){ moved=true; ring.style.opacity='1'; }
-  });
-  (function tick(){
-    rx += (tx-rx)*.15; ry += (ty-ry)*.15;
-    ring.style.transform = `translate(${rx-14}px,${ry-14}px)`;
-    requestAnimationFrame(tick);
-  })();
-  document.querySelectorAll('a,button,.pillar,.card-nav,.card-dot,.share-btn').forEach(el=>{
-    el.addEventListener('mouseenter',()=>ring.classList.add('hov'));
-    el.addEventListener('mouseleave',()=>ring.classList.remove('hov'));
-  });
-})();
 
 /* ═══ 3D CARD TILT ══════════════════════════════════════════════════ */
 (function(){
