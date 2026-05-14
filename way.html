@@ -33,13 +33,6 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--golddim)}
 
 /* ── CURSOR ─────────────────────────────── */
-@media(hover:hover){
-  *{cursor:none!important}
-  #cursor{position:fixed;width:28px;height:28px;pointer-events:none;z-index:9998;top:0;left:0;will-change:transform}
-  #cursor.hov .cur-line{stroke:var(--gold);opacity:.9}
-  #cursor.hov .cur-diamond{fill:var(--gold);opacity:.8}
-  #cursor-dot{display:none}
-}
 
 /* ── NAV ─────────────────────────────────── */
 #nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:.5px solid transparent;transition:all .4s}
@@ -349,8 +342,8 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .split-card.ubuntu::before{background:linear-gradient(90deg,transparent,var(--ubuntu),transparent)}
 
 .split-panel{padding:36px 32px;display:flex;flex-direction:column}
-.split-wisdom{background:rgba(245,230,208,.02);border-right:.5px solid var(--border)}
-.split-genz{background:rgba(245,230,208,.035);position:relative;overflow:hidden}
+.split-wisdom{background:rgba(10,6,8,.82);border-right:.5px solid var(--border)}
+.split-genz{background:rgba(10,6,8,.88);position:relative;overflow:hidden}
 .split-genz::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 60% at 50% 10%,rgba(201,168,76,.05) 0%,transparent 65%);pointer-events:none}
 
 .sp-label{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,230,208,.25);margin-bottom:20px;display:flex;align-items:center;gap:10px}
@@ -389,10 +382,10 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 /* ── AI TRADITION BACKGROUNDS (Higgsfield Cinema Studio 2.5) ─────── */
 #trad-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 2.2s ease;background-size:cover;background-position:center;background-repeat:no-repeat}
 #trad-bg.vis{opacity:1}
-#trad-bg.arabic{background-image:linear-gradient(rgba(10,6,8,.78),rgba(10,6,8,.78)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142445_64617657-09d2-41b4-9455-00749545e0b0_min.webp')}
-#trad-bg.zen{background-image:linear-gradient(rgba(10,6,8,.78),rgba(10,6,8,.78)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142555_98a1ae9c-cff0-44ad-9d7d-c0f40166f3b9_min.webp')}
-#trad-bg.stoic{background-image:linear-gradient(rgba(10,6,8,.78),rgba(10,6,8,.78)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142654_7a64490f-0c5f-400f-bbda-60f0e632fb15_min.webp')}
-#trad-bg.ubuntu{background-image:linear-gradient(rgba(10,6,8,.78),rgba(10,6,8,.78)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
+#trad-bg.arabic{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142445_64617657-09d2-41b4-9455-00749545e0b0_min.webp')}
+#trad-bg.zen{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142555_98a1ae9c-cff0-44ad-9d7d-c0f40166f3b9_min.webp')}
+#trad-bg.stoic{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142654_7a64490f-0c5f-400f-bbda-60f0e632fb15_min.webp')}
+#trad-bg.ubuntu{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
 
 /* ── RESPONSIVE ──────────────────────────── */
 @media(max-width:600px){
@@ -413,15 +406,6 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 <body>
 <canvas id="bg"></canvas>
 <div id="trad-bg" aria-hidden="true"></div>
-<div id="cursor" aria-hidden="true">
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line class="cur-line" x1="0" y1="14" x2="10" y2="14" stroke="rgba(201,168,76,.6)" stroke-width="1"/>
-    <line class="cur-line" x1="18" y1="14" x2="28" y2="14" stroke="rgba(201,168,76,.6)" stroke-width="1"/>
-    <line class="cur-line" x1="14" y1="0" x2="14" y2="10" stroke="rgba(201,168,76,.6)" stroke-width="1"/>
-    <line class="cur-line" x1="14" y1="18" x2="14" y2="28" stroke="rgba(201,168,76,.6)" stroke-width="1"/>
-    <rect class="cur-diamond" x="11.5" y="11.5" width="5" height="5" transform="rotate(45 14 14)" fill="rgba(201,168,76,.55)"/>
-  </svg>
-</div>
 <div id="toast"></div>
 
 <nav id="nav">
@@ -775,16 +759,6 @@ const AudioEngine = (() => {
   };
 })();
 
-/* ═══ CURSOR ════════════════════════════════════════════════════════ */
-(function(){
-  if(!window.matchMedia('(hover:hover)').matches)return;
-  const ring=document.getElementById('cursor');
-  if(!ring)return;
-  let rx=0,ry=0,tx=0,ty=0;
-  window.addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;});
-  (function tick(){rx+=(tx-rx)*.15;ry+=(ty-ry)*.15;ring.style.transform=`translate(${rx-14}px,${ry-14}px)`;requestAnimationFrame(tick);})();
-  document.querySelectorAll('a,button,.bc,.bc-share,.split-card,.flip-card').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hov'));el.addEventListener('mouseleave',()=>ring.classList.remove('hov'));});
-})();
 
 /* ═══ CHAR COUNT ════════════════════════════════════════════════════ */
 const feelingEl = document.getElementById('feeling');
@@ -1031,7 +1005,6 @@ function openShareModal(){
   back.className = `ecard ecard-back ${weeklyKey}-back`;
   back.style.setProperty('--gb-bg', ({arabic:'#0e0105',zen:'#02080a',stoic:'#090706',ubuntu:'#0c0600'})[weeklyKey]||'#0f0608');
   back.style.setProperty('--gb-acc', ({arabic:'rgba(140,27,53,.35)',zen:'rgba(26,107,88,.3)',stoic:'rgba(122,72,32,.3)',ubuntu:'rgba(122,48,16,.35)'})[weeklyKey]||'rgba(140,27,53,.25)');
-  document.getElementById('ec-back-deco').textContent = m.glyph;
   document.getElementById('ec-genz').textContent = d.genZ || '';
   document.getElementById('ec-back-concept').textContent = (d.concept || '').toUpperCase();
   document.getElementById('ec-back-coord').textContent = coord;
