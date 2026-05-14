@@ -59,6 +59,11 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 #hero-section{position:relative;height:500vh;z-index:1}
 #hero-sticky{position:sticky;top:0;height:100svh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
 #scrub-canvas{position:absolute;inset:0;z-index:1;width:100%;height:100%}
+#frame-wrap{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;will-change:opacity}
+#frame-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#frame-loader{position:fixed;bottom:0;left:0;right:0;height:2px;background:rgba(201,168,76,.08);z-index:199;pointer-events:none;transition:opacity 1.2s}
+#frame-loader.done{opacity:0}
+#frame-loader-fill{height:100%;background:var(--gold);width:0%;transition:width .15s linear}
 #vignette{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.45) 100%)}
 
 /* HERO TITLES */
@@ -291,6 +296,8 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 <section id="hero-section">
   <div id="hero-sticky">
     <canvas id="scrub-canvas"></canvas>
+    <div id="frame-wrap"><canvas id="frame-canvas"></canvas></div>
+    <div id="frame-loader"><div id="frame-loader-fill"></div></div>
     <div id="vignette"></div>
 
     <h1 class="hero-title" id="title-top">WHERE</h1>
@@ -506,8 +513,12 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 gsap.registerPlugin(ScrollTrigger);
 
 /* ═══ LENIS SMOOTH SCROLL ════════════════════════════════════════════ */
-const lenis = new Lenis({duration:1.1,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
-lenis.on('scroll',ScrollTrigger.update);
+const lenis = new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+lenis.on('scroll', e => {
+  ScrollTrigger.update();
+  const sp = document.getElementById('scroll-progress');
+  if(sp) sp.style.transform = `scaleX(${e.progress})`;
+});
 gsap.ticker.add(time=>lenis.raf(time*1000));
 gsap.ticker.lagSmoothing(0);
 
@@ -579,16 +590,87 @@ const U = (function(){
   return{init,draw};
 })();
 
+/* ═══ FRAME SEQUENCE ═════════════════════════════════════════════════ */
+const FRAME_COUNT = 300;
+const FC  = document.getElementById('frame-canvas');
+const FW  = document.getElementById('frame-wrap');
+const LDR = document.getElementById('frame-loader');
+const LDF = document.getElementById('frame-loader-fill');
+const frames = new Array(FRAME_COUNT).fill(null);
+let framesLoaded=0, frameReady=false, currentFrame=-1;
+
+function sizeFC(){FC.width=window.innerWidth;FC.height=window.innerHeight;}
+sizeFC();
+window.addEventListener('resize',sizeFC,{passive:true});
+
+function drawFrame(idx){
+  const img=frames[idx];
+  if(!img||!img.complete||!img.naturalWidth) return;
+  if(idx===currentFrame) return;
+  currentFrame=idx;
+  const ctx=FC.getContext('2d'),W=FC.width,H=FC.height;
+  const scale=Math.max(W/img.naturalWidth,H/img.naturalHeight);
+  const dW=img.naturalWidth*scale,dH=img.naturalHeight*scale;
+  ctx.clearRect(0,0,W,H);
+  ctx.drawImage(img,(W-dW)/2,(H-dH)/2,dW,dH);
+}
+
+(function preloadFrames(){
+  const order=[],set=new Set();
+  const add=i=>{if(i>=0&&i<FRAME_COUNT&&!set.has(i)){order.push(i);set.add(i);}};
+  for(let i=0;i<Math.min(20,FRAME_COUNT);i++) add(i);
+  for(let i=FRAME_COUNT-1;i>=Math.max(0,FRAME_COUNT-20);i--) add(i);
+  for(let i=0;i<FRAME_COUNT;i+=10) add(i);
+  for(let i=0;i<FRAME_COUNT;i+=3)  add(i);
+  for(let i=0;i<FRAME_COUNT;i++)   add(i);
+  let qi=0;
+  function next(){
+    if(qi>=order.length) return;
+    const idx=order[qi++],img=new Image();
+    img.decoding='async';
+    img.onload=()=>{
+      frames[idx]=img; framesLoaded++;
+      if(LDF) LDF.style.width=Math.round(framesLoaded/FRAME_COUNT*100)+'%';
+      if(framesLoaded>=FRAME_COUNT){frameReady=true;if(LDR)LDR.classList.add('done');}
+      else if(!frameReady&&framesLoaded>=20) frameReady=true;
+      next();
+    };
+    img.onerror=()=>{framesLoaded++;next();};
+    img.src=`frame_${String(idx+1).padStart(4,'0')}.jpg`;
+  }
+  for(let i=0;i<6;i++) next();
+})();
+
+function updateFrameSequence(p){
+  const fadeIn  = p>0.17 ? Math.min((p-0.17)/0.10,1) : 0;
+  const fadeOut = p<0.85 ? 1 : Math.max(0,1-(p-0.85)/0.10);
+  const alpha   = fadeIn*fadeOut;
+  if(FW)  FW.style.opacity  = frameReady ? String(alpha) : '0';
+  if(SC)  SC.style.opacity  = String(1-alpha*0.95);
+  if(frameReady&&alpha>0.02){
+    const normP=Math.max(0,Math.min(1,(p-0.17)/(0.85-0.17)));
+    drawFrame(Math.min(FRAME_COUNT-1,Math.floor(normP*FRAME_COUNT)));
+  }
+}
+
+/* ═══ GENERATIVE STAR CANVAS + RAF ════════════════════════════════════ */
 const SC=document.getElementById('scrub-canvas');
 let tp=0,AT=0;
 U.init(SC);
-window.addEventListener('resize',()=>U.init(SC),{passive:true});
+window.addEventListener('resize',()=>{U.init(SC);sizeFC();},{passive:true});
 
 (function loop(){
   AT+=.016;
   U.draw(SC,tp,AT);
+  updateFrameSequence(tp);
   requestAnimationFrame(loop);
 })();
+
+/* ═══ GLOBAL MOUSE SPOTLIGHT ══════════════════════════════════════════ */
+document.addEventListener('mousemove',e=>{
+  document.documentElement.style.setProperty('--mx',(e.clientX/window.innerWidth*100).toFixed(1)+'%');
+  document.documentElement.style.setProperty('--my',(e.clientY/window.innerHeight*100).toFixed(1)+'%');
+},{passive:true});
 
 /* ═══ GSAP SCROLL ══════════════════════════════════════════════════════ */
 const CULTURES=[
@@ -1033,41 +1115,6 @@ const AudioEngine = (() => {
   })();
 })();
 
-/* ── Lenis smooth scroll ─────────────────────────────────── */
-if(typeof Lenis !== 'undefined'){
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    orientation: 'vertical',
-    smoothWheel: true,
-  });
-  lenis.on('scroll', ScrollTrigger.update);
-  function lenisRaf(time){ lenis.raf(time); requestAnimationFrame(lenisRaf); }
-  requestAnimationFrame(lenisRaf);
-
-  /* Scroll progress bar */
-  const scrollProg = document.getElementById('scroll-progress');
-  if(scrollProg){
-    lenis.on('scroll', ({progress}) => {
-      scrollProg.style.transform = `scaleX(${progress})`;
-    });
-  }
-}
-
-/* ── Hero title parallax ─────────────────────────────────── */
-const titleTop = document.getElementById('title-top');
-const titleBottom = document.getElementById('title-bottom');
-if(titleTop && titleBottom){
-  gsap.to(titleTop, {
-    yPercent: -30, ease: 'none',
-    scrollTrigger: { trigger: '#hero-section', start: 'top top', end: 'bottom top', scrub: 0.3 }
-  });
-  gsap.to(titleBottom, {
-    yPercent: -70, ease: 'none',
-    scrollTrigger: { trigger: '#hero-section', start: 'top top', end: 'bottom top', scrub: 0.7 }
-  });
-}
-
 /* ── Scroll grid card staggered entrance ─────────────────── */
 (function(){
   const cards = document.querySelectorAll('.sg-card');
@@ -1110,28 +1157,6 @@ if(shareCard){
   });
 }
 
-/* ── Weekly culture banner (index) ───────────────────────── */
-(function(){
-  const CULTURES = ['arabic','zen','stoic','ubuntu'];
-  const META = {
-    arabic:{glyph:'☽',label:'Arabic',color:'#8c1b35'},
-    zen:{glyph:'⛩',label:'Japanese Zen',color:'#1a6b58'},
-    stoic:{glyph:'Φ',label:'Stoic',color:'#7a4820'},
-    ubuntu:{glyph:'◉',label:'Ubuntu',color:'#7a3010'},
-  };
-  const wk = CULTURES[Math.floor(Date.now()/(7*24*60*60*1000))%4];
-  const m = META[wk];
-  const banner = document.getElementById('weekly-banner');
-  if(banner){
-    banner.innerHTML = `
-      <span class="wcb-glyph" style="color:${m.color}">${m.glyph}</span>
-      <span class="wcb-week">This week</span>
-      <span class="wcb-dot"></span>
-      <span class="wcb-name" style="color:${m.color}">${m.label}</span>
-      <a href="way.html" class="wcb-cta">Find my bearing →</a>
-    `;
-  }
-})();
 </script>
 <a href="today.html" id="floating-pill">Today's Bearing ✦</a>
 </body>
