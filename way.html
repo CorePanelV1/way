@@ -386,6 +386,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 #trad-bg.zen{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142555_98a1ae9c-cff0-44ad-9d7d-c0f40166f3b9_min.webp')}
 #trad-bg.stoic{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142654_7a64490f-0c5f-400f-bbda-60f0e632fb15_min.webp')}
 #trad-bg.ubuntu{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
+#trad-bg.sufi{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
+#trad-bg.taoist{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
+#trad-bg.vedic{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
+#trad-bg.celtic{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
+#trad-bg.nordic{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
+#trad-bg.confucian{background-image:linear-gradient(rgba(10,6,8,.88),rgba(10,6,8,.88)),url('https://d8j0ntlcm91z4.cloudfront.net/user_3DdVhhCyHekZRRGHE8oeYLlytQK/hf_20260513_142759_81dbd86b-de46-4e8e-b39b-71015f9b3216_min.webp')}
 
 /* ── RESPONSIVE ──────────────────────────── */
 @media(max-width:600px){
@@ -749,7 +755,13 @@ const AudioEngine = (() => {
     },
     stoic(){const rv=ireverb(7);rv.connect(master);const f=ctx().createBiquadFilter();f.type='lowpass';f.frequency.value=460;f.connect(rv);[55,110,165].forEach(freq=>{const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.value=freq;g.gain.value=.055;o.connect(g);g.connect(f);o.start();alive.push(o);});},
     ubuntu(){const rv=ireverb(4);rv.connect(master);[264,330,396,495].forEach((freq,i)=>{const n=osc(freq,'sine',.055,rv,7);lfo(n,4.5+i*.3,.007);});},
-    persian(){const rv=ireverb(6);rv.connect(master);[196,233,294,370].forEach((freq,i)=>{const n=osc(freq,'sine',.06,rv,8);lfo(n,2.8+i*.2,.012);}); }
+    persian(){const rv=ireverb(6);rv.connect(master);[196,233,294,370].forEach((freq,i)=>{const n=osc(freq,'sine',.06,rv,8);lfo(n,2.8+i*.2,.012);}); },
+    sufi(){const rv=ireverb(6);rv.connect(master);[196,233,294,370].forEach((freq,i)=>{const n=osc(freq,'sine',.06,rv,8);lfo(n,2.8+i*.2,.012);});},
+    taoist(){const rv=ireverb(9);rv.connect(master);osc(220,'sine',.08,rv,2);osc(440,'sine',.04,rv,1);osc(330,'sine',.03,rv,3);},
+    vedic(){const rv=ireverb(7);rv.connect(master);[136,204,273,341].forEach((freq,i)=>{const n=osc(freq,'sine',.055,rv,6);lfo(n,2+i*.25,.008);});},
+    celtic(){const rv=ireverb(8);rv.connect(master);const f=ctx().createBiquadFilter();f.type='bandpass';f.frequency.value=600;f.Q.value=0.8;f.connect(rv);[247,294,370,440].forEach((freq,i)=>{const n=osc(freq,'sine',.05,f,5);lfo(n,3.5+i*.3,.01);});},
+    nordic(){const rv=ireverb(5);rv.connect(master);const f=ctx().createBiquadFilter();f.type='lowpass';f.frequency.value=600;f.connect(rv);[82,110,165].forEach(freq=>{const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.value=freq;g.gain.value=.05;o.connect(g);g.connect(f);o.start();alive.push(o);});},
+    confucian(){const rv=ireverb(8);rv.connect(master);function bell(){if(!playing)return;const ac=ctx(),o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=528+Math.random()*20;g.gain.setValueAtTime(.12,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+5);o.connect(g);g.connect(rv);o.start();o.stop(ac.currentTime+5.1);setTimeout(bell,8000+Math.random()*5000);}setTimeout(bell,1500);}
   };
   return{
     play(key){this.stop();const fn=S[key];if(!fn)return;const ac=ctx();if(ac.state==='suspended')ac.resume();fn();playing=true;master.gain.cancelScheduledValues(ac.currentTime);master.gain.setTargetAtTime(1,ac.currentTime,1.4);},
@@ -826,14 +838,20 @@ function finishLoadAnim(){
 }
 
 /* ═══ WEEKLY CULTURE ════════════════════════════════════════════════ */
-const WEEKLY_ORDER = ['arabic','zen','stoic','ubuntu'];
+const WEEKLY_ORDER = ['arabic','zen','stoic','ubuntu','sufi','taoist','vedic','celtic','nordic','confucian'];
 const WEEKLY_META = {
-  arabic: {glyph:'☽', label:'ARABIC',  cls:'arabic', coord:'23°N 45°E', region:'Arabia',    color:'#8c1b35', loadLabel:'Consulting the ancient Arabic sages…'},
-  zen:    {glyph:'⛩', label:'ZEN',     cls:'zen',    coord:'35°N 135°E', region:'Kyoto',    color:'#1a6b58', loadLabel:'Asking the Kyoto monks…'},
-  stoic:  {glyph:'Φ',  label:'STOIC',  cls:'stoic',  coord:'41°N 12°E', region:'Rome',      color:'#7a4820', loadLabel:'Consulting the Roman philosophers…'},
-  ubuntu: {glyph:'◉', label:'UBUNTU',  cls:'ubuntu', coord:'26°S 28°E', region:'Africa',    color:'#7a3010', loadLabel:'Listening to African wisdom…'},
+  arabic:    {glyph:'☽', label:'ARABIC',     cls:'arabic',    coord:'23°N 45°E',  region:'Arabia',      color:'#8c1b35', loadLabel:'Consulting the ancient Arabic sages…'},
+  zen:       {glyph:'⛩', label:'ZEN',        cls:'zen',       coord:'35°N 135°E', region:'Kyoto',       color:'#1a6b58', loadLabel:'Asking the Kyoto monks…'},
+  stoic:     {glyph:'Φ',  label:'STOIC',     cls:'stoic',     coord:'41°N 12°E',  region:'Rome',        color:'#7a4820', loadLabel:'Consulting the Roman philosophers…'},
+  ubuntu:    {glyph:'◉', label:'UBUNTU',     cls:'ubuntu',    coord:'26°S 28°E',  region:'Africa',      color:'#7a3010', loadLabel:'Listening to African wisdom…'},
+  sufi:      {glyph:'✦', label:'SUFI',       cls:'sufi',      coord:'35°N 51°E',  region:'Persia',      color:'#7a3585', loadLabel:'Listening to the Persian mystics…'},
+  taoist:    {glyph:'☯', label:'TAOIST',     cls:'taoist',    coord:'30°N 114°E', region:'China',       color:'#2a5c78', loadLabel:'Consulting the Tao…'},
+  vedic:     {glyph:'ॐ', label:'VEDIC',      cls:'vedic',     coord:'20°N 77°E',  region:'India',       color:'#c47820', loadLabel:'Hearing the Vedic sages…'},
+  celtic:    {glyph:'᛭', label:'CELTIC',     cls:'celtic',    coord:'53°N 8°W',   region:'Ireland',     color:'#2d6b3a', loadLabel:'Seeking the Celtic druids…'},
+  nordic:    {glyph:'ᚦ', label:'NORDIC',     cls:'nordic',    coord:'60°N 11°E',  region:'Scandinavia', color:'#4a5a8c', loadLabel:'Consulting the Norse sages…'},
+  confucian: {glyph:'仁', label:'CONFUCIAN', cls:'confucian', coord:'35°N 117°E', region:'China',       color:'#8c4a2a', loadLabel:'Asking the Confucian scholars…'},
 };
-const weeklyKey = WEEKLY_ORDER[Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000)) % 4];
+const weeklyKey = WEEKLY_ORDER[Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000)) % WEEKLY_ORDER.length];
 const weeklyMeta = WEEKLY_META[weeklyKey];
 
 (function initWeeklyUI(){
@@ -1003,8 +1021,10 @@ function openShareModal(){
   // Back face
   const back = document.getElementById('ecard-back');
   back.className = `ecard ecard-back ${weeklyKey}-back`;
-  back.style.setProperty('--gb-bg', ({arabic:'#0e0105',zen:'#02080a',stoic:'#090706',ubuntu:'#0c0600'})[weeklyKey]||'#0f0608');
-  back.style.setProperty('--gb-acc', ({arabic:'rgba(140,27,53,.35)',zen:'rgba(26,107,88,.3)',stoic:'rgba(122,72,32,.3)',ubuntu:'rgba(122,48,16,.35)'})[weeklyKey]||'rgba(140,27,53,.25)');
+  const bgMap={arabic:'#0e0105',zen:'#02080a',stoic:'#090706',ubuntu:'#0c0600',sufi:'#0d0210',taoist:'#010a0e',vedic:'#0e0800',celtic:'#010e04',nordic:'#03050e',confucian:'#0e0500'};
+  const accMap={arabic:'rgba(140,27,53,.35)',zen:'rgba(26,107,88,.3)',stoic:'rgba(122,72,32,.3)',ubuntu:'rgba(122,48,16,.35)',sufi:'rgba(122,53,133,.35)',taoist:'rgba(42,92,120,.3)',vedic:'rgba(196,120,32,.35)',celtic:'rgba(45,107,58,.3)',nordic:'rgba(74,90,140,.3)',confucian:'rgba(140,74,42,.35)'};
+  back.style.setProperty('--gb-bg', bgMap[weeklyKey]||'#0f0608');
+  back.style.setProperty('--gb-acc', accMap[weeklyKey]||'rgba(140,27,53,.25)');
   document.getElementById('ec-genz').textContent = d.genZ || '';
   document.getElementById('ec-back-concept').textContent = (d.concept || '').toUpperCase();
   document.getElementById('ec-back-coord').textContent = coord;

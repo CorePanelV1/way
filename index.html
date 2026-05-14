@@ -294,6 +294,20 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
   #sg-r2{animation:marquee-r 32s linear infinite}
   #sg-r3{animation:marquee-l 24s linear infinite}
 }
+
+/* WEEKLY FEATURE */
+#weekly-feature{border-radius:20px;padding:44px 48px;position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(238,220,192,.9),rgba(229,207,166,.7));border:.5px solid rgba(201,168,76,.25);box-shadow:0 24px 80px rgba(44,16,24,.1)}
+#weekly-feature::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--wf-color,var(--gold)),transparent)}
+.wf-glyph{font-size:3.5rem;margin-bottom:20px;display:block}
+.wf-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.wf-name{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;margin-bottom:24px}
+.wf-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.8vw,2rem);font-style:italic;line-height:1.55;color:var(--text);margin-bottom:12px}
+.wf-translation{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text3);font-style:italic;margin-bottom:28px}
+.wf-concept{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--golddim);margin-bottom:32px}
+.wf-cta{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:var(--bg);border-radius:8px;padding:12px 28px;font-family:'Cinzel',serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .3s}
+.wf-cta:hover{background:var(--red2);transform:translateY(-2px)}
+.wf-coord{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--text3);margin-top:20px;opacity:.7}
+@media(max-width:680px){#weekly-feature{padding:32px 28px}}
 </style>
 </head>
 <body>
@@ -356,7 +370,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 <!-- ═══ SCROLL GRID ════════════════════════════════════════════════════ -->
 <section id="scroll-grid">
   <div class="sg-label">
-    <div class="sg-eyebrow">Four traditions · One question</div>
+    <div class="sg-eyebrow">Ten traditions · One question</div>
     <div class="sg-headline">Wisdom that has<br>waited for you</div>
   </div>
   <div class="sg-rows" id="sg-rows">
@@ -365,27 +379,48 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
       <div class="sg-card arabic"><span class="sg-card-glyph">☽</span><div class="sg-card-culture">Arabic · 23°N 45°E</div><div class="sg-card-quote">"الصبر مفتاح الفرج"<br>Patience is the key to relief.</div><div class="sg-card-concept">Sabr</div></div>
       <div class="sg-card zen"><span class="sg-card-glyph">⛩</span><div class="sg-card-culture">Japanese Zen · 35°N 135°E</div><div class="sg-card-quote">Fall seven times, rise eight.</div><div class="sg-card-concept">Nana Korobi Ya Oki</div></div>
       <div class="sg-card stoic"><span class="sg-card-glyph">Φ</span><div class="sg-card-culture">Stoic · 38°N 23°E</div><div class="sg-card-quote">You have power over your mind, not outside events.</div><div class="sg-card-concept">Hegemonikon</div></div>
-      <div class="sg-card ubuntu"><span class="sg-card-glyph">◉</span><div class="sg-card-culture">Ubuntu · 0°S 25°E</div><div class="sg-card-quote">I am because we are.</div><div class="sg-card-concept">Ubuntu</div></div>
-      <div class="sg-card arabic"><span class="sg-card-glyph">☽</span><div class="sg-card-culture">Arabic · 24°N 54°E</div><div class="sg-card-quote">"من صبر ظفر"<br>He who is patient, succeeds.</div><div class="sg-card-concept">Zafar</div></div>
-      <div class="sg-card zen"><span class="sg-card-glyph">⛩</span><div class="sg-card-culture">Japanese Zen · 35°N 136°E</div><div class="sg-card-quote">The obstacle is the path.</div><div class="sg-card-concept">Shoshin</div></div>
+      <div class="sg-card sufi"><span class="sg-card-glyph">✦</span><div class="sg-card-culture">Sufi · 35°N 51°E</div><div class="sg-card-quote">"بشنو این نی چون شکایت می‌کند"<br>Listen to the reed's longing song.</div><div class="sg-card-concept">Ishq</div></div>
+      <div class="sg-card taoist"><span class="sg-card-glyph">☯</span><div class="sg-card-culture">Taoist · 30°N 114°E</div><div class="sg-card-quote">"知人者智，自知者明"<br>Knowing yourself is enlightenment.</div><div class="sg-card-concept">Wu Wei</div></div>
+      <div class="sg-card vedic"><span class="sg-card-glyph">ॐ</span><div class="sg-card-culture">Vedic · 20°N 77°E</div><div class="sg-card-quote">"योगः कर्मसु कौशलम्"<br>Excellence in action is yoga.</div><div class="sg-card-concept">Dharma</div></div>
+      <!-- duplicate for seamless loop -->
+      <div class="sg-card arabic"><span class="sg-card-glyph">☽</span><div class="sg-card-culture">Arabic · 23°N 45°E</div><div class="sg-card-quote">"الصبر مفتاح الفرج"<br>Patience is the key to relief.</div><div class="sg-card-concept">Sabr</div></div>
+      <div class="sg-card zen"><span class="sg-card-glyph">⛩</span><div class="sg-card-culture">Japanese Zen · 35°N 135°E</div><div class="sg-card-quote">Fall seven times, rise eight.</div><div class="sg-card-concept">Nana Korobi Ya Oki</div></div>
+      <div class="sg-card stoic"><span class="sg-card-glyph">Φ</span><div class="sg-card-culture">Stoic · 38°N 23°E</div><div class="sg-card-quote">You have power over your mind, not outside events.</div><div class="sg-card-concept">Hegemonikon</div></div>
+      <div class="sg-card sufi"><span class="sg-card-glyph">✦</span><div class="sg-card-culture">Sufi · 35°N 51°E</div><div class="sg-card-quote">"بشنو این نی چون شکایت می‌کند"<br>Listen to the reed's longing song.</div><div class="sg-card-concept">Ishq</div></div>
+      <div class="sg-card taoist"><span class="sg-card-glyph">☯</span><div class="sg-card-culture">Taoist · 30°N 114°E</div><div class="sg-card-quote">"知人者智，自知者明"<br>Knowing yourself is enlightenment.</div><div class="sg-card-concept">Wu Wei</div></div>
+      <div class="sg-card vedic"><span class="sg-card-glyph">ॐ</span><div class="sg-card-culture">Vedic · 20°N 77°E</div><div class="sg-card-quote">"योगः कर्मसु कौशलम्"<br>Excellence in action is yoga.</div><div class="sg-card-concept">Dharma</div></div>
     </div>
     <!-- Row 2 — drifts right -->
     <div class="sg-row" id="sg-r2">
+      <div class="sg-card ubuntu"><span class="sg-card-glyph">◉</span><div class="sg-card-culture">Ubuntu · 26°S 28°E</div><div class="sg-card-quote">I am because we are.</div><div class="sg-card-concept">Ubuntu</div></div>
+      <div class="sg-card celtic"><span class="sg-card-glyph">᛭</span><div class="sg-card-culture">Celtic · 53°N 8°W</div><div class="sg-card-quote">Is minic a bhris béal duine a shrón.<br>The mouth often breaks the nose.</div><div class="sg-card-concept">Anam Cara</div></div>
+      <div class="sg-card nordic"><span class="sg-card-glyph">ᚦ</span><div class="sg-card-culture">Nordic · 60°N 11°E</div><div class="sg-card-quote">Cattle die, kinsmen die. One thing never dies: the fame of a dead man's deeds.</div><div class="sg-card-concept">Wyrd</div></div>
+      <div class="sg-card confucian"><span class="sg-card-glyph">仁</span><div class="sg-card-culture">Confucian · 35°N 117°E</div><div class="sg-card-quote">"己所不欲，勿施於人"<br>Do not impose on others what you don't want.</div><div class="sg-card-concept">Ren</div></div>
+      <div class="sg-card arabic"><span class="sg-card-glyph">☽</span><div class="sg-card-culture">Arabic · 24°N 54°E</div><div class="sg-card-quote">"من صبر ظفر"<br>He who is patient, succeeds.</div><div class="sg-card-concept">Zafar</div></div>
       <div class="sg-card stoic"><span class="sg-card-glyph">Φ</span><div class="sg-card-culture">Stoic · 41°N 28°E</div><div class="sg-card-quote">Waste no more time arguing. Act.</div><div class="sg-card-concept">Prohairesis</div></div>
-      <div class="sg-card ubuntu"><span class="sg-card-glyph">◉</span><div class="sg-card-culture">Ubuntu · 1°S 36°E</div><div class="sg-card-quote">A child who is not embraced by the village will burn it down.</div><div class="sg-card-concept">Umuntu</div></div>
-      <div class="sg-card arabic"><span class="sg-card-glyph">☽</span><div class="sg-card-culture">Arabic · 33°N 44°E</div><div class="sg-card-quote">"لكل أمر نهاية"<br>Every matter has an end.</div><div class="sg-card-concept">Nihaya</div></div>
-      <div class="sg-card zen"><span class="sg-card-glyph">⛩</span><div class="sg-card-culture">Japanese Zen · 34°N 132°E</div><div class="sg-card-quote">Only when you can be extremely pliable and soft can you be extremely hard.</div><div class="sg-card-concept">Mushin</div></div>
-      <div class="sg-card stoic"><span class="sg-card-glyph">Φ</span><div class="sg-card-culture">Stoic · 37°N 22°E</div><div class="sg-card-quote">The whole future lies in uncertainty. Live immediately.</div><div class="sg-card-concept">Amor Fati</div></div>
-      <div class="sg-card ubuntu"><span class="sg-card-glyph">◉</span><div class="sg-card-culture">Ubuntu · 4°S 15°E</div><div class="sg-card-quote">When the music changes, so does the dance.</div><div class="sg-card-concept">Imani</div></div>
+      <!-- duplicate for seamless loop -->
+      <div class="sg-card ubuntu"><span class="sg-card-glyph">◉</span><div class="sg-card-culture">Ubuntu · 26°S 28°E</div><div class="sg-card-quote">I am because we are.</div><div class="sg-card-concept">Ubuntu</div></div>
+      <div class="sg-card celtic"><span class="sg-card-glyph">᛭</span><div class="sg-card-culture">Celtic · 53°N 8°W</div><div class="sg-card-quote">Is minic a bhris béal duine a shrón.<br>The mouth often breaks the nose.</div><div class="sg-card-concept">Anam Cara</div></div>
+      <div class="sg-card nordic"><span class="sg-card-glyph">ᚦ</span><div class="sg-card-culture">Nordic · 60°N 11°E</div><div class="sg-card-quote">Cattle die, kinsmen die. One thing never dies: the fame of a dead man's deeds.</div><div class="sg-card-concept">Wyrd</div></div>
+      <div class="sg-card confucian"><span class="sg-card-glyph">仁</span><div class="sg-card-culture">Confucian · 35°N 117°E</div><div class="sg-card-quote">"己所不欲，勿施於人"<br>Do not impose on others what you don't want.</div><div class="sg-card-concept">Ren</div></div>
+      <div class="sg-card arabic"><span class="sg-card-glyph">☽</span><div class="sg-card-culture">Arabic · 24°N 54°E</div><div class="sg-card-quote">"من صبر ظفر"<br>He who is patient, succeeds.</div><div class="sg-card-concept">Zafar</div></div>
+      <div class="sg-card stoic"><span class="sg-card-glyph">Φ</span><div class="sg-card-culture">Stoic · 41°N 28°E</div><div class="sg-card-quote">Waste no more time arguing. Act.</div><div class="sg-card-concept">Prohairesis</div></div>
     </div>
     <!-- Row 3 — drifts left slower -->
     <div class="sg-row" id="sg-r3">
-      <div class="sg-card zen"><span class="sg-card-glyph">⛩</span><div class="sg-card-culture">Japanese Zen · 33°N 130°E</div><div class="sg-card-quote">Before enlightenment, chop wood, carry water.</div><div class="sg-card-concept">Wabi-Sabi</div></div>
-      <div class="sg-card arabic"><span class="sg-card-glyph">☽</span><div class="sg-card-culture">Arabic · 36°N 37°E</div><div class="sg-card-quote">"العلم نور"<br>Knowledge is light.</div><div class="sg-card-concept">Ilm</div></div>
-      <div class="sg-card ubuntu"><span class="sg-card-glyph">◉</span><div class="sg-card-culture">Ubuntu · 6°S 12°E</div><div class="sg-card-quote">If you want to go fast, go alone. If you want to go far, go together.</div><div class="sg-card-concept">Harambee</div></div>
-      <div class="sg-card stoic"><span class="sg-card-glyph">Φ</span><div class="sg-card-culture">Stoic · 40°N 22°E</div><div class="sg-card-quote">He who has a why to live can bear almost any how.</div><div class="sg-card-concept">Eudaimonia</div></div>
-      <div class="sg-card arabic"><span class="sg-card-glyph">☽</span><div class="sg-card-culture">Arabic · 25°N 55°E</div><div class="sg-card-quote">"اطلب العلم من المهد إلى اللحد"<br>Seek knowledge from cradle to grave.</div><div class="sg-card-concept">Tafakkur</div></div>
-      <div class="sg-card zen"><span class="sg-card-glyph">⛩</span><div class="sg-card-culture">Japanese Zen · 35°N 138°E</div><div class="sg-card-quote">The pine tree doesn't care if it is bonsai or forest giant.</div><div class="sg-card-concept">Ikigai</div></div>
+      <div class="sg-card taoist"><span class="sg-card-glyph">☯</span><div class="sg-card-culture">Taoist · 30°N 114°E</div><div class="sg-card-quote">The journey of a thousand miles begins with a single step.</div><div class="sg-card-concept">Tao</div></div>
+      <div class="sg-card vedic"><span class="sg-card-glyph">ॐ</span><div class="sg-card-culture">Vedic · 25°N 83°E</div><div class="sg-card-quote">The soul is never born nor dies at any time.</div><div class="sg-card-concept">Atman</div></div>
+      <div class="sg-card zen"><span class="sg-card-glyph">⛩</span><div class="sg-card-culture">Japanese Zen · 34°N 132°E</div><div class="sg-card-quote">Before enlightenment, chop wood, carry water.</div><div class="sg-card-concept">Mushin</div></div>
+      <div class="sg-card sufi"><span class="sg-card-glyph">✦</span><div class="sg-card-culture">Sufi · 38°N 43°E</div><div class="sg-card-quote">Out beyond ideas of wrongdoing and rightdoing, there is a field. I'll meet you there.</div><div class="sg-card-concept">Fana</div></div>
+      <div class="sg-card ubuntu"><span class="sg-card-glyph">◉</span><div class="sg-card-culture">Ubuntu · 1°S 36°E</div><div class="sg-card-quote">If you want to go fast, go alone. If far, go together.</div><div class="sg-card-concept">Harambee</div></div>
+      <div class="sg-card nordic"><span class="sg-card-glyph">ᚦ</span><div class="sg-card-culture">Nordic · 64°N 18°W</div><div class="sg-card-quote">Better to fight and fall than to live without hope.</div><div class="sg-card-concept">Valhalla</div></div>
+      <!-- duplicate for seamless loop -->
+      <div class="sg-card taoist"><span class="sg-card-glyph">☯</span><div class="sg-card-culture">Taoist · 30°N 114°E</div><div class="sg-card-quote">The journey of a thousand miles begins with a single step.</div><div class="sg-card-concept">Tao</div></div>
+      <div class="sg-card vedic"><span class="sg-card-glyph">ॐ</span><div class="sg-card-culture">Vedic · 25°N 83°E</div><div class="sg-card-quote">The soul is never born nor dies at any time.</div><div class="sg-card-concept">Atman</div></div>
+      <div class="sg-card zen"><span class="sg-card-glyph">⛩</span><div class="sg-card-culture">Japanese Zen · 34°N 132°E</div><div class="sg-card-quote">Before enlightenment, chop wood, carry water.</div><div class="sg-card-concept">Mushin</div></div>
+      <div class="sg-card sufi"><span class="sg-card-glyph">✦</span><div class="sg-card-culture">Sufi · 38°N 43°E</div><div class="sg-card-quote">Out beyond ideas of wrongdoing and rightdoing, there is a field. I'll meet you there.</div><div class="sg-card-concept">Fana</div></div>
+      <div class="sg-card ubuntu"><span class="sg-card-glyph">◉</span><div class="sg-card-culture">Ubuntu · 1°S 36°E</div><div class="sg-card-quote">If you want to go fast, go alone. If far, go together.</div><div class="sg-card-concept">Harambee</div></div>
+      <div class="sg-card nordic"><span class="sg-card-glyph">ᚦ</span><div class="sg-card-culture">Nordic · 64°N 18°W</div><div class="sg-card-quote">Better to fight and fall than to live without hope.</div><div class="sg-card-concept">Valhalla</div></div>
     </div>
   </div>
 </section>
@@ -421,38 +456,10 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 <!-- ═══ PHILOSOPHY ══════════════════════════════════════════════════════ -->
 <section id="why">
   <div class="section-wrap">
-    <div class="eyebrow"><div class="ey-line"></div>The Philosophy<div class="ey-line"></div></div>
-    <div class="big-hl">Four traditions.<br>One question.</div>
-    <div class="weekly-culture-banner" id="weekly-banner"></div>
-    <div class="body-t">For thousands of years every culture has held wisdom for the questions you're asking now. WAY hands you a compass and you choose the bearing that feels true.</div>
-    <div class="pillars" id="pillars-grid">
-      <div class="pillar" data-d="0">
-        <span class="p-glyph" style="color:#8c1b35">☽</span>
-        <div class="p-culture" style="color:#8c1b35">Arabic</div>
-        <div class="p-quote">"الصبر مفتاح الفرج"<br><em>Patience is the key to relief.</em></div>
-      </div>
-      <div class="pillar" data-d="100">
-        <span class="p-glyph" style="color:#2a7a6a">⛩</span>
-        <div class="p-culture" style="color:#2a7a6a">Japanese Zen</div>
-        <div class="p-quote">"七転び八起き"<br><em>Fall seven times. Rise eight.</em></div>
-      </div>
-      <div class="pillar" data-d="200">
-        <span class="p-glyph" style="color:#6b4020">Φ</span>
-        <div class="p-culture" style="color:#6b4020">Stoic</div>
-        <div class="p-quote"><em>"The impediment to action advances action."</em></div>
-      </div>
-      <div class="pillar" data-d="300">
-        <span class="p-glyph" style="color:#7a4020">◉</span>
-        <div class="p-culture" style="color:#7a4020">Ubuntu</div>
-        <div class="p-quote"><em>"Umuntu ngumuntu ngabantu."</em><br>A person is a person through people.</div>
-      </div>
-    </div>
-    <div class="pillars-dots" id="pillars-dots">
-      <span class="pd active" data-i="0"></span>
-      <span class="pd" data-i="1"></span>
-      <span class="pd" data-i="2"></span>
-      <span class="pd" data-i="3"></span>
-    </div>
+    <div class="eyebrow"><div class="ey-line"></div>This Week's Bearing<div class="ey-line"></div></div>
+    <div class="big-hl" id="why-headline">This week's<br>compass.</div>
+    <div class="body-t">WAY opens a single bearing each week — drawn from one of ten ancient traditions, rotating through the year. Each week is a new direction. Return and find yourself somewhere different.</div>
+    <div id="weekly-feature" style="opacity:0;transform:translateY(16px);transition:opacity .8s ease,transform .8s ease"></div>
   </div>
 </section>
 
@@ -512,7 +519,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
     <div class="cta-hl">Where are<br>you today?</div>
     <div class="cta-sub">Let WAY guide you, one feeling at a time.</div>
     <a href="way.html" class="cta-btn"><span>✦</span>Find My Way<span>✦</span></a>
-    <div class="cta-foot">Four traditions · Thousands of years · One question</div>
+    <div class="cta-foot">Ten traditions · Thousands of years · One question</div>
   </div>
 </section>
 
@@ -802,30 +809,50 @@ document.querySelectorAll('.pillar,.step').forEach(el => io.observe(el));
 
 /* ═══ WEEKLY CULTURE ══════════════════════════════════════════════════ */
 (function(){
-  const ORDER = ['arabic','zen','stoic','ubuntu'];
+  const ORDER = ['arabic','zen','stoic','ubuntu','sufi','taoist','vedic','celtic','nordic','confucian'];
   const META = {
-    arabic:  {glyph:'☽', label:'Arabic',       color:'#8c1b35'},
-    zen:     {glyph:'⛩', label:'Japanese Zen', color:'#2a7a6a'},
-    stoic:   {glyph:'Φ', label:'Stoic',         color:'#6b4020'},
-    ubuntu:  {glyph:'◉', label:'Ubuntu',        color:'#7a4020'},
+    arabic:    {glyph:'☽', label:'Arabic',        color:'#8c1b35', coord:'23°N 45°E', region:'Arabia',
+      quote:'"الصبر مفتاح الفرج"', translation:'Patience is the key to relief.', concept:'Sabr'},
+    zen:       {glyph:'⛩', label:'Japanese Zen',  color:'#1a6b58', coord:'35°N 135°E', region:'Kyoto',
+      quote:'"七転び八起き"', translation:'Fall seven times. Rise eight.', concept:'Nana Korobi Ya Oki'},
+    stoic:     {glyph:'Φ',  label:'Stoic',         color:'#7a4820', coord:'41°N 12°E', region:'Rome',
+      quote:'"The impediment to action advances action."', translation:'', concept:'Amor Fati'},
+    ubuntu:    {glyph:'◉', label:'Ubuntu',         color:'#7a3010', coord:'26°S 28°E', region:'Africa',
+      quote:'"Umuntu ngumuntu ngabantu."', translation:'A person is a person through people.', concept:'Ubuntu'},
+    sufi:      {glyph:'✦', label:'Sufi',           color:'#7a3585', coord:'35°N 51°E', region:'Persia',
+      quote:'"بشنو این نی چون شکایت می‌کند"', translation:'Listen to the reed, how it tells a tale of separation.', concept:'Ishq'},
+    taoist:    {glyph:'☯', label:'Taoist',         color:'#2a5c78', coord:'30°N 114°E', region:'China',
+      quote:'"知人者智，自知者明"', translation:'Knowing others is wisdom; knowing yourself is enlightenment.', concept:'Wu Wei'},
+    vedic:     {glyph:'ॐ', label:'Vedic',          color:'#c47820', coord:'20°N 77°E', region:'India',
+      quote:'"योगः कर्मसु कौशलम्"', translation:'Yoga is excellence in action.', concept:'Dharma'},
+    celtic:    {glyph:'᛭', label:'Celtic',         color:'#2d6b3a', coord:'53°N 8°W', region:'Ireland',
+      quote:'"Is minic a bhris béal duine a shrón."', translation:'Many a time a man\'s mouth broke his nose.', concept:'Anam Cara'},
+    nordic:    {glyph:'ᚦ', label:'Nordic',         color:'#4a5a8c', coord:'60°N 11°E', region:'Scandinavia',
+      quote:'"Cattle die, kinsmen die — the self must also die. One thing that never dies: the fame of a dead man\'s deeds."', translation:'', concept:'Wyrd'},
+    confucian: {glyph:'仁', label:'Confucian',     color:'#8c4a2a', coord:'35°N 117°E', region:'China',
+      quote:'"己所不欲，勿施於人"', translation:'Do not impose on others what you yourself do not want.', concept:'Ren'},
   };
-  const weekIdx = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000)) % 4;
+  const weekIdx = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000)) % ORDER.length;
   const key = ORDER[weekIdx];
   const m = META[key];
-  const banner = document.getElementById('weekly-banner');
-  if(banner){
-    banner.innerHTML = `<span class="wcb-week">This Week</span><span class="wcb-dot"></span><span class="wcb-glyph" style="color:${m.color}">${m.glyph}</span><span class="wcb-name" style="color:${m.color}">${m.label}</span><a href="way.html?culture=${key}" class="wcb-cta">Seek This Bearing →</a>`;
-  }
-  // Highlight the active pillar
-  const pillars = document.querySelectorAll('#pillars-grid .pillar');
-  const pillarOrder = ['arabic','zen','stoic','ubuntu'];
-  pillars.forEach((p, i) => {
-    if(i === weekIdx){
-      p.style.border = `.5px solid ${m.color}`;
-      p.style.boxShadow = `0 0 0 2px ${m.color}22, 0 8px 32px ${m.color}18`;
-    }
-  });
   window.__weeklyKey = key;
+  window.__weeklyMeta = m;
+
+  // Weekly feature card
+  const wf = document.getElementById('weekly-feature');
+  if(wf){
+    wf.style.setProperty('--wf-color', m.color);
+    wf.innerHTML = `
+      <span class="wf-glyph" style="color:${m.color}">${m.glyph}</span>
+      <div class="wf-label">This Week · ${m.region} · ${m.coord}</div>
+      <div class="wf-name" style="color:${m.color}">${m.label}</div>
+      <div class="wf-quote">${m.quote}</div>
+      ${m.translation ? `<div class="wf-translation">${m.translation}</div>` : ''}
+      <div class="wf-concept">${m.concept}</div>
+      <a href="way.html" class="wf-cta">✦ &nbsp;Seek This Bearing</a>
+    `;
+    setTimeout(()=>{ wf.style.opacity='1'; wf.style.transform='translateY(0)'; }, 200);
+  }
 })();
 
 /* ═══ PILLARS CAROUSEL DOTS ═══════════════════════════════════════════ */
@@ -1111,8 +1138,9 @@ const AudioEngine = (() => {
     });
   });
 
-  /* ── SCROLL GRID drift ── */
+  /* ── SCROLL GRID drift (desktop only — mobile uses CSS marquee) ── */
   (function(){
+    if(window.innerWidth<=680) return;
     const r1=document.getElementById('sg-r1');
     const r2=document.getElementById('sg-r2');
     const r3=document.getElementById('sg-r3');
@@ -1122,16 +1150,14 @@ const AudioEngine = (() => {
     function update(){
       const rect=sec.getBoundingClientRect();
       const wh=window.innerHeight;
-      const prog=1-(rect.bottom/(rect.height+wh));
-      const clamped=Math.max(-0.1,Math.min(1.1,prog));
-      const drift=clamped*180;
-      const base=window.innerWidth<680?-80:0;
-      r1.style.transform=`translateX(${base-drift}px)`;
-      r2.style.transform=`translateX(${-base+drift*0.7}px)`;
-      r3.style.transform=`translateX(${base*0.6-drift*0.5}px)`;
+      const prog=Math.max(-0.1,Math.min(1.1,1-(rect.bottom/(rect.height+wh))));
+      const drift=prog*160;
+      r1.style.transform=`translateX(${-drift}px)`;
+      r2.style.transform=`translateX(${drift*0.75}px)`;
+      r3.style.transform=`translateX(${-drift*0.5}px)`;
       ticking=false;
     }
-    window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(update);ticking=true;}},{passive:true});
+    lenis.on('scroll', ()=>{ if(!ticking){ requestAnimationFrame(update); ticking=true; }});
     update();
   })();
 })();
