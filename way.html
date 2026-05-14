@@ -18,7 +18,6 @@
 <link rel="preconnect" href="https://api.groq.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -176,10 +175,10 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 
 /* ── ECARD FLIP ──────────────────────────── */
 .flip-card{perspective:1200px;width:100%;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.flip-card-inner{position:relative;width:100%;aspect-ratio:3/4;transition:transform .7s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
-.flip-card.flipped .flip-card-inner{transform:rotateY(180deg)}
-.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7)}
-.flip-back{transform:rotateY(180deg)}
+.flip-card-inner{position:relative;width:100%;aspect-ratio:3/4;transition:transform .7s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
+.flip-card.flipped .flip-card-inner{transform:rotateY(180deg);-webkit-transform:rotateY(180deg)}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7);transform:rotateY(0deg) translateZ(0);-webkit-transform:rotateY(0deg) translateZ(0)}
+.flip-back{transform:rotateY(180deg) translateZ(0);-webkit-transform:rotateY(180deg) translateZ(0)}
 
 /* ── ECARD BASE ──────────────────────────── */
 .ecard{width:100%;height:100%;position:relative;display:flex;flex-direction:column}
@@ -573,7 +572,6 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
               </div>
               <div class="ecard-rule"></div>
               <div class="ecard-quote-area">
-                <span class="ecard-deco" id="ec-back-deco"></span>
                 <div class="ecard-gz-eyebrow">or in gen z terms</div>
                 <div class="ecard-gz-text" id="ec-genz"></div>
                 <div class="ecard-gz-sub" id="ec-back-concept"></div>
@@ -603,8 +601,6 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
         WhatsApp
       </button>
     </div>
-    <div id="modal-shorturl" style="width:100%;text-align:center;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2px;color:rgba(245,230,208,.35);margin-top:10px;min-height:16px"></div>
-    <div id="modal-qr" style="width:100%;display:flex;justify-content:center;margin-top:10px"></div>
   </div>
 </div>
 
@@ -1037,19 +1033,6 @@ function openShareModal(){
   document.getElementById('modal-audio-btn').classList.remove('active');
   AudioEngine.stop();
   setTimeout(()=>{ AudioEngine.play(weeklyKey); updateModalAudioBtn(true); }, 400);
-
-  // QR code + short URL
-  const qrDiv=document.getElementById('modal-qr');
-  const suDiv=document.getElementById('modal-shorturl');
-  if(qrDiv){qrDiv.innerHTML='';}
-  if(suDiv){suDiv.textContent='Generating link…';}
-  getShortUrl(activeShareKey).then(url=>{
-    if(suDiv) suDiv.textContent=url.replace('https://','');
-    if(qrDiv&&typeof QRCode!=='undefined'){
-      qrDiv.innerHTML='';
-      new QRCode(qrDiv,{text:url,width:96,height:96,colorDark:'#f5e6d0',colorLight:'#0a0608'});
-    }
-  });
 }
 
 function toggleFlip(){
@@ -1083,27 +1066,15 @@ function buildShareUrl(key){
   return window.location.origin+'/card?d='+encoded;
 }
 
-let _shortUrlCache={};
-async function getShortUrl(key){
-  const long=buildShareUrl(key);
-  if(_shortUrlCache[key]) return _shortUrlCache[key];
-  try{
-    const r=await fetch('https://tinyurl.com/api-create.php?url='+encodeURIComponent(long),{signal:AbortSignal.timeout(3500)});
-    if(r.ok){const s=(await r.text()).trim();if(s.startsWith('https://')){_shortUrlCache[key]=s;return s;}}
-  }catch(e){}
-  return long;
-}
-
-async function modalCopy(){
+function modalCopy(){
   if(!lastWisdom||!activeShareKey) return;
-  const url=await getShortUrl(activeShareKey);
-  navigator.clipboard.writeText(url).then(()=>showToast('Link copied ✓'));
+  navigator.clipboard.writeText(buildShareUrl(activeShareKey)).then(()=>showToast('Link copied ✓'));
 }
 
-async function modalX(){
+function modalX(){
   if(!lastWisdom) return;
   const d=lastWisdom[weeklyKey];
-  const url=await getShortUrl(weeklyKey);
+  const url=buildShareUrl(weeklyKey);
   const full=`"${d.translation}"\n— ${d.concept}, ${weeklyMeta.label}\n\n${url}`;
   const txt=full.length>270?`"${d.translation.substring(0,180)}…"\n— ${d.concept}\n\n${url}`:full;
   window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(txt),'_blank');
@@ -1118,7 +1089,7 @@ async function modalWhatsApp(){
   waBtn.innerHTML='<span style="opacity:.6">•••</span> Generating…';
   waBtn.disabled=true;
   try {
-    const url=await getShortUrl(weeklyKey);
+    const url=buildShareUrl(weeklyKey);
     const msg=`✦ WAY · ${m.label}\n\n${d.quote}\n\n"${d.translation}"\n— ${d.concept}\n\nYour bearing this week 👇\n${url}`;
     const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
     const canvas=await buildWisdomCanvas(isFlipped?'genz':'wisdom');
@@ -1309,8 +1280,19 @@ async function saveImage(){
   try{
     const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
     const canvas=await buildWisdomCanvas(isFlipped?'genz':'wisdom');
-    canvas.toBlob(blob=>{
+    canvas.toBlob(async blob=>{
       if(!blob){showToast('Could not save image');return;}
+      const file=new File([blob],'way-wisdom.png',{type:'image/png'});
+      // Mobile: native share sheet → iOS shows "Save Image" → Photos, Android → gallery
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        try{
+          await navigator.share({files:[file],title:'WAY — Find Your Bearing'});
+          return;
+        }catch(e){
+          if(e.name==='AbortError') return; // user cancelled — don't fall through
+        }
+      }
+      // Desktop fallback: direct download
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');
       a.href=url;a.download='way-wisdom.png';a.click();
