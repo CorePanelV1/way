@@ -26,6 +26,7 @@
   --red:#8c1b35;--red2:#a82040;
   --gold:#c9a84c;--gold2:#e0bc6a;--golddim:rgba(201,168,76,.5);
   --arabic:#8c1b35;--zen:#1a6b58;--stoic:#7a4820;--ubuntu:#7a3010;--persian:#4a2878;
+  --sufi:#7a3585;--taoist:#2a5c78;--vedic:#c47820;--celtic:#2d6b3a;--nordic:#4a5a8c;--confucian:#8c4a2a;
   --border:rgba(245,230,208,.08);
 }
 html{scroll-behavior:smooth;background:var(--bg)}
@@ -182,6 +183,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .ecard.zen     {background:linear-gradient(160deg,#02080a 0%,#041510 50%,#010605 100%)}
 .ecard.stoic   {background:linear-gradient(160deg,#080605 0%,#130e06 50%,#070504 100%)}
 .ecard.ubuntu  {background:linear-gradient(160deg,#0c0600 0%,#1a0d02 50%,#080400 100%)}
+.ecard.sufi    {background:linear-gradient(160deg,#0d0210 0%,#1a0620 50%,#090108 100%)}
+.ecard.taoist  {background:linear-gradient(160deg,#010a0e 0%,#021520 50%,#010608 100%)}
+.ecard.vedic   {background:linear-gradient(160deg,#0e0800 0%,#1e1200 50%,#0a0500 100%)}
+.ecard.celtic  {background:linear-gradient(160deg,#010e04 0%,#021a08 50%,#010602 100%)}
+.ecard.nordic  {background:linear-gradient(160deg,#03050e 0%,#080e1e 50%,#020408 100%)}
+.ecard.confucian{background:linear-gradient(160deg,#0e0500 0%,#1e0e00 50%,#0a0300 100%)}
 
 /* SVG decorative pattern per culture — Islamic star, Enso, Meander, Ubuntu sun */
 .ecard.arabic  .ecard-pattern{background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c9a84c' stroke-width='.4' opacity='.35'%3E%3Cpolygon points='40,4 47,22 64,16 58,33 76,40 58,47 64,64 47,58 40,76 33,58 16,64 22,47 4,40 22,33 16,16 33,22'/%3E%3Ccircle cx='40' cy='40' r='18'/%3E%3C/g%3E%3C/svg%3E");background-size:80px 80px;opacity:.18}
@@ -196,6 +203,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .ecard.zen     .ecard-glow{background:radial-gradient(ellipse 70% 55% at 70% 20%,rgba(26,107,88,.22) 0%,transparent 65%),radial-gradient(ellipse 40% 35% at 30% 80%,rgba(10,50,35,.15) 0%,transparent 60%)}
 .ecard.stoic   .ecard-glow{background:radial-gradient(ellipse 70% 55% at 50% 20%,rgba(122,72,32,.25) 0%,transparent 65%)}
 .ecard.ubuntu  .ecard-glow{background:radial-gradient(ellipse 70% 55% at 35% 30%,rgba(122,48,16,.3) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 65% 75%,rgba(80,30,5,.2) 0%,transparent 60%)}
+.ecard.sufi    .ecard-glow{background:radial-gradient(ellipse 70% 55% at 40% 25%,rgba(122,53,133,.28) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 65% 80%,rgba(70,20,80,.2) 0%,transparent 60%)}
+.ecard.taoist  .ecard-glow{background:radial-gradient(ellipse 70% 55% at 60% 20%,rgba(42,92,120,.25) 0%,transparent 65%),radial-gradient(ellipse 40% 35% at 35% 80%,rgba(15,40,55,.18) 0%,transparent 60%)}
+.ecard.vedic   .ecard-glow{background:radial-gradient(ellipse 70% 55% at 45% 20%,rgba(196,120,32,.28) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 70% 80%,rgba(100,60,10,.2) 0%,transparent 60%)}
+.ecard.celtic  .ecard-glow{background:radial-gradient(ellipse 70% 55% at 35% 25%,rgba(45,107,58,.25) 0%,transparent 65%),radial-gradient(ellipse 40% 35% at 70% 80%,rgba(20,55,25,.18) 0%,transparent 60%)}
+.ecard.nordic  .ecard-glow{background:radial-gradient(ellipse 70% 55% at 50% 20%,rgba(74,90,140,.25) 0%,transparent 65%),radial-gradient(ellipse 40% 35% at 70% 80%,rgba(30,40,80,.18) 0%,transparent 60%)}
+.ecard.confucian .ecard-glow{background:radial-gradient(ellipse 70% 55% at 40% 25%,rgba(140,74,42,.28) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 70% 80%,rgba(80,40,15,.2) 0%,transparent 60%)}
 .ecard-glow{position:absolute;inset:0;z-index:1;pointer-events:none}
 
 /* Card content layout */
@@ -218,6 +231,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .ecard.zen     .ecard-deco{color:#1a6b58}
 .ecard.stoic   .ecard-deco{color:#7a4820}
 .ecard.ubuntu  .ecard-deco{color:#c9a84c}
+.ecard.sufi    .ecard-deco{color:#9a55aa}
+.ecard.taoist  .ecard-deco{color:#3a8ca0}
+.ecard.vedic   .ecard-deco{color:#c47820}
+.ecard.celtic  .ecard-deco{color:#3a8c50}
+.ecard.nordic  .ecard-deco{color:#5a6aaa}
+.ecard.confucian .ecard-deco{color:#aa6040}
 .ecard-original{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,5vw,1.85rem);font-style:italic;color:rgba(245,230,208,.97);line-height:1.45;text-align:center;letter-spacing:.01em}
 .ecard-translation{font-family:'Cormorant Garamond',serif;font-size:clamp(.9rem,3vw,1.1rem);color:rgba(245,230,208,.55);line-height:1.6;font-style:italic;text-align:center}
 
@@ -232,6 +251,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .ecard.zen-back     {--gb-bg:#02080a;--gb-acc:rgba(26,107,88,.3)}
 .ecard.stoic-back   {--gb-bg:#090706;--gb-acc:rgba(122,72,32,.3)}
 .ecard.ubuntu-back  {--gb-bg:#0c0600;--gb-acc:rgba(122,48,16,.35)}
+.ecard.sufi-back    {--gb-bg:#0d0210;--gb-acc:rgba(122,53,133,.35)}
+.ecard.taoist-back  {--gb-bg:#010a0e;--gb-acc:rgba(42,92,120,.3)}
+.ecard.vedic-back   {--gb-bg:#0e0800;--gb-acc:rgba(196,120,32,.35)}
+.ecard.celtic-back  {--gb-bg:#010e04;--gb-acc:rgba(45,107,58,.3)}
+.ecard.nordic-back  {--gb-bg:#03050e;--gb-acc:rgba(74,90,140,.3)}
+.ecard.confucian-back{--gb-bg:#0e0500;--gb-acc:rgba(140,74,42,.35)}
 .ecard-back .ecard-glow{background:radial-gradient(ellipse 80% 60% at 60% 70%,var(--gb-acc,rgba(140,27,53,.25)) 0%,transparent 65%)}
 .ecard-back .ecard-deco{font-size:2.8rem;opacity:.25}
 .ecard-gz-eyebrow{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.28);text-align:center;margin-bottom:6px}
@@ -340,6 +365,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .split-card.zen::before{background:linear-gradient(90deg,transparent,var(--zen),transparent)}
 .split-card.stoic::before{background:linear-gradient(90deg,transparent,var(--stoic),transparent)}
 .split-card.ubuntu::before{background:linear-gradient(90deg,transparent,var(--ubuntu),transparent)}
+.split-card.sufi::before{background:linear-gradient(90deg,transparent,var(--sufi),transparent)}
+.split-card.taoist::before{background:linear-gradient(90deg,transparent,var(--taoist),transparent)}
+.split-card.vedic::before{background:linear-gradient(90deg,transparent,var(--vedic),transparent)}
+.split-card.celtic::before{background:linear-gradient(90deg,transparent,var(--celtic),transparent)}
+.split-card.nordic::before{background:linear-gradient(90deg,transparent,var(--nordic),transparent)}
+.split-card.confucian::before{background:linear-gradient(90deg,transparent,var(--confucian),transparent)}
 
 .split-panel{padding:36px 32px;display:flex;flex-direction:column}
 .split-wisdom{background:rgba(10,6,8,.82);border-right:.5px solid var(--border)}
