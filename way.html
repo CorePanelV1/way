@@ -1280,8 +1280,19 @@ async function saveImage(){
   try{
     const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
     const canvas=await buildWisdomCanvas(isFlipped?'genz':'wisdom');
-    canvas.toBlob(blob=>{
+    canvas.toBlob(async blob=>{
       if(!blob){showToast('Could not save image');return;}
+      const file=new File([blob],'way-wisdom.png',{type:'image/png'});
+      // Mobile: native share sheet → iOS shows "Save Image" → Photos, Android → gallery
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        try{
+          await navigator.share({files:[file],title:'WAY — Find Your Bearing'});
+          return;
+        }catch(e){
+          if(e.name==='AbortError') return; // user cancelled — don't fall through
+        }
+      }
+      // Desktop fallback: direct download
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');
       a.href=url;a.download='way-wisdom.png';a.click();
