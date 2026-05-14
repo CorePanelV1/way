@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title id="pg-title">WAY of the Day</title>
+<title id="pg-title">WAY of the Day — Today's Ancient Wisdom Bearing</title>
 <meta name="description" id="pg-desc" content="Today's collective wisdom bearing from WAY."/>
 <meta property="og:title" id="og-title" content="WAY of the Day"/>
 <meta property="og:description" id="og-desc" content="Ancient wisdom for today."/>
 <meta property="og:image" content="/og.svg"/>
 <meta property="og:type" content="website"/>
+<meta property="og:url" content="https://way-whereareyou.vercel.app/today.html"/>
+<link rel="canonical" href="https://way-whereareyou.vercel.app/today.html"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/og.svg"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
@@ -112,7 +114,10 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 
 <nav class="top-nav" id="top-nav">
   <a href="index.html" class="nav-logo">WAY</a>
-  <a href="way.html" class="nav-cta">Find My Way →</a>
+  <div style="display:flex;gap:20px;align-items:center">
+    <a href="about.html" class="nav-cta">About</a>
+    <a href="way.html" class="nav-cta">Find My Way →</a>
+  </div>
 </nav>
 
 <div class="day-header">
@@ -158,7 +163,16 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   </div>
 </div>
 
-<div class="day-foot">Returns each day with the turning of the compass · WAY</div>
+<div class="day-foot">Wisdom is AI-generated · rooted in authentic cultural traditions · always verify before citing</div>
+
+<footer style="position:relative;z-index:1;width:100%;max-width:680px;margin-top:40px;padding:24px 0;border-top:.5px solid rgba(245,230,208,.08);text-align:center;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.2)">
+  <a href="index.html" style="color:inherit;text-decoration:none;transition:color .3s" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='inherit'">Home</a>
+  &nbsp;·&nbsp;
+  <a href="way.html" style="color:inherit;text-decoration:none;transition:color .3s" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='inherit'">Find My Bearing</a>
+  &nbsp;·&nbsp;
+  <a href="about.html" style="color:inherit;text-decoration:none;transition:color .3s" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='inherit'">About</a>
+  &nbsp;·&nbsp; © 2026 WAY
+</footer>
 
 <script>
 /* ── STAR CANVAS ── */
@@ -278,13 +292,13 @@ const CARDS = [
   {key:'zen',glyph:'⛩',culture:'ZEN',coord:'33°N 130°E · Fukuoka',
    quote:'Before enlightenment, chop wood, carry water. After enlightenment, chop wood, carry water.',
    translation:'Before enlightenment, chop wood, carry water. After enlightenment, chop wood, carry water.',
-   concept:'Wabi-Sabi',
+   concept:'Shoshin',
    practice:'Do one ordinary task today with complete attention — as if it were the only thing.',
    context:'Zen locates the sacred not in extraordinary experiences but in ordinary ones met with full presence. The magic was always in the chopping and the carrying.'},
 
   {key:'stoic',glyph:'Φ',culture:'STOIC',coord:'41°N 28°E · Constantinople',
    quote:'Nemo ante mortem beatus.',translation:'No man is to be called happy before his death.',
-   concept:'Eudaimonia',
+   concept:'Ataraxia',
    practice:'Define what a good life looks like for you today — not someday, but in the next 24 hours.',
    context:'Solon\'s warning, echoed through Stoic philosophy: happiness is not a destination arrived at but a quality of the journey. It lives in how you move through today, not in what today delivers.'},
 
@@ -384,6 +398,7 @@ function dayOfYear(d){
 }
 
 /* ── RENDER ── */
+let _dayKey = 'arabic';
 (function(){
   const now = new Date();
   const idx = dayOfYear(now) % CARDS.length;
@@ -422,11 +437,10 @@ function dayOfYear(d){
   // X share link
   const xText = `"${card.translation}"\n— ${card.concept}, ${card.culture} Wisdom · WAY of the Day`;
   document.getElementById('x-btn').href =
-    'https://twitter.com/intent/tweet?text=' + encodeURIComponent(xText) + '&url=' + encodeURIComponent(location.href);
+    'https://x.com/intent/tweet?text=' + encodeURIComponent(xText) + '&url=' + encodeURIComponent(location.href);
 })();
 
 /* ── AUDIO ENGINE ── */
-let _dayKey = 'arabic';
 const DayAudio = (() => {
   let actx=null,master=null,alive=[],playing=false;
   function ctx(){if(!actx){actx=new(window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=0;master.connect(actx.destination);}return actx;}

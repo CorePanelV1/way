@@ -57,12 +57,12 @@ function buildSystem(traditions, mode) {
   const blocks = traditions.map(t => {
     const c = TRADITIONS[t];
     return `  "${t}": {
-    "quote": "AUTHENTIC quote — ${c.instruction}. This MUST be a real, verifiable saying, not invented.",
-    "translation": "faithful English translation (skip if already English)",
+    "quote": "<REQUIRED: actual original-script text — ${c.instruction}. Real, verifiable saying. NEVER an empty string.>",
+    "translation": "faithful English translation (omit if quote is already in English)",
     "concept": "1-4 word concept name from that tradition",
     "context": "2 sentences: why this exact wisdom meets their specific situation — reference details from what they shared, not generic advice",
     "practice": "one concrete, doable action they can take today",
-    "genZ": "${c.genZVoice}",
+    "genZ": "<${c.genZVoice}>",
     "coordinate": "${c.coord}",
     "region": "${c.region}"
   }`;
@@ -72,12 +72,19 @@ function buildSystem(traditions, mode) {
 
 CRITICAL RULES:
 1. Quotes must be REAL and AUTHENTIC — actual proverbs, verses, or sayings from that tradition. Never invent quotes.
-2. Original-language quotes MUST use the actual script of that culture (Arabic, Japanese, Chinese, Devanagari, etc.)
+2. The "quote" field MUST contain the actual original-language text in native script — this field MUST NEVER be an empty string "":
+   - Arabic/Islamic → Arabic calligraphy (right-to-left, e.g. "الصبر مفتاح الفرج")
+   - Japanese Zen → Japanese kanji/hiragana (e.g. "七転び八起き")
+   - Chinese/Taoist/Confucian → Traditional Chinese characters (e.g. "知人者智，自知者明")
+   - Sanskrit/Vedic → Devanagari script (e.g. "योगः कर्मसु कौशलम्")
+   - Persian/Sufi → Farsi script (e.g. "بشنو این نی چون شکایت می‌کند")
+   - Celtic/Nordic/Stoic → Latin, Old Norse, Irish Gaelic, or original English as written
+   - If uncertain of the exact script, use the romanized transliteration — but NEVER leave "quote" empty.
 3. "context" field MUST reference specific details from what they shared — if they mention work, a relationship, a decision, name it directly. Generic advice is FORBIDDEN.
 4. "practice" must be actionable today, specific to their situation.
 5. genZ field must be genuinely funny and culturally flavored — not a bland restatement.
 6. Keep all fields concise — no padding, no filler.
-7. Respond ONLY with the JSON object below. No preamble, no explanation.
+7. Respond ONLY with the JSON object below. No preamble, no explanation, no markdown fences.
 
 {
   "summary": "3-5 word poetic summary of their emotional state",
@@ -148,6 +155,12 @@ export default async function handler(req) {
     if (!match) return new Response(JSON.stringify({ error: 'Could not parse wisdom. Try again.' }), { status: 500, headers });
 
     const wisdom = JSON.parse(match[0]);
+    // Ensure no tradition has an empty quote field
+    for (const key of Object.keys(TRADITIONS)) {
+      if (wisdom[key] && !wisdom[key].quote) {
+        wisdom[key].quote = wisdom[key].translation || '';
+      }
+    }
     return new Response(JSON.stringify(wisdom), { status: 200, headers });
   } catch (err) {
     console.error('Handler error:', err);

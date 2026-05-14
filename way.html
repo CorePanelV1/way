@@ -9,6 +9,8 @@
 <meta property="og:description" content="Tell WAY how you feel. Receive ancient wisdom from Arabic, Zen, Stoic and Ubuntu traditions."/>
 <meta property="og:image" content="/og.svg"/>
 <meta property="og:type" content="website"/>
+<meta property="og:url" content="https://way-whereareyou.vercel.app/way.html"/>
+<link rel="canonical" href="https://way-whereareyou.vercel.app/way.html"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/og.svg"/>
 <meta name="theme-color" content="#0a0608"/>
@@ -526,10 +528,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
     </div>
     <div class="load-label" id="load-label">Reading your bearing</div>
     <div class="load-cultures">
-      <span class="lc" id="lc-arabic">☽ ARABIC</span>
-      <span class="lc" id="lc-zen">⛩ ZEN</span>
-      <span class="lc" id="lc-stoic">Φ STOIC</span>
-      <span class="lc" id="lc-ubuntu">◉ UBUNTU</span>
+      <span class="lc" id="lc-weekly"></span>
     </div>
     <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
   </div>
@@ -540,6 +539,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   <div class="results-header">
     <div class="results-eyebrow" id="results-eyebrow">Your bearing</div>
     <div class="results-summary" id="results-summary"></div>
+    <div id="trad-note" style="display:none;margin-top:10px;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,230,208,.28)"></div>
   </div>
   <div class="split-card" id="split-card">
     <div class="split-panel split-wisdom" id="split-wisdom"></div>
@@ -847,15 +847,11 @@ let litTimer = null;
 function startLoadAnim(){
   const bar = document.getElementById('load-bar');
   bar.style.width='0%';
-  ['arabic','zen','stoic','ubuntu'].forEach(k=>{const el=document.getElementById('lc-'+k);if(el)el.classList.remove('lit');});
+  const lcEl = document.getElementById('lc-weekly');
+  if(lcEl){ lcEl.textContent = weeklyMeta.glyph + ' ' + weeklyMeta.label; lcEl.classList.remove('lit'); }
   let pct=0;
-  const keys=['arabic','zen','stoic','ubuntu'];
-  let ki=0;
   clearInterval(litTimer);
-  litTimer=setInterval(()=>{
-    if(ki<keys.length){const el=document.getElementById('lc-'+keys[ki]);if(el)el.classList.add('lit');ki++;}
-    else clearInterval(litTimer);
-  },600);
+  litTimer=setTimeout(()=>{if(lcEl)lcEl.classList.add('lit');},400);
   loadTimer=setInterval(()=>{
     pct=Math.min(pct+(Math.random()*3+0.8),88);
     bar.style.width=pct+'%';
@@ -863,9 +859,10 @@ function startLoadAnim(){
 }
 function finishLoadAnim(){
   clearInterval(loadTimer);
-  clearInterval(litTimer);
+  clearTimeout(litTimer);
   document.getElementById('load-bar').style.width='100%';
-  ['arabic','zen','stoic','ubuntu'].forEach(k=>{const el=document.getElementById('lc-'+k);if(el)el.classList.add('lit');});
+  const lcEl=document.getElementById('lc-weekly');
+  if(lcEl)lcEl.classList.add('lit');
 }
 
 /* ═══ WEEKLY CULTURE ════════════════════════════════════════════════ */
@@ -964,6 +961,15 @@ async function seek(){
 function renderResults(data){
   document.getElementById('results-summary').textContent = data.summary || '';
   document.getElementById('results-eyebrow').textContent = `Your ${weeklyMeta.label.toLowerCase()} bearing`;
+
+  // Show tradition note if user's saved preferences don't include this week's culture
+  const _savedTrds = (() => { try { return JSON.parse(localStorage.getItem('way_traditions') || '[]'); } catch { return []; } })();
+  const tradNoteEl = document.getElementById('trad-note');
+  if(tradNoteEl && _savedTrds.length && !_savedTrds.includes(weeklyKey)){
+    const names = _savedTrds.map(k => (WEEKLY_META[k]||{}).label || k).join(' · ');
+    tradNoteEl.textContent = `Your traditions: ${names} · This week features ${weeklyMeta.label}`;
+    tradNoteEl.style.display = 'block';
+  } else if(tradNoteEl){ tradNoteEl.style.display = 'none'; }
 
   const d = data[weeklyKey];
   if(!d){ showToast('Could not read bearing. Try again.'); show('state-input'); return; }
