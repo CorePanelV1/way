@@ -541,7 +541,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 gsap.registerPlugin(ScrollTrigger);
 
 /* ═══ LENIS SMOOTH SCROLL ════════════════════════════════════════════ */
-const lenis = new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+const lenis = new Lenis({duration:0.7,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
 lenis.on('scroll', e => {
   ScrollTrigger.update();
   const sp = document.getElementById('scroll-progress');
@@ -734,7 +734,7 @@ el.to(HUD,  {opacity:1,duration:1},1.4);
 const master = gsap.timeline({
   scrollTrigger:{
     trigger:'#hero-section', start:'top top', end:'bottom bottom',
-    scrub:0.15, invalidateOnRefresh:true,
+    scrub:true, invalidateOnRefresh:true,
     onUpdate(self){
       const p = self.progress;
       tp = p;
@@ -966,9 +966,10 @@ const WAY = {
 
   shareX(){
     const q = SHARE_QUOTES[shareIdx];
-    const text = '"' + q.english + '"\n— ' + q.pill + '\n\nFind your own bearing:';
+    const quote = q.english.length > 140 ? q.english.substring(0,137)+'…' : q.english;
+    const text = `"${quote}"\n— ${q.pill} wisdom`;
     const url = window.location.origin + '/way.html';
-    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url),'_blank');
+    window.open('https://x.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url),'_blank','noopener');
   },
 
   shareWhatsApp(){
