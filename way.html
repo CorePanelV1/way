@@ -1303,30 +1303,6 @@ async function buildWisdomCanvas(side){
   return canvas;
 }
 
-  ctx.font=qFont;ctx.fillStyle='rgba(245,230,208,.92)';
-  if(isAr){
-    ctx.direction='rtl';ctx.textAlign='right';
-    for(const l of qLines){ctx.fillText(l,W-PAD,y);y+=30;}
-    ctx.direction='ltr';ctx.textAlign='left';
-  } else {for(const l of qLines){ctx.fillText(l,PAD,y);y+=30;}}
-  y+=14;
-
-  if(tLines.length){
-    ctx.font=tFont;ctx.fillStyle='rgba(245,230,208,.5)';
-    for(const l of tLines){ctx.fillText(l,PAD,y);y+=26;}
-    y+=14;
-  }
-
-  ctx.font='400 9px "Cinzel",serif';ctx.letterSpacing='2px';
-  ctx.fillStyle='rgba(201,168,76,.5)';
-  ctx.fillText((d.concept||'').toUpperCase(),PAD,y+6);
-  ctx.textAlign='right';ctx.fillStyle='rgba(201,168,76,.3)';
-  ctx.fillText('WAY',W-PAD,y+6);
-  ctx.textAlign='left';ctx.letterSpacing='0';
-
-  return canvas;
-}
-
 async function saveImage(){
   if(!lastWisdom) return;
   showToast('Generating image…');
