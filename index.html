@@ -33,7 +33,7 @@
   --text:#2c1018;--text2:#6b2030;--text3:#9a7060;
   --border:rgba(140,27,53,.12);--card-dark:#110608;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--golddim);border-radius:2px}
 
@@ -269,10 +269,31 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 .sg-card.zen .sg-card-glyph{color:#1a6b58}
 .sg-card.stoic .sg-card-glyph{color:#7a4820}
 .sg-card.ubuntu .sg-card-glyph{color:#7a3010}
+.sg-card.sufi::before{background:linear-gradient(90deg,transparent,#6b3570,transparent)}
+.sg-card.taoist::before{background:linear-gradient(90deg,transparent,#2a5c78,transparent)}
+.sg-card.vedic::before{background:linear-gradient(90deg,transparent,#8c5a1b,transparent)}
+.sg-card.celtic::before{background:linear-gradient(90deg,transparent,#2d6b3a,transparent)}
+.sg-card.nordic::before{background:linear-gradient(90deg,transparent,#4a5a8c,transparent)}
+.sg-card.confucian::before{background:linear-gradient(90deg,transparent,#8c3a1b,transparent)}
+.sg-card.sufi .sg-card-glyph{color:#8c4a9a}
+.sg-card.taoist .sg-card-glyph{color:#3a8ca0}
+.sg-card.vedic .sg-card-glyph{color:#c47820}
+.sg-card.celtic .sg-card-glyph{color:#3a8c50}
+.sg-card.nordic .sg-card-glyph{color:#5a6aaa}
+.sg-card.confucian .sg-card-glyph{color:#aa5a3a}
 .sg-card-culture{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-bottom:10px}
 .sg-card-quote{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;line-height:1.65;color:rgba(245,230,208,.75);margin-bottom:8px}
 .sg-card-concept{font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:rgba(201,168,76,.45)}
-@media(max-width:680px){#scroll-grid{padding:60px 0}.sg-card{width:200px;padding:16px 16px 14px}}
+@keyframes marquee-l{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes marquee-r{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@media(max-width:680px){
+  #scroll-grid{padding:60px 0}
+  .sg-card{width:188px;padding:14px 14px 12px}
+  .sg-rows{overflow:hidden}
+  #sg-r1{animation:marquee-l 28s linear infinite}
+  #sg-r2{animation:marquee-r 32s linear infinite}
+  #sg-r3{animation:marquee-l 24s linear infinite}
+}
 </style>
 </head>
 <body>
