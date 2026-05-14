@@ -15,11 +15,17 @@
 <meta name="twitter:image" content="/og.svg"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="apple-touch-icon" href="/favicon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://api.groq.com">
+<meta name="theme-color" content="#f5e6d0"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* SCROLL PROGRESS */
+#scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:200;pointer-events:none}
 :root{
   --bg:#f5e6d0;--bg2:#eedcc0;--bg3:#e5cfa6;
   --red:#8c1b35;--red2:#a82040;--red3:#5a1020;
@@ -115,6 +121,9 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 .pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .pillar{border:.5px solid rgba(140,27,53,.1);border-radius:16px;padding:28px 24px;background:linear-gradient(145deg,rgba(238,220,192,.88) 0%,rgba(229,207,166,.65) 100%);position:relative;overflow:hidden;opacity:0;transform:translateY(18px);transition:border-color .3s,transform .3s}
 .pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
+.pillar::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(201,168,76,.08),transparent);pointer-events:none;opacity:0;transition:opacity .3s}
+.pillar:hover::after{opacity:1;animation:shimmer .6s ease forwards}
+@keyframes shimmer{0%{left:-100%}100%{left:200%}}
 .pillar.vis{opacity:1;transform:translateY(0);transition:opacity .7s ease,transform .7s ease,border-color .3s}
 .pillar:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px)!important;box-shadow:0 12px 40px rgba(140,27,53,.08)}
 @media(hover:none){.pillar:hover{transform:none!important;box-shadow:none}}
@@ -160,7 +169,7 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
   transition:transform .4s ease,box-shadow .4s ease;cursor:default;
 }
 #share-card:hover{box-shadow:0 44px 110px rgba(17,6,8,.45),0 14px 36px rgba(0,0,0,.28)}
-#share-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 25% 20%,rgba(140,27,53,.2) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 75% 80%,rgba(201,168,76,.06) 0%,transparent 65%);pointer-events:none}
+#share-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at var(--mx,25%) var(--my,20%),rgba(140,27,53,.22) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 75% 80%,rgba(201,168,76,.06) 0%,transparent 65%);pointer-events:none;transition:background .15s ease}
 #share-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent)}
 .sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;position:relative;z-index:1}
 .sc-logo{font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:6px;color:rgba(245,230,208,.9);font-weight:700}
@@ -192,7 +201,11 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 /* CTA */
 #cta-section{text-align:center;padding:140px 48px;position:relative;z-index:2;overflow:hidden}
 #cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(140,27,53,.04) 0%,transparent 70%);pointer-events:none}
-.cta-inner{max-width:680px;margin:0 auto;position:relative}
+.cta-inner{max-width:680px;margin:0 auto;position:relative;overflow:visible}
+.cta-inner::before,.cta-inner::after{content:'';position:absolute;left:50%;top:30%;border-radius:50%;border:.5px solid rgba(140,27,53,.08);pointer-events:none;transform-origin:center}
+.cta-inner::before{width:min(600px,90vw);height:min(600px,90vw);margin-left:calc(-1*min(300px,45vw));margin-top:calc(-1*min(300px,45vw));animation:ctaring 4s ease-in-out infinite}
+.cta-inner::after{width:min(800px,120vw);height:min(800px,120vw);margin-left:calc(-1*min(400px,60vw));margin-top:calc(-1*min(400px,60vw));animation:ctaring 4s ease-in-out 1.5s infinite}
+@keyframes ctaring{0%,100%{opacity:0;transform:scale(.85)}50%{opacity:1;transform:scale(1)}}
 .cta-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,7.5vw,5.8rem);font-weight:500;line-height:1;color:var(--red);margin-bottom:22px;font-style:italic}
 .cta-sub{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--text2);font-style:italic;line-height:1.9;margin-bottom:48px}
 .cta-btn{display:inline-flex;align-items:center;gap:12px;background:var(--red);color:var(--bg);border:none;border-radius:12px;padding:20px 52px;font-family:'Cinzel',serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-decoration:none;box-shadow:0 10px 44px rgba(140,27,53,.25);transition:all .3s}
@@ -221,9 +234,14 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 .sc-audio-btn.playing{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:var(--gold2);animation:apl 2s ease-in-out infinite}
 @keyframes apl{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.3)}55%{box-shadow:0 0 0 9px rgba(201,168,76,0)}}
 /* GRAIN + TOAST */
-.grain{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.022}
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.022;animation:grainshift 8s steps(1) infinite}
+@keyframes grainshift{0%,100%{background-position:0 0}25%{background-position:25% 35%}50%{background-position:60% 15%}75%{background-position:40% 70%}}
 #toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);z-index:1000;background:var(--text);color:var(--bg);padding:13px 28px;border-radius:30px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* FLOATING PILL */
+@keyframes pillpulse{0%,100%{box-shadow:0 8px 24px rgba(140,27,53,.35)}50%{box-shadow:0 8px 32px rgba(140,27,53,.55),0 0 0 8px rgba(140,27,53,.08)}}
+#floating-pill{position:fixed;bottom:28px;right:24px;z-index:150;display:flex;align-items:center;gap:8px;background:var(--red);color:var(--bg);border:none;border-radius:30px;padding:12px 20px;font-family:'Cinzel',serif;font-size:8.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;box-shadow:0 8px 24px rgba(140,27,53,.35);animation:pillpulse 3s ease-in-out infinite}
 
 /* RESPONSIVE */
 @media(max-width:900px){.share-layout{grid-template-columns:1fr;gap:48px}}
@@ -272,6 +290,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 </style>
 </head>
 <body>
+<div id="scroll-progress"></div>
 <div class="grain"></div>
 <div id="cursor" aria-hidden="true"></div>
 <div id="cursor-dot" aria-hidden="true"></div>
@@ -283,6 +302,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
     <a href="#why" class="nav-link">Philosophy</a>
     <a href="#how-section" class="nav-link">How It Works</a>
     <a href="#share-section" class="nav-link">Share</a>
+    <a href="today.html" class="nav-link">Today</a>
     <button class="nav-cta" onclick="document.getElementById('cta-section').scrollIntoView({behavior:'smooth'})">Find My Way</button>
   </div>
   <a href="way.html" class="nav-mobile-cta">Find My Way →</a>
@@ -511,6 +531,7 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
     <a href="#why" class="f-link">Philosophy</a>
     <a href="#how-section" class="f-link">How It Works</a>
     <a href="#share-section" class="f-link">Share</a>
+    <a href="about.html" class="f-link">About</a>
   </div>
   <div class="f-copy">© 2026 WAY · wisdom rooted in culture<br><span style="font-size:9px;opacity:.6">Wisdom is AI-generated. Quotes are intended to reflect authentic traditions — always verify before citing.</span></div>
 </footer>
@@ -1241,6 +1262,107 @@ const AudioEngine = (() => {
     update();
   })();
 })();
+
+/* ── Lenis smooth scroll ─────────────────────────────────── */
+if(typeof Lenis !== 'undefined'){
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    orientation: 'vertical',
+    smoothWheel: true,
+  });
+  lenis.on('scroll', ScrollTrigger.update);
+  function lenisRaf(time){ lenis.raf(time); requestAnimationFrame(lenisRaf); }
+  requestAnimationFrame(lenisRaf);
+
+  /* Scroll progress bar */
+  const scrollProg = document.getElementById('scroll-progress');
+  if(scrollProg){
+    lenis.on('scroll', ({progress}) => {
+      scrollProg.style.transform = `scaleX(${progress})`;
+    });
+  }
+}
+
+/* ── Hero title parallax ─────────────────────────────────── */
+const titleTop = document.getElementById('title-top');
+const titleBottom = document.getElementById('title-bottom');
+if(titleTop && titleBottom){
+  gsap.to(titleTop, {
+    yPercent: -30, ease: 'none',
+    scrollTrigger: { trigger: '#hero-section', start: 'top top', end: 'bottom top', scrub: 0.3 }
+  });
+  gsap.to(titleBottom, {
+    yPercent: -70, ease: 'none',
+    scrollTrigger: { trigger: '#hero-section', start: 'top top', end: 'bottom top', scrub: 0.7 }
+  });
+}
+
+/* ── Scroll grid card staggered entrance ─────────────────── */
+(function(){
+  const cards = document.querySelectorAll('.sg-card');
+  if(!cards.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    let delay = 0;
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, delay);
+        delay += 60;
+        obs.unobserve(el);
+      }
+    });
+  }, {threshold: 0.1});
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity .6s ease, transform .6s ease';
+    obs.observe(card);
+  });
+})();
+
+/* ── Share card mouse-tracked glow ───────────────────────── */
+const shareCard = document.getElementById('share-card');
+if(shareCard){
+  shareCard.addEventListener('mousemove', e => {
+    const rect = shareCard.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    shareCard.style.setProperty('--mx', x + '%');
+    shareCard.style.setProperty('--my', y + '%');
+  });
+  shareCard.addEventListener('mouseleave', () => {
+    shareCard.style.setProperty('--mx', '25%');
+    shareCard.style.setProperty('--my', '20%');
+  });
+}
+
+/* ── Weekly culture banner (index) ───────────────────────── */
+(function(){
+  const CULTURES = ['arabic','zen','stoic','ubuntu'];
+  const META = {
+    arabic:{glyph:'☽',label:'Arabic',color:'#8c1b35'},
+    zen:{glyph:'⛩',label:'Japanese Zen',color:'#1a6b58'},
+    stoic:{glyph:'Φ',label:'Stoic',color:'#7a4820'},
+    ubuntu:{glyph:'◉',label:'Ubuntu',color:'#7a3010'},
+  };
+  const wk = CULTURES[Math.floor(Date.now()/(7*24*60*60*1000))%4];
+  const m = META[wk];
+  const banner = document.getElementById('weekly-banner');
+  if(banner){
+    banner.innerHTML = `
+      <span class="wcb-glyph" style="color:${m.color}">${m.glyph}</span>
+      <span class="wcb-week">This week</span>
+      <span class="wcb-dot"></span>
+      <span class="wcb-name" style="color:${m.color}">${m.label}</span>
+      <a href="way.html" class="wcb-cta">Find my bearing →</a>
+    `;
+  }
+})();
 </script>
+<a href="today.html" id="floating-pill">Today's Bearing ✦</a>
 </body>
 </html>

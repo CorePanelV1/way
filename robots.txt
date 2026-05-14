@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://way-whereareyou.vercel.app/sitemap.xml

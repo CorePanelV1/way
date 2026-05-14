@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>About WAY — Four Traditions, One Question</title>
+<meta name="description" content="WAY draws from four ancient wisdom traditions to help you find your bearing."/>
+<meta property="og:title" content="About WAY — Four Traditions, One Question"/>
+<meta property="og:image" content="/og.svg"/>
+<meta name="theme-color" content="#0a0608"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0608;--parch:#f5e6d0;--gold:#c9a84c;--red:#8c1b35;--border:rgba(245,230,208,.08)}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;overflow-x:hidden;line-height:1.7}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:rgba(10,6,8,.88);backdrop-filter:blur(20px);border-bottom:.5px solid var(--border)}
+.nav-logo{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;letter-spacing:8px;color:var(--parch);text-decoration:none;opacity:.9}
+.nav-link{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.5);text-decoration:none;transition:color .3s}
+.nav-link:hover{color:var(--gold)}
+main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:120px 32px 80px}
+.hero{padding:60px 0 80px;text-align:center}
+.hero-eyebrow{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:5px;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:20px}
+.hero-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,8vw,5.5rem);font-style:italic;color:var(--parch);line-height:1;margin-bottom:28px}
+.hero-sub{font-size:1.25rem;color:rgba(245,230,208,.55);font-style:italic;line-height:1.8;max-width:540px;margin:0 auto}
+.rule{height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent);margin:60px 0}
+.section-title{font-family:'Cinzel',serif;font-size:8px;letter-spacing:5px;text-transform:uppercase;color:rgba(201,168,76,.5);margin-bottom:28px}
+.body-p{font-size:1.15rem;color:rgba(245,230,208,.65);line-height:2;margin-bottom:28px;font-style:italic}
+.tradition-block{margin:80px 0;padding:48px;border:.5px solid rgba(245,230,208,.06);border-radius:20px;background:rgba(245,230,208,.02);position:relative;overflow:hidden}
+.tradition-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.tb-arabic::before{background:linear-gradient(90deg,transparent,#8c1b35,transparent)}
+.tb-zen::before{background:linear-gradient(90deg,transparent,#1a6b58,transparent)}
+.tb-stoic::before{background:linear-gradient(90deg,transparent,#7a4820,transparent)}
+.tb-ubuntu::before{background:linear-gradient(90deg,transparent,#7a3010,transparent)}
+.tb-glyph{font-size:4rem;opacity:.2;margin-bottom:20px;display:block}
+.tb-culture{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;margin-bottom:20px}
+.tb-pull{font-family:'Cormorant Garamond',serif;font-size:clamp(1.25rem,3.5vw,1.9rem);font-style:italic;color:var(--parch);line-height:1.4;border-left:2px solid;padding-left:24px;margin-bottom:32px}
+.tb-arabic .tb-pull{border-color:#8c1b35}
+.tb-zen .tb-pull{border-color:#1a6b58}
+.tb-stoic .tb-pull{border-color:#7a4820}
+.tb-ubuntu .tb-pull{border-color:#7a3010}
+.cta-block{text-align:center;padding:60px 0}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;background:var(--parch);color:var(--bg);border:none;border-radius:10px;padding:16px 40px;font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-decoration:none;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:all .3s}
+.cta-btn:hover{background:var(--gold);transform:translateY(-2px)}
+footer{position:relative;z-index:1;border-top:.5px solid var(--border);padding:32px 48px;text-align:center;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.22)}
+footer a{color:inherit;text-decoration:none;transition:color .3s}
+footer a:hover{color:var(--gold)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(201,168,76,.35)}
+@media(max-width:600px){nav{padding:16px 20px}main{padding:96px 20px 48px}.tradition-block{padding:28px 20px}.tb-pull{font-size:1.15rem}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<nav>
+  <a href="index.html" class="nav-logo">WAY</a>
+  <a href="way.html" class="nav-link">Find My Bearing →</a>
+</nav>
+<main>
+  <div class="hero">
+    <div class="hero-eyebrow">The Story</div>
+    <h1 class="hero-hl">Four traditions.<br>One question.</h1>
+    <p class="hero-sub">WAY exists because the questions we carry have been asked before — by monks, philosophers, elders, and the lost — for thousands of years.</p>
+  </div>
+  <div class="rule"></div>
+  <div class="section-title">The idea</div>
+  <p class="body-p">Every morning someone wakes up not knowing which way to turn. They're not searching for a quote — they're searching for permission. Permission to rest. To act. To grieve. To begin again. Ancient wisdom has always had an answer. The problem is access.</p>
+  <p class="body-p">WAY is a compass, not a library. You tell it where you are. It tells you what four traditions — each with their own geography, language, and hard-won knowledge — have to say to you, right now, in plain language.</p>
+  <p class="body-p">The weekly culture rotation is intentional. Each tradition has its own season, its own temperament. Arabic wisdom for the weeks when you must wait. Zen for the weeks when thinking too much is the problem. Stoic for when the world is against you. Ubuntu for when you've forgotten you're not alone.</p>
+
+  <div class="tradition-block tb-arabic">
+    <span class="tb-glyph" style="color:#8c1b35">☽</span>
+    <div class="tb-culture" style="color:#8c1b35">Arabic Wisdom · 23°N 45°E</div>
+    <div class="tb-pull">"الصبر مفتاح الفرج"<br>Patience is the key to relief.</div>
+    <p class="body-p">Arabic wisdom is rooted in the desert — a landscape that demands stillness, demands endurance. The concept of <em>sabr</em> (patience) is not passive waiting. It is an active, conscious holding of the self against pressure. A decision, repeated daily, to remain.</p>
+    <p class="body-p">The Arabic proverb tradition is one of the richest in the world — compressed wisdom passed between generations as condensed poetry. From the scholars of Baghdad to the poets of Andalusia, this tradition has always held that wisdom and beauty are inseparable. A good proverb is a gift. It stays with you for a lifetime.</p>
+    <p class="body-p">WAY draws on this tradition to offer you the particular kind of knowing that comes from a culture built on navigation through vast, uncertain terrain. The desert teaches: you cannot rush arrival. You can only stay true to the direction.</p>
+  </div>
+
+  <div class="tradition-block tb-zen">
+    <span class="tb-glyph" style="color:#1a6b58">⛩</span>
+    <div class="tb-culture" style="color:#1a6b58">Japanese Zen · 35°N 135°E</div>
+    <div class="tb-pull">"七転び八起き"<br>Fall seven times. Rise eight.</div>
+    <p class="body-p">Zen is not a religion about withdrawal from the world. It is a philosophy of total, radical presence within it. The Zen tradition teaches that clarity does not come from having fewer problems — it comes from meeting each problem with complete attention. No agenda. No flight. Just the thing itself.</p>
+    <p class="body-p">The Japanese aesthetic of <em>wabi-sabi</em> — finding beauty in imperfection and transience — is not pessimism. It is a sophisticated acceptance of the nature of all things. Nothing lasts. Nothing is finished. Nothing is perfect. And this is exactly as it should be. The cracked bowl is more beautiful for the gold that fills its fractures.</p>
+    <p class="body-p">WAY's Zen bearings draw from the koans, the haiku, the daily wisdom of the Kyoto tradition — the kind of guidance that doesn't explain but illuminates. A single line that opens a door you didn't know was there.</p>
+  </div>
+
+  <div class="tradition-block tb-stoic">
+    <span class="tb-glyph" style="color:#7a4820">Φ</span>
+    <div class="tb-culture" style="color:#7a4820">Stoic Philosophy · 41°N 12°E</div>
+    <div class="tb-pull">"You have power over your mind, not outside events.<br>Realise this, and you will find strength."</div>
+    <p class="body-p">Stoicism was born in ancient Athens and refined in Rome. It was the philosophy of emperors — Marcus Aurelius wrote <em>Meditations</em> on the battlefield — and slaves. Epictetus, one of its greatest teachers, began life in bondage. Stoicism is not for the comfortable. It is for whoever is facing something hard.</p>
+    <p class="body-p">The Stoics taught a radical distinction: between what is in our control (our own thoughts, values, and actions) and what is not (everything else). Freedom, they argued, comes not from changing your circumstances but from changing your relationship to them. The obstacle is the path. The difficulty is the material.</p>
+    <p class="body-p">Two thousand years later, this remains the most immediately practical philosophy ever written. WAY brings it to you not as theory but as a specific response to where you actually are — the way a good mentor would, not a textbook.</p>
+  </div>
+
+  <div class="tradition-block tb-ubuntu">
+    <span class="tb-glyph" style="color:#7a3010">◉</span>
+    <div class="tb-culture" style="color:#7a3010">Ubuntu Philosophy · Sub-Saharan Africa</div>
+    <div class="tb-pull">"Umuntu ngumuntu ngabantu."<br>A person is a person through other people.</div>
+    <p class="body-p">Ubuntu is not an idea you can hold in isolation — it is a lived philosophy of radical interdependence. The Nguni Bantu concept that a person's humanity is made complete only through their relationship with others is a direct challenge to the Western myth of the self-made individual. You were not made alone. You cannot be unmade alone either.</p>
+    <p class="body-p">Ubuntu wisdom says: you cannot flourish in isolation. Your healing is collective. Your success is communal. And your suffering, too, belongs to a web of connection that holds you even when you cannot feel it. The village is not a metaphor. It is the unit of survival.</p>
+    <p class="body-p">In a world of increasing disconnection and performed self-sufficiency, Ubuntu offers the most necessary reminder of all: you have never been as alone as you think. The question is not whether support exists. The question is whether you are willing to receive it.</p>
+  </div>
+
+  <div class="rule"></div>
+  <div class="cta-block">
+    <div class="hero-eyebrow" style="margin-bottom:20px">Begin</div>
+    <a href="way.html" class="cta-btn">✦ Find Your Bearing</a>
+  </div>
+</main>
+<footer>
+  © 2026 WAY · wisdom rooted in culture ·
+  <a href="index.html">Home</a> ·
+  <a href="way.html">Find Your Bearing</a>
+</footer>
+<script>
+(function(){
+  const c=document.getElementById('bg'),cx=c.getContext('2d');let W,H,stars=[];
+  function init(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];const n=Math.floor(W*H/6000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:.1+Math.random()*1.1,ph:Math.random()*Math.PI*2,sp:.005+Math.random()*.014,br:.15+Math.random()*.55});}
+  function draw(){cx.clearRect(0,0,W,H);cx.fillStyle='#05030a';cx.fillRect(0,0,W,H);stars.forEach(s=>{s.ph+=s.sp;const a=s.br*(.4+.6*Math.sin(s.ph));cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(237,229,200,${a})`;cx.fill();});requestAnimationFrame(draw);}
+  init();window.addEventListener('resize',init);draw();
+})();
+</script>
+</body>
+</html>

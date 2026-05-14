@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>404 — WAY</title>
+<meta name="theme-color" content="#0a0608"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100dvh;background:#0a0608;color:#f5e6d0;font-family:'Cormorant Garamond',serif;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;overflow:hidden}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+main{position:relative;z-index:1;max-width:480px}
+.four{font-family:'Cormorant Garamond',serif;font-size:clamp(6rem,22vw,12rem);font-style:italic;font-weight:300;line-height:1;color:rgba(245,230,208,.05);letter-spacing:-4px}
+.question{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,13vw,7rem);font-style:italic;font-weight:300;line-height:1;color:rgba(201,168,76,.3);animation:qpulse 3s ease-in-out infinite;margin-top:-20px}
+@keyframes qpulse{0%,100%{opacity:.3}50%{opacity:.7}}
+.compass-wrap{width:56px;height:56px;margin:28px auto;opacity:.28;animation:cspin 8s linear infinite}
+@keyframes cspin{to{transform:rotate(360deg)}}
+.msg{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-style:italic;color:rgba(245,230,208,.5);line-height:1.7;margin-bottom:8px}
+.sub{font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.35);margin-bottom:36px}
+.cta{display:inline-flex;align-items:center;gap:8px;background:rgba(245,230,208,.07);border:.5px solid rgba(245,230,208,.18);color:rgba(245,230,208,.65);padding:13px 28px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:all .3s}
+.cta:hover{background:rgba(245,230,208,.13);color:var(--parch,rgba(245,230,208,1));border-color:rgba(245,230,208,.38)}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<main>
+  <div class="four">404</div>
+  <div class="question">?</div>
+  <svg class="compass-wrap" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" stroke="rgba(245,230,208,.15)" stroke-width=".8"/>
+    <circle cx="50" cy="50" r="38" stroke="rgba(201,168,76,.1)" stroke-width=".5"/>
+    <polygon points="50,10 46,48 50,44 54,48" fill="#c9a84c" opacity=".75"/>
+    <polygon points="50,90 46,52 50,56 54,52" fill="rgba(245,230,208,.2)"/>
+    <circle cx="50" cy="50" r="3.5" fill="#c9a84c" opacity=".65"/>
+  </svg>
+  <div class="msg">Even the lost have a bearing.</div>
+  <div class="sub">The page you sought does not exist</div>
+  <a href="way.html" class="cta">✦ Find Your Bearing</a>
+</main>
+<script>
+(function(){
+  const c=document.getElementById('bg'),cx=c.getContext('2d');let W,H,stars=[];
+  function init(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];const n=Math.floor(W*H/4500);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:.1+Math.random()*1.2,ph:Math.random()*Math.PI*2,sp:.005+Math.random()*.018,br:.2+Math.random()*.7});}
+  function draw(){cx.clearRect(0,0,W,H);cx.fillStyle='#05030a';cx.fillRect(0,0,W,H);stars.forEach(s=>{s.ph+=s.sp;const a=s.br*(.4+.6*Math.sin(s.ph));cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(237,229,200,${a})`;cx.fill();});requestAnimationFrame(draw);}
+  init();window.addEventListener('resize',init);draw();
+})();
+</script>
+</body>
+</html>

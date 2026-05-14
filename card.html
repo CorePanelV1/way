@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title id="page-title">WAY — Find Your Bearing</title>
+<meta name="description" content="Ancient wisdom from WAY — Where Are You?"/>
+<meta property="og:title" content="WAY — Ancient wisdom"/>
+<meta property="og:description" content="Ancient wisdom curated for you."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="/og-card.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/og-card.svg"/>
+<meta name="theme-color" content="#0a0608"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0608;--parch:#f5e6d0;--gold:#c9a84c;--red:#8c1b35}
+html,body{min-height:100dvh;background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+#topbar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:center;align-items:center;padding:20px;pointer-events:none}
+.way-wordmark{font-family:'Cinzel',serif;font-size:.85rem;font-weight:700;letter-spacing:8px;color:rgba(245,230,208,.6)}
+
+#main{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 20px 48px;gap:24px}
+
+.flip-wrap{perspective:1200px;width:min(320px,88vw);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.flip-inner{position:relative;width:100%;aspect-ratio:3/4;transition:transform .6s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;filter:drop-shadow(0 32px 64px rgba(0,0,0,.7));animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.flip-wrap.flipped .flip-inner{transform:rotateY(180deg);animation:floatF 4s ease-in-out infinite}
+@keyframes floatF{0%,100%{transform:rotateY(180deg) translateY(0)}50%{transform:rotateY(180deg) translateY(-10px)}}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;overflow:hidden}
+.flip-back-face{transform:rotateY(180deg)}
+
+.card-front{width:100%;height:100%;background:#0a0608;border:1px solid rgba(201,168,76,.12);border-radius:16px;display:flex;flex-direction:column;padding:20px 22px;position:relative;overflow:hidden}
+.card-front::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(201,168,76,.06) 0%,transparent 70%);pointer-events:none}
+.cf-watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:3rem;font-weight:700;letter-spacing:8px;color:rgba(245,230,208,.025);pointer-events:none;transform:rotate(-15deg)}
+.cf-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
+.cf-logo{font-family:'Cinzel',serif;font-size:.55rem;font-weight:700;letter-spacing:6px;color:rgba(201,168,76,.8)}
+.cf-glyph-top{font-size:.9rem;color:rgba(201,168,76,.8)}
+.cf-rule{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.2),transparent);margin:10px 0;position:relative;z-index:1}
+.cf-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;position:relative;z-index:1;padding:4px 0}
+.cf-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,4.5vw,1.5rem);font-style:italic;color:rgba(245,230,208,.96);line-height:1.5;text-align:center}
+.cf-translation{font-family:'Cormorant Garamond',serif;font-size:clamp(.78rem,3vw,.95rem);color:rgba(245,230,208,.48);line-height:1.55;font-style:italic}
+.cf-footer{display:flex;justify-content:space-between;align-items:flex-end;position:relative;z-index:1}
+.cf-concept{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,.65)}
+.cf-coord{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,230,208,.22);text-align:right}
+
+.card-back{width:100%;height:100%;background:#f5e6d0;border:1px solid rgba(44,16,24,.12);border-radius:16px;display:flex;flex-direction:column;padding:20px 22px;position:relative;overflow:hidden}
+.cb-top{display:flex;justify-content:space-between;align-items:flex-start}
+.cb-eyebrow{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:2.5px;text-transform:uppercase;color:#8c1b35;margin-bottom:2px}
+.cb-logo{font-family:'Cinzel',serif;font-size:.5rem;font-weight:700;letter-spacing:5px;color:rgba(44,16,24,.4)}
+.cb-glyph-top{font-size:.9rem;color:rgba(44,16,24,.45)}
+.cb-rule{height:1px;background:linear-gradient(90deg,transparent,rgba(44,16,24,.18),transparent);margin:10px 0}
+.cb-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.cb-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,4vw,1.35rem);font-style:italic;color:#2c1018;line-height:1.55;text-align:center}
+.cb-sub{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:2px;text-transform:uppercase;color:rgba(44,16,24,.4);margin-top:6px}
+.cb-footer{display:flex;justify-content:space-between;align-items:flex-end}
+.cb-coord{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(44,16,24,.28)}
+
+.flip-hint{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.3);text-align:center;cursor:pointer;user-select:none;transition:color .3s;display:flex;align-items:center;justify-content:center;gap:8px}
+.flip-hint::before,.flip-hint::after{content:'';flex:1;max-width:32px;height:.5px;background:rgba(245,230,208,.12)}
+.flip-hint:hover{color:rgba(245,230,208,.6)}
+
+.card-cta{display:inline-flex;align-items:center;gap:10px;background:var(--parch);color:var(--bg);border:none;border-radius:10px;padding:15px 34px;font-family:'Cinzel',serif;font-size:.58rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-decoration:none;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:all .3s}
+.card-cta:hover{background:var(--gold);transform:translateY(-2px)}
+
+#error-state{text-align:center;padding:40px 20px;display:none}
+.err-mark{font-family:'Cormorant Garamond',serif;font-size:4rem;font-style:italic;color:rgba(245,230,208,.12);margin-bottom:20px}
+.err-msg{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(245,230,208,.45);font-size:1.05rem;margin-bottom:24px;line-height:1.7}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="topbar"><span class="way-wordmark">WAY</span></div>
+
+<div id="main">
+  <div id="card-wrap" style="display:none;flex-direction:column;align-items:center;gap:14px">
+    <div class="flip-wrap" id="flip-wrap" onclick="toggleFlip()">
+      <div class="flip-inner">
+        <div class="flip-face">
+          <div class="card-front">
+            <div class="cf-watermark">WAY</div>
+            <div class="cf-top">
+              <span class="cf-logo">WAY</span>
+              <span class="cf-glyph-top" id="cf-glyph">✦</span>
+            </div>
+            <div class="cf-rule"></div>
+            <div class="cf-body">
+              <div class="cf-quote" id="cf-quote"></div>
+              <div class="cf-translation" id="cf-translation"></div>
+            </div>
+            <div class="cf-rule"></div>
+            <div class="cf-footer">
+              <span class="cf-concept" id="cf-concept"></span>
+              <span class="cf-coord" id="cf-coord"></span>
+            </div>
+          </div>
+        </div>
+        <div class="flip-face flip-back-face">
+          <div class="card-back">
+            <div class="cb-top">
+              <div>
+                <div class="cb-eyebrow">no cap this actually hits 💀</div>
+                <div class="cb-logo">WAY</div>
+              </div>
+              <span class="cb-glyph-top" id="cb-glyph">✦</span>
+            </div>
+            <div class="cb-rule"></div>
+            <div class="cb-body">
+              <div class="cb-quote" id="cb-quote"></div>
+              <div class="cb-sub" id="cb-sub"></div>
+            </div>
+            <div class="cb-rule"></div>
+            <div class="cb-footer">
+              <span class="cb-logo">WAY</span>
+              <span class="cb-coord" id="cb-coord2"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flip-hint" onclick="toggleFlip()">tap to flip</div>
+    <a href="way.html" class="card-cta">Find your own bearing →</a>
+  </div>
+
+  <div id="error-state">
+    <div class="err-mark">?</div>
+    <div class="err-msg">This bearing has expired or the link is broken.<br>Every moment has its own wisdom waiting.</div>
+    <a href="way.html" class="card-cta">Find your own bearing →</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('bg'),cx=c.getContext('2d');
+  let W,H,stars=[],shoots=[];
+  function init(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];const n=Math.floor(W*H/5000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H*.85,r:.1+Math.random()*1.2,ph:Math.random()*Math.PI*2,sp:.005+Math.random()*.016,br:.2+Math.random()*.7,col:Math.random()<.12?[255,210,140]:Math.random()<.08?[180,200,255]:[237,229,200]});}
+  function draw(){cx.clearRect(0,0,W,H);cx.fillStyle='#05030a';cx.fillRect(0,0,W,H);stars.forEach(s=>{s.ph+=s.sp;const a=s.br*(.4+.6*Math.sin(s.ph));cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a})`;cx.fill();});if(Math.random()<.002)shoots.push({x:(.1+Math.random()*.8)*W,y:(.02+Math.random()*.3)*H,vx:-2-Math.random()*4,vy:.5+Math.random()*1.5,life:1});for(let i=shoots.length-1;i>=0;i--){const s=shoots[i];s.x+=s.vx;s.y+=s.vy;s.life-=.05;if(s.life<=0){shoots.splice(i,1);continue}cx.beginPath();cx.moveTo(s.x,s.y);cx.lineTo(s.x-s.vx*8,s.y-s.vy*8);const g=cx.createLinearGradient(s.x,s.y,s.x-s.vx*8,s.y-s.vy*8);g.addColorStop(0,`rgba(255,245,220,${s.life*.7})`);g.addColorStop(1,'rgba(255,245,220,0)');cx.strokeStyle=g;cx.lineWidth=.7;cx.stroke();}requestAnimationFrame(draw);}
+  init();window.addEventListener('resize',init);draw();
+})();
+
+function toggleFlip(){document.getElementById('flip-wrap').classList.toggle('flipped');}
+
+const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
+
+(function(){
+  const params=new URLSearchParams(location.search);
+  const d=params.get('d');
+  if(!d){document.getElementById('error-state').style.display='block';return;}
+  try{
+    const data=JSON.parse(decodeURIComponent(escape(atob(d))));
+    const{k='arabic',q='',t='',c='',g='',a='',p=''}=data;
+    const glyph=GLYPHS[k]||'✦';
+    const kLabel=k.charAt(0).toUpperCase()+k.slice(1);
+    document.title=kLabel+' wisdom — WAY';
+    document.getElementById('cf-glyph').textContent=glyph;
+    const qEl=document.getElementById('cf-quote');
+    qEl.textContent=q;
+    if(k==='arabic')qEl.setAttribute('dir','rtl');
+    document.getElementById('cf-translation').textContent=t;
+    document.getElementById('cf-concept').textContent=(c||'').toUpperCase();
+    document.getElementById('cf-coord').textContent=a;
+    document.getElementById('cb-glyph').textContent=glyph;
+    document.getElementById('cb-quote').textContent=g||t;
+    document.getElementById('cb-sub').textContent=(c||'').toUpperCase();
+    document.getElementById('cb-coord2').textContent=a;
+    const wrap=document.getElementById('card-wrap');
+    wrap.style.display='flex';
+  }catch(e){
+    document.getElementById('error-state').style.display='block';
+  }
+})();
+</script>
+</body>
+</html>
