@@ -898,6 +898,18 @@ const weeklyMeta = WEEKLY_META[weeklyKey];
 /* ═══ SEEK — MAIN FLOW ══════════════════════════════════════════════ */
 let lastWisdom = null;
 
+/* ── Recent-quote tracking: store last 10 quotes per tradition key ── */
+function getRecentQuotes(){
+  try{ return JSON.parse(localStorage.getItem('way_recent_quotes')||'[]'); }catch{ return []; }
+}
+function recordRecentQuote(quote){
+  try{
+    const q = getRecentQuotes();
+    if(!q.includes(quote)){ q.unshift(quote); q.splice(10); }
+    localStorage.setItem('way_recent_quotes', JSON.stringify(q));
+  }catch{}
+}
+
 async function seek(){
   if(navigator.vibrate) navigator.vibrate(50);
   const feeling = feelingEl.value.trim();
@@ -915,7 +927,7 @@ async function seek(){
     const res = await fetch('/api/way', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ feeling, traditions: [weeklyKey], mode: 'standard' })
+      body: JSON.stringify({ feeling, traditions: [weeklyKey], mode: 'standard', recentQuotes: getRecentQuotes() })
     });
 
     const data = await res.json();
@@ -923,6 +935,8 @@ async function seek(){
     if(!res.ok || data.error) throw new Error(data.error || 'Generation failed');
 
     finishLoadAnim();
+    // Track this quote so it's excluded from future requests
+    if(data[weeklyKey]?.quote) recordRecentQuote(data[weeklyKey].quote);
     lastWisdom = data;
     _shortUrlCache = {};
 
