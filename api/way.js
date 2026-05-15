@@ -111,7 +111,7 @@ const TRADITIONS = {
   },
 };
 
-function buildSystem(traditions, mode) {
+function buildSystem(traditions, mode, recentQuotes) {
   const blocks = traditions.map(t => {
     const c = TRADITIONS[t];
     return `  "${t}": {
@@ -125,6 +125,10 @@ function buildSystem(traditions, mode) {
     "region": "${c.region}"
   }`;
   }).join(',\n');
+
+  const avoidBlock = recentQuotes && recentQuotes.length
+    ? `\n8. DO NOT use any of these quotes — this person has already received them:\n${recentQuotes.map(q => `   - "${q}"`).join('\n')}\n   Choose a different quote from the same tradition instead.`
+    : '';
 
   return `You are WAY — a cultural wisdom oracle. Read carefully what this person shared about their situation, then respond with wisdom that speaks DIRECTLY to their specific words and feelings.
 
@@ -142,7 +146,7 @@ CRITICAL RULES:
 4. "practice" must be actionable today, specific to their situation.
 5. genZ field must be genuinely funny and culturally flavored — not a bland restatement.
 6. Keep all fields concise — no padding, no filler.
-7. Respond ONLY with the JSON object below. No preamble, no explanation, no markdown fences.
+7. Respond ONLY with the JSON object below. No preamble, no explanation, no markdown fences.${avoidBlock}
 
 {
   "summary": "3-5 word poetic summary of their emotional state",
@@ -161,7 +165,7 @@ export default async function handler(req) {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers });
   if (req.method !== 'POST') return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });
 
-  let feeling, traditions, mode;
+  let feeling, traditions, mode, recentQuotes;
   try {
     const body = await req.json();
     feeling = body.feeling?.trim();
@@ -171,6 +175,10 @@ export default async function handler(req) {
       : validKeys;
     if (!traditions.length) traditions = validKeys;
     mode = body.mode === 'deep' ? 'deep' : 'standard';
+    // Accept up to 10 recent quotes to avoid repeating — strings only, capped at 120 chars each
+    recentQuotes = Array.isArray(body.recentQuotes)
+      ? body.recentQuotes.filter(q => typeof q === 'string' && q.length > 0).map(q => q.slice(0, 120)).slice(0, 10)
+      : [];
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid request' }), { status: 400, headers });
   }
@@ -191,7 +199,7 @@ export default async function handler(req) {
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [
-          { role: 'system', content: buildSystem(traditions, mode) },
+          { role: 'system', content: buildSystem(traditions, mode, recentQuotes) },
           { role: 'user', content: feeling },
         ],
         max_tokens: mode === 'deep' ? 3500 : 2500,
@@ -214,11 +222,13 @@ export default async function handler(req) {
 
     const wisdom = JSON.parse(match[0]);
     // If any tradition has an empty quote, substitute from the curated list
+    // Prefer entries the user hasn't seen recently
     for (const key of Object.keys(TRADITIONS)) {
       if (wisdom[key] && !wisdom[key].quote) {
         const pool = FALLBACK_QUOTES[key];
         if (pool) {
-          const fb = pool[Math.floor(Math.random() * pool.length)];
+          const fresh = pool.filter(fb => !recentQuotes.includes(fb.quote));
+          const fb = (fresh.length ? fresh : pool)[Math.floor(Math.random() * (fresh.length || pool.length))];
           wisdom[key].quote = fb.quote;
           if (!wisdom[key].translation) wisdom[key].translation = fb.translation;
           if (!wisdom[key].concept)     wisdom[key].concept     = fb.concept;
