@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>WAY — Where Are You?</title>
 <meta name="description" content="Ancient wisdom for your exact moment. Ten traditions. One question. A new culture every week."/>
 <meta property="og:title" content="WAY — Where Are You?"/>
@@ -35,8 +35,8 @@
   --text:#2c1018;--text2:#6b2030;--text3:#9a7060;
   --border:rgba(140,27,53,.12);--card-dark:#110608;
 }
-html{scroll-behavior:auto}
-body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+html{scroll-behavior:auto;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--golddim);border-radius:2px}
 
 /* NAV */
@@ -46,7 +46,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-links{display:flex;gap:32px;align-items:center}
 .nav-link{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.65);text-decoration:none;transition:color .3s}
 .nav-link:hover{color:rgba(245,230,208,1)}
-.nav-cta{background:transparent;border:.5px solid rgba(245,230,208,.3);color:rgba(245,230,208,.7);padding:9px 24px;border-radius:6px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.nav-cta{background:transparent;border:.5px solid rgba(245,230,208,.3);color:rgba(245,230,208,.7);padding:9px 24px;min-height:44px;display:inline-flex;align-items:center;border-radius:6px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .nav-cta:hover{background:rgba(245,230,208,.1);color:rgba(245,230,208,1)}
 /* Scrolled: parchment bg — dark crimson text */
 nav.scrolled{background:rgba(245,230,208,.94);backdrop-filter:blur(24px);border-color:rgba(140,27,53,.1)}
@@ -55,7 +55,7 @@ nav.scrolled .nav-link{color:var(--text2)}
 nav.scrolled .nav-link:hover{color:var(--red)}
 nav.scrolled .nav-cta{border-color:rgba(140,27,53,.35);color:var(--red)}
 nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
-.nav-mobile-cta{display:none;align-items:center;gap:6px;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:9px 18px;font-family:'Cinzel',serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.nav-mobile-cta{display:none;align-items:center;gap:6px;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:9px 18px;min-height:44px;font-family:'Cinzel',serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none}
 
 /* HERO */
 #hero-section{position:relative;height:500vh;z-index:1}
@@ -137,7 +137,7 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 .wcb-dot{width:3px;height:3px;border-radius:50%;background:var(--golddim)}
 .wcb-name{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);font-weight:600}
 .wcb-glyph{font-size:1.1rem}
-.wcb-cta{margin-left:auto;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:7px 16px;font-family:'Cinzel',serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .3s}
+.wcb-cta{margin-left:auto;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:7px 16px;min-height:44px;display:inline-flex;align-items:center;font-family:'Cinzel',serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .3s}
 .wcb-cta:hover{background:var(--red2);transform:translateY(-1px)}
 
 /* HOW IT WORKS */

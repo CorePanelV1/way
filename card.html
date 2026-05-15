@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title id="page-title">WAY — Find Your Bearing</title>
 <meta name="description" content="Ancient wisdom from WAY — Where Are You?"/>
 <meta property="og:title" content="WAY — Ancient wisdom"/>
@@ -18,13 +18,14 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0a0608;--parch:#f5e6d0;--gold:#c9a84c;--red:#8c1b35}
-html,body{min-height:100dvh;background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+html{min-height:100dvh;background:var(--bg);overflow-x:hidden}
+body{min-height:100dvh;background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
 canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 #topbar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:center;align-items:center;padding:20px;pointer-events:none}
 .way-wordmark{font-family:'Cinzel',serif;font-size:.85rem;font-weight:700;letter-spacing:8px;color:rgba(245,230,208,.6)}
 
-#main{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 20px 48px;gap:24px}
+#main{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 20px max(48px,env(safe-area-inset-bottom));gap:24px}
 
 .flip-wrap{perspective:1200px;width:min(320px,88vw);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .flip-inner{position:relative;width:100%;aspect-ratio:3/4;transition:transform .6s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;filter:drop-shadow(0 32px 64px rgba(0,0,0,.7));animation:float 4s ease-in-out infinite}
@@ -70,6 +71,11 @@ canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 #error-state{text-align:center;padding:40px 20px;display:none}
 .err-mark{font-family:'Cormorant Garamond',serif;font-size:4rem;font-style:italic;color:rgba(245,230,208,.12);margin-bottom:20px}
 .err-msg{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(245,230,208,.45);font-size:1.05rem;margin-bottom:24px;line-height:1.7}
+@media(max-width:400px){
+  .flip-wrap{width:92vw}
+  #main{padding:60px 12px 32px;gap:18px}
+  .card-cta{padding:13px 24px;font-size:.5rem}
+}
 </style>
 </head>
 <body>

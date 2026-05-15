@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title id="pt">A Wisdom Bearing — WAY</title>
 <meta name="description" id="pd" content="Ancient wisdom, sent your way."/>
 <meta property="og:title" id="ogt" content="A Wisdom Bearing — WAY"/>
@@ -24,8 +24,8 @@
   --accent-rgb:140,27,53;
   --accent:rgb(var(--accent-rgb));
 }
-html{background:var(--bg);min-height:100%}
-body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 20px 48px;overflow-x:hidden}
+html{background:var(--bg);min-height:100%;overflow-x:hidden}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 20px max(48px,env(safe-area-inset-bottom));overflow-x:hidden}
 
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 

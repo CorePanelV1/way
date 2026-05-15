@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title id="pg-title">WAY of the Day — Today's Ancient Wisdom Bearing</title>
 <meta name="description" id="pg-desc" content="Today's collective wisdom bearing from WAY."/>
 <meta property="og:title" id="og-title" content="WAY of the Day"/>
@@ -25,8 +25,8 @@
   --border:rgba(245,230,208,.08);
   --accent:#c9a84c;
 }
-html{background:var(--bg);min-height:100%}
-body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 20px 80px;overflow-x:hidden}
+html{background:var(--bg);min-height:100%;overflow-x:hidden}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 20px max(80px,env(safe-area-inset-bottom));overflow-x:hidden}
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 /* NAV */
@@ -89,12 +89,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 
 /* SHARE ROW */
 .share-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding-top:16px}
-.sh-btn{display:flex;align-items:center;gap:7px;background:rgba(245,230,208,.07);border:.5px solid rgba(245,230,208,.25);color:rgba(245,230,208,.8);padding:11px 18px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none}
+.sh-btn{display:flex;align-items:center;gap:7px;background:rgba(245,230,208,.07);border:.5px solid rgba(245,230,208,.25);color:rgba(245,230,208,.8);padding:11px 18px;min-height:44px;border-radius:8px;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none}
 .sh-btn:hover{border-color:rgba(245,230,208,.5);color:var(--parch);background:rgba(245,230,208,.12)}
 
 /* AUDIO ROW */
 .audio-row{display:flex;justify-content:center;padding-top:12px}
-.play-day-btn{display:flex;align-items:center;gap:10px;background:transparent;border:.5px solid rgba(var(--accent-rgb,201,168,76),.35);color:rgba(var(--accent-rgb,201,168,76),1);padding:10px 20px;border-radius:30px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.play-day-btn{display:flex;align-items:center;gap:10px;background:transparent;border:.5px solid rgba(var(--accent-rgb,201,168,76),.35);color:rgba(var(--accent-rgb,201,168,76),1);padding:10px 20px;min-height:44px;border-radius:30px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .play-day-btn:hover{background:rgba(var(--accent-rgb,201,168,76),.08);border-color:rgba(var(--accent-rgb,201,168,76),.6)}
 .play-day-btn.playing{animation:dayPulse 2s ease-in-out infinite}
 @keyframes dayPulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--accent-rgb,201,168,76),.35)}50%{box-shadow:0 0 0 10px rgba(var(--accent-rgb,201,168,76),0)}}

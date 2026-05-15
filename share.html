@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title id="page-title">WAY — A Wisdom Bearing</title>
 <meta name="description" id="page-desc" content="Ancient wisdom to guide you. Find your own bearing at WAY."/>
 <meta property="og:title" id="og-title" content="WAY — A Wisdom Bearing"/>
@@ -23,8 +23,8 @@
   --border:rgba(245,230,208,.08);
   --c-arabic:#8c1b35;--c-zen:#1a6b58;--c-stoic:#7a4820;--c-ubuntu:#7a3010;
 }
-html{background:var(--bg);min-height:100%}
-body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px 60px;overflow-x:hidden}
+html{background:var(--bg);min-height:100%;overflow-x:hidden}
+body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px max(60px,env(safe-area-inset-bottom));overflow-x:hidden}
 
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
