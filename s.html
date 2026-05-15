@@ -280,10 +280,10 @@ const Audio = (() => {
 })();
 
 /* ── DATA ── */
-const GLYPHS  = {arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
-const LABELS  = {arabic:'ARABIC',zen:'ZEN',stoic:'STOIC',ubuntu:'UBUNTU'};
-const ACCENTS = {arabic:'140,27,53',zen:'26,107,88',stoic:'122,72,32',ubuntu:'122,48,16'};
-const MUSIC_LABEL = {arabic:'Arabic ambient',zen:'Zen ambient',stoic:'Stoic ambient',ubuntu:'Ubuntu ambient'};
+const GLYPHS  = {arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉',sufi:'✦',taoist:'☯',vedic:'ॐ',celtic:'᛭',nordic:'ᚦ',confucian:'仁'};
+const LABELS  = {arabic:'ARABIC',zen:'ZEN',stoic:'STOIC',ubuntu:'UBUNTU',sufi:'SUFI',taoist:'TAOIST',vedic:'VEDIC',celtic:'CELTIC',nordic:'NORDIC',confucian:'CONFUCIAN'};
+const ACCENTS = {arabic:'140,27,53',zen:'26,107,88',stoic:'122,72,32',ubuntu:'122,48,16',sufi:'122,53,133',taoist:'42,92,120',vedic:'196,120,32',celtic:'45,107,58',nordic:'74,90,140',confucian:'140,74,42'};
+const MUSIC_LABEL = {arabic:'Arabic ambient',zen:'Zen ambient',stoic:'Stoic ambient',ubuntu:'Ubuntu ambient',sufi:'Sufi ambient',taoist:'Taoist ambient',vedic:'Vedic ambient',celtic:'Celtic ambient',nordic:'Nordic ambient',confucian:'Confucian ambient'};
 
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
@@ -291,7 +291,11 @@ function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace
 let data = null;
 try{
   const raw = new URLSearchParams(location.search).get('d');
-  if(raw) data = JSON.parse(decodeURIComponent(escape(atob(raw))));
+  if(raw){
+    // raw may be a plain base64 string (old links) or an encodeURIComponent'd one (new links)
+    // URLSearchParams.get() already percent-decodes, so raw is the base64 string
+    data = JSON.parse(decodeURIComponent(escape(atob(raw))));
+  }
 }catch(e){}
 
 const page = document.getElementById('page');

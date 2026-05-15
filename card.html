@@ -144,13 +144,14 @@ canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 function toggleFlip(){document.getElementById('flip-wrap').classList.toggle('flipped');}
 
-const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
+const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉',sufi:'✦',taoist:'☯',vedic:'ॐ',celtic:'᛭',nordic:'ᚦ',confucian:'仁'};
 
 (function(){
   const params=new URLSearchParams(location.search);
   const d=params.get('d');
   if(!d){document.getElementById('error-state').style.display='block';return;}
   try{
+    // URLSearchParams.get() already percent-decodes %2B→+, so atob gets correct base64
     const data=JSON.parse(decodeURIComponent(escape(atob(d))));
     const{k='arabic',q='',t='',c='',g='',a='',p=''}=data;
     const glyph=GLYPHS[k]||'✦';
