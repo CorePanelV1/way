@@ -1,8 +1,9 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Loop,
+  OffthreadVideo,
   Sequence,
-  Video,
   interpolate,
   spring,
   staticFile,
@@ -93,19 +94,20 @@ const CinematicBg: React.FC<CinematicBgProps> = ({
         transform: `scale(${scale}) translate(${tx}px, ${ty}px)`,
         willChange: 'transform',
       }}>
-        <Video
-          src={staticFile(src)}
-          style={{
-            position: 'absolute', inset: 0,
-            width: '100%', height: '100%',
-            objectFit: 'cover',
-            filter: `brightness(${brightness}) saturate(${saturate}) contrast(${contrast})`,
-          }}
-          playbackRate={rate}
-          muted
-          loop
-          startFrom={startFrom}
-        />
+        <Loop durationInFrames={60}>
+          <OffthreadVideo
+            src={staticFile(src)}
+            style={{
+              position: 'absolute', inset: 0,
+              width: '100%', height: '100%',
+              objectFit: 'cover',
+              filter: `brightness(${brightness}) saturate(${saturate}) contrast(${contrast})`,
+            }}
+            playbackRate={rate}
+            muted
+            startFrom={startFrom}
+          />
+        </Loop>
       </div>
       {/* Brand colour wash */}
       <div style={{
