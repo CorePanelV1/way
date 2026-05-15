@@ -52,6 +52,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .share-card.zen::before{background:linear-gradient(90deg,transparent,var(--c-zen),transparent)}
 .share-card.stoic::before{background:linear-gradient(90deg,transparent,var(--c-stoic),transparent)}
 .share-card.ubuntu::before{background:linear-gradient(90deg,transparent,var(--c-ubuntu),transparent)}
+.share-card.sufi::before{background:linear-gradient(90deg,transparent,#7a3585,transparent)}
+.share-card.taoist::before{background:linear-gradient(90deg,transparent,#2a5c78,transparent)}
+.share-card.vedic::before{background:linear-gradient(90deg,transparent,#c47820,transparent)}
+.share-card.celtic::before{background:linear-gradient(90deg,transparent,#2d6b3a,transparent)}
+.share-card.nordic::before{background:linear-gradient(90deg,transparent,#4a5a8c,transparent)}
+.share-card.confucian::before{background:linear-gradient(90deg,transparent,#8c4a2a,transparent)}
 
 .share-card::after{content:'';position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(ellipse 70% 50% at 20% 15%,rgba(140,27,53,.12) 0%,transparent 60%);}
@@ -62,6 +68,12 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 .zen .sc-glyph{color:var(--c-zen)}
 .stoic .sc-glyph{color:var(--c-stoic)}
 .ubuntu .sc-glyph{color:var(--c-ubuntu)}
+.sufi .sc-glyph{color:#7a3585}
+.taoist .sc-glyph{color:#2a5c78}
+.vedic .sc-glyph{color:#c47820}
+.celtic .sc-glyph{color:#2d6b3a}
+.nordic .sc-glyph{color:#4a5a8c}
+.confucian .sc-glyph{color:#8c4a2a}
 .sc-culture{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--parch2)}
 .sc-coord{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-top:4px}
 
@@ -187,8 +199,8 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 })();
 
 /* ── RENDER ── */
-const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉'};
-const LABELS={arabic:'ARABIC',zen:'ZEN',stoic:'STOIC',ubuntu:'UBUNTU'};
+const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉',sufi:'✦',taoist:'☯',vedic:'ॐ',celtic:'᛭',nordic:'ᚦ',confucian:'仁'};
+const LABELS={arabic:'ARABIC',zen:'ZEN',stoic:'STOIC',ubuntu:'UBUNTU',sufi:'SUFI',taoist:'TAOIST',vedic:'VEDIC',celtic:'CELTIC',nordic:'NORDIC',confucian:'CONFUCIAN'};
 
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 

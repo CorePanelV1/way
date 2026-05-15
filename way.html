@@ -1113,9 +1113,11 @@ function buildShareUrl(key){
   if(!lastWisdom) return window.location.origin+'/way.html';
   const d=lastWisdom[key];
   const m=WEEKLY_META[key]||weeklyMeta;
-  const payload={k:key,q:d.quote||'',t:d.translation||'',c:d.concept||'',g:d.genZ||'',a:(d.coordinate||m.coord)+' · '+(d.region||m.region),p:d.practice||'',w:Math.floor(Date.now()/(7*24*60*60*1000))};
-  const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-  return window.location.origin+'/card?d='+encoded;
+  // Omit genZ (g) and week (w) — unused by share pages, keeps URL shorter
+  const payload={k:key,q:d.quote||'',t:d.translation||'',c:d.concept||'',a:(d.coordinate||m.coord)+' · '+(d.region||m.region),p:d.practice||''};
+  // encodeURIComponent prevents base64 '+' being decoded as space by URLSearchParams
+  const encoded=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
+  return window.location.origin+'/s?d='+encoded;
 }
 
 function modalCopy(){
@@ -1141,26 +1143,23 @@ async function modalWhatsApp(){
   const orig=waBtn.innerHTML;
   waBtn.innerHTML='<span style="opacity:.6">•••</span> Generating…';
   waBtn.disabled=true;
+  const waText=`✦ WAY · ${m.label}\n\n${d.quote}\n\n"${d.translation}"\n— ${d.concept}\n\nFind your bearing 👉 way-whereareyou.vercel.app`;
   try {
-    const url=buildShareUrl(weeklyKey);
-    const msg=`✦ WAY · ${m.label}\n\n${d.quote}\n\n"${d.translation}"\n— ${d.concept}\n\nYour bearing this week 👇\n${url}`;
     const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
     const canvas=await buildWisdomCanvas(isFlipped?'genz':'wisdom');
     canvas.toBlob(async(blob)=>{
       const file=new File([blob],'way-wisdom.png',{type:'image/png'});
       if(navigator.canShare&&navigator.canShare({files:[file]})){
-        await navigator.share({files:[file],text:msg});
+        await navigator.share({files:[file],text:waText});
       } else {
         const burl=URL.createObjectURL(blob);const a=document.createElement('a');a.href=burl;a.download='way-wisdom.png';a.click();
         setTimeout(()=>URL.revokeObjectURL(burl),3000);
-        setTimeout(()=>window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank'),400);
+        setTimeout(()=>window.open('https://wa.me/?text='+encodeURIComponent(waText),'_blank'),400);
       }
       waBtn.innerHTML=orig;waBtn.disabled=false;
     },'image/png');
   } catch(e){
-    const url=buildShareUrl(weeklyKey);
-    const msg=`✦ WAY · ${m.label}\n\n${d.quote}\n\n"${d.translation}"\n— ${d.concept}\n\nYour bearing this week 👇\n${url}`;
-    window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+    window.open('https://wa.me/?text='+encodeURIComponent(waText),'_blank');
     waBtn.innerHTML=orig;waBtn.disabled=false;
   }
 }
