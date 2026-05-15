@@ -2,6 +2,7 @@ import { Composition, getStaticFiles } from "remotion";
 import { AIVideo, aiVideoSchema } from "./components/AIVideo";
 import { FPS, INTRO_DURATION } from "./lib/constants";
 import { getTimelinePath, loadTimelineFromFile } from "./lib/utils";
+import { StrikePanelTrailer, TRAILER_FPS, TRAILER_FRAMES } from "./trailer/Trailer";
 
 export const RemotionRoot: React.FC = () => {
   const staticFiles = getStaticFiles();
@@ -11,6 +12,18 @@ export const RemotionRoot: React.FC = () => {
 
   return (
     <>
+      {/* ── StrikePanel™ Cinematic Trailer ── */}
+      <Composition
+        id="StrikePanelTrailer"
+        component={StrikePanelTrailer}
+        fps={TRAILER_FPS}
+        width={1080}
+        height={1920}
+        durationInFrames={TRAILER_FRAMES}
+        defaultProps={{}}
+      />
+
+      {/* ── AI Story videos ── */}
       {timelines.map((storyName) => (
         <Composition
           id={storyName}
