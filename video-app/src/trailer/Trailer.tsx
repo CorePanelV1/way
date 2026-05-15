@@ -9,8 +9,6 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
-import {loadFont as loadBebas} from '@remotion/google-fonts/BebasNeue';
-import {loadFont as loadBarlow} from '@remotion/google-fonts/BarlowCondensed';
 import {
   FilmGrain,
   Vignette,
@@ -22,8 +20,8 @@ import {
   CornerDecor,
 } from './effects';
 
-const {fontFamily: BEBAS} = loadBebas();
-const {fontFamily: BARLOW} = loadBarlow();
+const BEBAS = "'Bebas Neue', sans-serif";
+const BARLOW = "'Barlow Condensed', sans-serif";
 
 // ─── palette ───────────────────────────────────────────────
 const CYAN   = '#00D4F0';
