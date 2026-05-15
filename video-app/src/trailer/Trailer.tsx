@@ -1,9 +1,11 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Img,
   Sequence,
   interpolate,
   spring,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
@@ -58,6 +60,10 @@ const Scene1: React.FC = () => {
 
   return (
     <AbsoluteFill style={{background: '#05070b'}}>
+      <Img src={staticFile("frames/bg-s1.jpg")} style={{
+        position: 'absolute', inset: 0, width: '100%', height: '100%',
+        objectFit: 'cover', opacity: 0.12, filter: 'brightness(0.4) saturate(0.3)',
+      }} />
       <AmbientGlow color={`rgba(239,68,68,${beat * 0.14})`} x={50} y={115} rx={120} ry={55}/>
       <AmbientGlow color='rgba(0,212,240,0.05)' x={50} y={-5} rx={70} ry={30}/>
 
@@ -236,6 +242,10 @@ const Scene3: React.FC = () => {
 
   return (
     <AbsoluteFill style={{background: '#0b0d14'}}>
+      <Img src={staticFile("frames/bg-s3.jpg")} style={{
+        position: 'absolute', inset: 0, width: '100%', height: '100%',
+        objectFit: 'cover', opacity: 0.12, filter: 'brightness(0.4) saturate(0.3)',
+      }} />
       <AmbientGlow color={`rgba(0,212,240,${glowStr})`} x={50} y={40} rx={90} ry={60}/>
       <AmbientGlow color='rgba(139,92,246,0.06)' x={80} y={90} rx={60} ry={40}/>
       <DataLines opacity={0.8}/>
@@ -634,6 +644,10 @@ const Scene5: React.FC = () => {
 
   return (
     <AbsoluteFill style={{background: '#050709'}}>
+      <Img src={staticFile("frames/bg-s5.jpg")} style={{
+        position: 'absolute', inset: 0, width: '100%', height: '100%',
+        objectFit: 'cover', opacity: 0.12, filter: 'brightness(0.4) saturate(0.3)',
+      }} />
       <AmbientGlow color={`rgba(0,212,240,${bgGlow})`} x={50} y={50} rx={90} ry={70}/>
       <DataLines opacity={0.4}/>
 
