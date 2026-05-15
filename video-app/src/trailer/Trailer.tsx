@@ -217,8 +217,8 @@ const Scene3: React.FC = () => {
   // Logo "STRIKE" slides in from left, "PANEL" from right
   const strikeSp = spring({frame: f - 8,  fps, config: {damping: 14, stiffness: 120, mass: 0.5}});
   const panelSp  = spring({frame: f - 14, fps, config: {damping: 14, stiffness: 120, mass: 0.5}});
-  const strikeX  = fi(f, [8, 8], [-200, -200]) * (1 - strikeSp);
-  const panelX   = fi(f, [14, 14], [200, 200]) * (1 - panelSp);
+  const strikeX  = -200 * (1 - strikeSp);
+  const panelX   = 200 * (1 - panelSp);
   const logoOp   = fi(f, [8, 20, 165, 180], [0, 1, 1, 0]);
 
   // Cyan glow builds

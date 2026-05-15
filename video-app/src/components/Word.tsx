@@ -1,15 +1,16 @@
 import { makeTransform, scale, translateY } from "@remotion/animation-utils";
-import { loadFont } from "@remotion/google-fonts/BreeSerif";
 import { fitText } from "@remotion/layout-utils";
 import type React from "react";
 import { AbsoluteFill, interpolate, useVideoConfig } from "remotion";
+
+const BREE_SERIF_FAMILY = "'Bree Serif', serif";
 
 export const Word: React.FC<{
   enterProgress: number;
   text: string;
   stroke: boolean;
 }> = ({ enterProgress, text, stroke }) => {
-  const { fontFamily } = loadFont();
+  const fontFamily = BREE_SERIF_FAMILY;
   const { width } = useVideoConfig();
   const desiredFontSize = 120;
 
