@@ -19,9 +19,9 @@ import {
   Scanlines,
   CornerDecor,
 } from './effects';
-
-const BEBAS = "'Bebas Neue', sans-serif";
-const BARLOW = "'Barlow Condensed', sans-serif";
+import './fonts';
+import {BEBAS, BARLOW, MONO} from './fonts';
+import {StrikePanelLogo, StrikePanelWordmark} from './logo';
 
 // ─── palette ───────────────────────────────────────────────
 const CYAN   = '#00D4F0';
@@ -72,7 +72,7 @@ const Scene1: React.FC = () => {
       }}>
         {/* Giant timestamp */}
         <div style={{
-          fontFamily: "'DM Mono', 'Courier New', monospace",
+          fontFamily: MONO,
           fontSize: 164, color: TEXT,
           letterSpacing: '0.04em', lineHeight: 1,
           textShadow: '0 0 80px rgba(255,255,255,0.07)',
@@ -257,41 +257,26 @@ const Scene3: React.FC = () => {
         alignItems: 'center', justifyContent: 'center',
       }}>
         {/* Logo */}
-        <div style={{opacity: logoOp, position: 'relative', textAlign: 'center'}}>
+        <div style={{opacity: logoOp, textAlign: 'center'}}>
           <div style={{
-            fontFamily: BEBAS,
-            fontSize: 130, lineHeight: 0.88,
-            letterSpacing: '0.08em',
-            color: TEXT,
-            textShadow: `0 0 60px rgba(0,212,240,0.25)`,
-            display: 'flex', alignItems: 'flex-start', justifyContent: 'center', gap: 0,
+            display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
           }}>
-            <span style={{transform: `translateX(${strikeX}px)`, display: 'inline-block'}}>
-              STRIKE
-            </span>
-            <span style={{
-              transform: `translateX(${panelX}px)`,
-              display: 'inline-block', color: CYAN,
-              textShadow: `0 0 40px rgba(0,212,240,0.7)`,
+            {/* Icon — slides up */}
+            <div style={{
+              transform: `translateY(${(1 - spring({frame: f - 8, fps, config: {damping: 14, stiffness: 120, mass: 0.5}})) * 40}px)`,
+              marginRight: 20, marginTop: 8,
             }}>
-              PANEL
-            </span>
-            <span style={{
-              fontFamily: BARLOW, fontSize: 32, fontWeight: 700,
-              color: CYAN, lineHeight: 1, marginTop: 12, marginLeft: 3,
-              opacity: superscriptOp,
-              textShadow: `0 0 20px rgba(0,212,240,0.8)`,
-            }}>
-              ™
-            </span>
+              <StrikePanelLogo size={100} glowOpacity={glowStr * 1.5}/>
+            </div>
+            {/* Wordmark — STRIKE from left, PANEL from right */}
+            <div style={{fontFamily: BEBAS, fontSize: 130, lineHeight: 0.88, letterSpacing: '0.08em', display: 'flex', alignItems: 'flex-start'}}>
+              <span style={{color: TEXT, transform: `translateX(${strikeX}px)`, display: 'inline-block', textShadow: '0 0 60px rgba(255,255,255,0.08)'}}>STRIKE</span>
+              <span style={{color: CYAN, transform: `translateX(${panelX}px)`, display: 'inline-block', textShadow: '0 0 40px rgba(0,212,240,0.7)'}}>PANEL</span>
+              <span style={{fontFamily: BARLOW, fontSize: 32, fontWeight: 700, color: CYAN, alignSelf: 'flex-start', marginTop: 12, marginLeft: 3, opacity: superscriptOp, textShadow: '0 0 20px rgba(0,212,240,0.8)'}}>™</span>
+            </div>
           </div>
-
-          {/* Glow bar under logo */}
-          <div style={{
-            height: 1, width: '80%', margin: '16px auto 0',
-            background: `linear-gradient(90deg, transparent, ${CYAN}, rgba(139,92,246,0.8), transparent)`,
-            boxShadow: '0 0 12px rgba(0,212,240,0.5)',
-          }}/>
+          {/* Glow bar */}
+          <div style={{height: 1, width: '80%', margin: '16px auto 0', background: `linear-gradient(90deg, transparent, ${CYAN}, rgba(139,92,246,0.8), transparent)`, boxShadow: '0 0 12px rgba(0,212,240,0.5)'}}/>
         </div>
 
         {/* TRAINING INTELLIGENCE */}
@@ -779,21 +764,11 @@ const Scene6: React.FC = () => {
         <div style={{
           opacity: logoOp,
           transform: `scale(${0.6 + logoSp * 0.4})`,
-          textAlign: 'center',
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
         }}>
-          <div style={{
-            fontFamily: BEBAS, fontSize: 120, lineHeight: 0.9,
-            letterSpacing: '0.08em', color: TEXT,
-            textShadow: `0 0 60px rgba(0,212,240,0.25)`,
-          }}>
-            <span>STRIKE</span>
-            <span style={{color: CYAN, textShadow: `0 0 50px rgba(0,212,240,0.8)`}}>PANEL</span>
-            <span style={{
-              fontFamily: BARLOW, fontSize: 30, fontWeight: 700,
-              color: CYAN, verticalAlign: 'super',
-            }}>™</span>
-          </div>
-
+          <StrikePanelLogo size={120} glowOpacity={0.7}/>
+          <div style={{height: 20}}/>
+          <StrikePanelWordmark fontSize={100} bebas={BEBAS} barlow={BARLOW}/>
           {/* Glow under logo */}
           <div style={{
             height: 1, width: '70%', margin: '14px auto',
@@ -814,7 +789,7 @@ const Scene6: React.FC = () => {
 
         {/* URL */}
         <div style={{
-          fontFamily: "'DM Mono', monospace",
+          fontFamily: MONO,
           fontSize: 18, color: 'rgba(122,133,160,0.7)',
           letterSpacing: '0.08em', marginTop: 28,
           opacity: urlOp,
