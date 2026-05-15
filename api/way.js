@@ -1,5 +1,63 @@
 export const config = { runtime: 'edge' };
 
+// Curated fallback quotes — used when the LLM returns an empty quote field.
+// Each entry is guaranteed to be in the native script of that tradition.
+const FALLBACK_QUOTES = {
+  arabic: [
+    { quote: 'الصبر مفتاح الفرج', translation: 'Patience is the key to relief.', concept: 'Sabr' },
+    { quote: 'من صبر ظفر', translation: 'He who is patient, succeeds.', concept: 'Zafar' },
+    { quote: 'العلم نور', translation: 'Knowledge is light.', concept: 'Ilm' },
+    { quote: 'إنما الأعمال بالنيات', translation: 'Actions are but by intentions.', concept: 'Niyyah' },
+  ],
+  zen: [
+    { quote: '七転び八起き', translation: 'Fall seven times, rise eight.', concept: 'Nana Korobi Ya Oki' },
+    { quote: '一期一会', translation: 'One time, one meeting.', concept: 'Ichi-go Ichi-e' },
+    { quote: '今ここにいること', translation: 'Being here, now.', concept: 'Ima Koko' },
+    { quote: '柔能く剛を制す', translation: 'Softness overcomes hardness.', concept: 'Ju' },
+  ],
+  stoic: [
+    { quote: 'Amor fati.', translation: 'Love of fate.', concept: 'Amor Fati' },
+    { quote: 'Nusquam est qui ubique est.', translation: 'One who is everywhere is nowhere.', concept: 'Ataraxia' },
+    { quote: 'Dum spiro, spero.', translation: 'While I breathe, I hope.', concept: 'Spes' },
+    { quote: 'Per aspera ad astra.', translation: 'Through hardship to the stars.', concept: 'Virtus' },
+  ],
+  ubuntu: [
+    { quote: 'Umuntu ngumuntu ngabantu.', translation: 'A person is a person through other people.', concept: 'Ubuntu' },
+    { quote: 'Motho ke motho ka batho.', translation: 'A person is a person through persons.', concept: 'Botho' },
+    { quote: 'Umntu akalahlwa.', translation: 'A person is not thrown away.', concept: 'Isithunzi' },
+  ],
+  sufi: [
+    { quote: 'بشنو این نی چون شکایت می‌کند', translation: 'Listen to the reed, how it tells a tale of separation.', concept: 'Ishq' },
+    { quote: 'آتش عشق است کاندر نی فتاد', translation: 'The fire of love has fallen into the reed.', concept: 'Fana' },
+    { quote: 'دل هر ذره را که بشکافی\nآفتابیش در میان بینی', translation: 'If you split the heart of any atom, you will find a sun within it.', concept: 'Kashf' },
+  ],
+  taoist: [
+    { quote: '知人者智，自知者明', translation: 'Knowing others is wisdom; knowing yourself is enlightenment.', concept: 'Zhi' },
+    { quote: '上善若水', translation: 'The highest good is like water.', concept: 'Wu Wei' },
+    { quote: '千里之行，始於足下', translation: 'A journey of a thousand miles begins with a single step.', concept: 'Tao' },
+  ],
+  vedic: [
+    { quote: 'योगः कर्मसु कौशलम्', translation: 'Excellence in action is yoga.', concept: 'Dharma' },
+    { quote: 'तत् त्वम् असि', translation: 'Thou art that.', concept: 'Brahman' },
+    { quote: 'अहिंसा परमो धर्मः', translation: 'Non-violence is the highest duty.', concept: 'Ahimsa' },
+  ],
+  celtic: [
+    { quote: 'Is minic a bhris béal duine a shrón.', translation: 'Many a time a man\'s mouth broke his nose.', concept: 'Anam Cara' },
+    { quote: 'Ní neart go cur le chéile.', translation: 'There is no strength without unity.', concept: 'Cairdeas' },
+    { quote: 'Ar scáth a chéile a mhaireann na daoine.', translation: 'People live in each other\'s shelter.', concept: 'Dídean' },
+  ],
+  nordic: [
+    { quote: 'Deyr fé, deyja frændr, deyr sjálfr it sama.', translation: 'Cattle die, kinsmen die, you yourself will die.', concept: 'Wyrd' },
+    { quote: 'Vits er þörf, þeim er víða ratar.', translation: 'Wisdom is needed by those who travel widely.', concept: 'Hugr' },
+    { quote: 'Ganga skal, ei sitja.', translation: 'One must walk, not sit.', concept: 'Framganga' },
+  ],
+  confucian: [
+    { quote: '己所不欲，勿施於人', translation: 'Do not impose on others what you do not want for yourself.', concept: 'Ren' },
+    { quote: '學而時習之，不亦說乎', translation: 'To learn and practice what you have learned — is this not a joy?', concept: 'Xue' },
+    { quote: '知之者不如好之者，好之者不如樂之者', translation: 'To know is not as good as to love; to love is not as good as to delight in.', concept: 'Le' },
+  ],
+};
+
 const TRADITIONS = {
   arabic: {
     coord: '23°N 45°E', region: 'Arabia',
@@ -155,10 +213,16 @@ export default async function handler(req) {
     if (!match) return new Response(JSON.stringify({ error: 'Could not parse wisdom. Try again.' }), { status: 500, headers });
 
     const wisdom = JSON.parse(match[0]);
-    // Ensure no tradition has an empty quote field
+    // If any tradition has an empty quote, substitute from the curated list
     for (const key of Object.keys(TRADITIONS)) {
       if (wisdom[key] && !wisdom[key].quote) {
-        wisdom[key].quote = wisdom[key].translation || '';
+        const pool = FALLBACK_QUOTES[key];
+        if (pool) {
+          const fb = pool[Math.floor(Math.random() * pool.length)];
+          wisdom[key].quote = fb.quote;
+          if (!wisdom[key].translation) wisdom[key].translation = fb.translation;
+          if (!wisdom[key].concept)     wisdom[key].concept     = fb.concept;
+        }
       }
     }
     return new Response(JSON.stringify(wisdom), { status: 200, headers });
