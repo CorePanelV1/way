@@ -672,13 +672,13 @@ function drawFrame(idx){
 })();
 
 function updateFrameSequence(p){
-  const fadeIn  = p>0.17 ? Math.min((p-0.17)/0.10,1) : 0;
-  const fadeOut = p<0.85 ? 1 : Math.max(0,1-(p-0.85)/0.10);
+  const fadeIn  = p>0.08 ? Math.min((p-0.08)/0.10,1) : 0;
+  const fadeOut = p<0.88 ? 1 : Math.max(0,1-(p-0.88)/0.08);
   const alpha   = fadeIn*fadeOut;
   if(FW)  FW.style.opacity  = frameReady ? String(alpha) : '0';
   if(SC)  SC.style.opacity  = String(1-alpha*0.95);
   if(frameReady&&alpha>0.02){
-    const normP=Math.max(0,Math.min(1,(p-0.17)/(0.85-0.17)));
+    const normP=Math.max(0,Math.min(1,(p-0.08)/(0.88-0.08)));
     drawFrame(Math.min(FRAME_COUNT-1,Math.floor(normP*FRAME_COUNT)));
   }
 }

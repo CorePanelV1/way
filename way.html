@@ -938,7 +938,6 @@ async function seek(){
     // Track this quote so it's excluded from future requests
     if(data[weeklyKey]?.quote) recordRecentQuote(data[weeklyKey].quote);
     lastWisdom = data;
-    _shortUrlCache = {};
 
     // Reset entrance state
     const rs = document.getElementById('state-results');
@@ -1114,25 +1113,44 @@ function buildShareUrl(key){
   const d=lastWisdom[key];
   const m=WEEKLY_META[key]||weeklyMeta;
   // Omit genZ (g) and week (w) — unused by share pages, keeps URL shorter
-  const payload={k:key,q:d.quote||'',t:d.translation||'',c:d.concept||'',a:(d.coordinate||m.coord)+' · '+(d.region||m.region),p:d.practice||''};
+  const q=(d.quote||'').slice(0,300);
+  const t=(d.translation||'').slice(0,200);
+  const payload={k:key,q,t,c:d.concept||'',a:(d.coordinate||m.coord)+' · '+(d.region||m.region)};
   // encodeURIComponent prevents base64 '+' being decoded as space by URLSearchParams
   const encoded=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
   return window.location.origin+'/s?d='+encoded;
 }
 
-function modalCopy(){
-  if(!lastWisdom||!activeShareKey) return;
-  navigator.clipboard.writeText(buildShareUrl(activeShareKey)).then(()=>showToast('Link copied ✓'));
+async function shortUrl(u){
+  try{
+    const r=await fetch('https://tinyurl.com/api-create.php?url='+encodeURIComponent(u),{signal:AbortSignal.timeout(5000)});
+    if(r.ok){const t=(await r.text()).trim();if(t.startsWith('http'))return t;}
+  }catch{}
+  return u;
 }
 
-function modalX(){
+async function modalCopy(){
+  if(!lastWisdom||!activeShareKey) return;
+  showToast('Shortening link…');
+  const url=await shortUrl(buildShareUrl(activeShareKey));
+  navigator.clipboard.writeText(url).then(()=>showToast('Link copied ✓'));
+}
+
+async function modalX(){
   if(!lastWisdom) return;
+  const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
   const d=lastWisdom[weeklyKey];
-  const quote=d.translation||d.quote||'';
-  const short=quote.length>140?quote.substring(0,137)+'…':quote;
-  const text=`"${short}"\n— ${d.concept}, ${weeklyMeta.label} wisdom`;
-  const url=window.location.origin+'/way.html';
-  window.open('https://x.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url),'_blank','noopener');
+  let tweetText;
+  if(isFlipped){
+    const gz=(d.genZ||'').slice(0,220);
+    tweetText=`"${gz}" — ${weeklyMeta.label} wisdom (gen z edition) via WAY`;
+  } else {
+    const quote=(d.translation||d.quote||'').slice(0,160);
+    tweetText=`"${quote}" — ${d.concept}, ${weeklyMeta.label} wisdom`;
+  }
+  showToast('Shortening link…');
+  const link=await shortUrl(buildShareUrl(weeklyKey));
+  window.open('https://x.com/intent/tweet?text='+encodeURIComponent(tweetText)+'&url='+encodeURIComponent(link),'_blank','noopener');
 }
 
 async function modalWhatsApp(){
@@ -1168,7 +1186,8 @@ async function modalInstagram(){
   if(!lastWisdom) return;
   showToast('Generating Stories image…');
   try{
-    const canvas=await buildWisdomCanvas('wisdom');
+    const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
+    const canvas=await buildWisdomCanvas(isFlipped?'genz':'wisdom');
     const W=1080,H=1920;
     const out=document.createElement('canvas');out.width=W;out.height=H;
     const ctx=out.getContext('2d');
@@ -1220,7 +1239,11 @@ async function buildWisdomCanvas(side){
   const bgCol=BG[weeklyKey]||'#0f0608';
   const glowCol=GLOW[weeklyKey]||'rgba(140,27,53,.2)';
 
-  // Background
+  // Fill entire canvas first (prevents transparent corners in exported PNG)
+  ctx.fillStyle=bgCol;
+  ctx.fillRect(0,0,W,H);
+
+  // Background gradient
   const bg=ctx.createLinearGradient(0,0,0,H);
   bg.addColorStop(0,bgCol);bg.addColorStop(1,'#040104');
   ctx.fillStyle=bg;_rr(ctx,0,0,W,H,20);ctx.fill();
@@ -1252,19 +1275,19 @@ async function buildWisdomCanvas(side){
 
     // Top: WAY + Gen Z badge
     let y=PAD;
-    ctx.font='700 9px "Cinzel",serif';ctx.letterSpacing='6px';ctx.fillStyle='rgba(245,230,208,.45)';
-    ctx.fillText('WAY',PAD,y+13);
-    ctx.font='400 7px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(245,230,208,.4)';
-    ctx.textAlign='right';ctx.fillText('💬  GEN Z TAKE',W-PAD,y+13);ctx.textAlign='left';
+    ctx.font='700 13px "Cinzel",serif';ctx.letterSpacing='6px';ctx.fillStyle='rgba(245,230,208,.45)';
+    ctx.fillText('WAY',PAD,y+14);
+    ctx.font='400 11px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(245,230,208,.4)';
+    ctx.textAlign='right';ctx.fillText('💬  GEN Z TAKE',W-PAD,y+14);ctx.textAlign='left';
     y+=32;goldRule(y);y+=18;
 
     // Eyebrow
-    ctx.font='400 8px "Cinzel",serif';ctx.letterSpacing='3px';ctx.fillStyle='rgba(245,230,208,.28)';
-    ctx.textAlign='center';ctx.fillText('or in gen z terms',W/2,y+12);ctx.textAlign='left';
+    ctx.font='400 11px "Cinzel",serif';ctx.letterSpacing='3px';ctx.fillStyle='rgba(245,230,208,.28)';
+    ctx.textAlign='center';ctx.fillText('or in gen z terms',W/2,y+14);ctx.textAlign='left';
     y+=36;
 
     // GenZ text — large, centered
-    const gzFont=`italic 400 19px "Cormorant Garamond",serif`;
+    const gzFont=`italic 400 22px "Cormorant Garamond",serif`;
     const gzLines=wrap(d.genZ||'',gzFont,IW-10);
     ctx.font=gzFont;ctx.fillStyle='rgba(245,230,208,.95)';ctx.textAlign='center';
     const totalH=gzLines.length*30;
@@ -1276,7 +1299,7 @@ async function buildWisdomCanvas(side){
     // Bottom
     const bY=H-PAD-4;
     goldRule(bY-14);
-    ctx.font='400 7.5px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.45)';
+    ctx.font='400 11px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.45)';
     ctx.fillText((d.concept||'').toUpperCase(),PAD,bY);
     ctx.textAlign='right';ctx.fillStyle='rgba(245,230,208,.2)';
     ctx.fillText('✦ WAY',W-PAD,bY);ctx.textAlign='left';ctx.letterSpacing='0';
@@ -1285,10 +1308,10 @@ async function buildWisdomCanvas(side){
     // ── WISDOM FACE ─────────────────────────────────────────────────
     // Top: WAY + culture badge
     let y=PAD;
-    ctx.font='700 9px "Cinzel",serif';ctx.letterSpacing='6px';ctx.fillStyle='rgba(245,230,208,.45)';
-    ctx.fillText('WAY',PAD,y+13);
-    ctx.font='400 8px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.65)';
-    ctx.textAlign='right';ctx.fillText(b.glyph+'  '+b.label,W-PAD,y+13);ctx.textAlign='left';
+    ctx.font='700 13px "Cinzel",serif';ctx.letterSpacing='6px';ctx.fillStyle='rgba(245,230,208,.45)';
+    ctx.fillText('WAY',PAD,y+14);
+    ctx.font='400 12px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.65)';
+    ctx.textAlign='right';ctx.fillText(b.glyph+'  '+b.label,W-PAD,y+14);ctx.textAlign='left';
     y+=32;goldRule(y);y+=24;
 
     // Deco glyph watermark
@@ -1297,7 +1320,7 @@ async function buildWisdomCanvas(side){
 
     // Quote
     const isAr=weeklyKey==='arabic';
-    const qFont=`italic 400 ${isAr?'19':'21'}px "Cormorant Garamond",serif`;
+    const qFont=`italic 400 ${isAr?'22':'24'}px "Cormorant Garamond",serif`;
     const qLines=wrap(d.quote||'',qFont,IW);
     ctx.font=qFont;ctx.fillStyle='rgba(245,230,208,.95)';
     const qH=qLines.length*30;
@@ -1307,7 +1330,7 @@ async function buildWisdomCanvas(side){
     qy+=12;
 
     // Translation
-    const tFont=`italic 400 14px "Cormorant Garamond",serif`;
+    const tFont=`italic 400 17px "Cormorant Garamond",serif`;
     const tLines=(d.translation&&d.translation!==d.quote)?wrap(d.translation,tFont,IW):[];
     ctx.font=tFont;ctx.fillStyle='rgba(245,230,208,.5)';ctx.textAlign='center';
     for(const l of tLines){ctx.fillText(l,W/2,qy);qy+=22;}
@@ -1316,9 +1339,9 @@ async function buildWisdomCanvas(side){
     // Bottom
     const bY=H-PAD-4;
     goldRule(bY-14);
-    ctx.font='400 7.5px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.45)';
+    ctx.font='400 11px "Cinzel",serif';ctx.letterSpacing='2px';ctx.fillStyle='rgba(201,168,76,.45)';
     ctx.fillText((d.concept||'').toUpperCase(),PAD,bY);
-    ctx.font='400 7px "Cinzel",serif';ctx.letterSpacing='1px';ctx.fillStyle='rgba(245,230,208,.2)';
+    ctx.font='400 10px "Cinzel",serif';ctx.letterSpacing='1px';ctx.fillStyle='rgba(245,230,208,.2)';
     ctx.textAlign='right';ctx.fillText((d.coordinate||b.coord)+' · '+(d.region||b.region),W-PAD,bY);
     ctx.textAlign='left';ctx.letterSpacing='0';
   }
