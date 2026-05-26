@@ -624,9 +624,6 @@ const U = (function(){
 
 /* ═══ FRAME SEQUENCE ═════════════════════════════════════════════════ */
 const FRAME_COUNT = 300;
-// On touch/mobile: load every 3rd frame (100 frames) — 3× faster, still smooth
-const IS_TOUCH = ('ontouchstart' in window) || window.innerWidth < 768;
-const FRAME_STEP = IS_TOUCH ? 3 : 1;
 const FC  = document.getElementById('frame-canvas');
 const FW  = document.getElementById('frame-wrap');
 const LDR = document.getElementById('frame-loader');
@@ -639,11 +636,17 @@ sizeFC();
 window.addEventListener('resize',sizeFC,{passive:true});
 
 function drawFrame(idx){
-  // On mobile snap to nearest loaded frame
-  const snapped = IS_TOUCH ? Math.round(idx/FRAME_STEP)*FRAME_STEP : idx;
-  const fi = Math.min(FRAME_COUNT-1, Math.max(0, snapped));
+  const fi = Math.min(FRAME_COUNT-1, Math.max(0, idx));
   const img=frames[fi];
-  if(!img||!img.complete||!img.naturalWidth) return;
+  if(!img||!img.complete||!img.naturalWidth){
+    // fall back to nearest loaded frame
+    for(let d=1;d<20;d++){
+      const lo=frames[Math.max(0,fi-d)], hi=frames[Math.min(FRAME_COUNT-1,fi+d)];
+      if(lo&&lo.complete&&lo.naturalWidth){const ctx=FC.getContext('2d'),W=FC.width,H=FC.height;const s=Math.max(W/lo.naturalWidth,H/lo.naturalHeight);ctx.clearRect(0,0,W,H);ctx.drawImage(lo,(W-lo.naturalWidth*s)/2,(H-lo.naturalHeight*s)/2,lo.naturalWidth*s,lo.naturalHeight*s);break;}
+      if(hi&&hi.complete&&hi.naturalWidth){const ctx=FC.getContext('2d'),W=FC.width,H=FC.height;const s=Math.max(W/hi.naturalWidth,H/hi.naturalHeight);ctx.clearRect(0,0,W,H);ctx.drawImage(hi,(W-hi.naturalWidth*s)/2,(H-hi.naturalHeight*s)/2,hi.naturalWidth*s,hi.naturalHeight*s);break;}
+    }
+    return;
+  }
   if(fi===currentFrame) return;
   currentFrame=fi;
   const ctx=FC.getContext('2d'),W=FC.width,H=FC.height;
@@ -656,17 +659,14 @@ function drawFrame(idx){
 (function preloadFrames(){
   const order=[],set=new Set();
   const add=i=>{if(i>=0&&i<FRAME_COUNT&&!set.has(i)){order.push(i);set.add(i);}};
-  const s=FRAME_STEP;
-  // First: critical frames at the start (show up fast)
-  for(let i=0;i<Math.min(18,FRAME_COUNT);i+=s) add(i);
-  // Last frames, middle spread, then fill in
-  for(let i=FRAME_COUNT-1;i>=Math.max(0,FRAME_COUNT-18);i-=s) add(i);
-  for(let i=0;i<FRAME_COUNT;i+=s*3) add(i);
-  for(let i=0;i<FRAME_COUNT;i+=s)   add(i);
-  if(!IS_TOUCH) for(let i=0;i<FRAME_COUNT;i++) add(i); // desktop: all 300
-  // Mobile needs only 3 frames before showing; desktop 20
-  const READY_AFTER = IS_TOUCH ? 3 : 20;
-  const CONCURRENCY = IS_TOUCH ? 10 : 6;
+  // Priority: first 30 frames (visible immediately on scroll), last 10, then even spread, then fill all
+  for(let i=0;i<30;i++) add(i);
+  for(let i=FRAME_COUNT-1;i>=FRAME_COUNT-10;i--) add(i);
+  for(let i=0;i<FRAME_COUNT;i+=10) add(i);
+  for(let i=0;i<FRAME_COUNT;i+=3)  add(i);
+  for(let i=0;i<FRAME_COUNT;i++)   add(i); // all 300
+  const READY_AFTER = 8;
+  const CONCURRENCY = 12;
   let qi=0;
   function next(){
     if(qi>=order.length) return;
@@ -674,8 +674,8 @@ function drawFrame(idx){
     img.decoding='async';
     img.onload=()=>{
       frames[idx]=img; framesLoaded++;
-      if(LDF) LDF.style.width=Math.round(framesLoaded/order.length*100)+'%';
-      if(framesLoaded>=order.length){frameReady=true;if(LDR)LDR.classList.add('done');}
+      if(LDF) LDF.style.width=Math.round(framesLoaded/FRAME_COUNT*100)+'%';
+      if(framesLoaded>=FRAME_COUNT){frameReady=true;if(LDR)LDR.classList.add('done');}
       else if(!frameReady&&framesLoaded>=READY_AFTER) frameReady=true;
       next();
     };
@@ -686,13 +686,13 @@ function drawFrame(idx){
 })();
 
 function updateFrameSequence(p){
-  const fadeIn  = p>0.08 ? Math.min((p-0.08)/0.10,1) : 0;
-  const fadeOut = p<0.88 ? 1 : Math.max(0,1-(p-0.88)/0.08);
+  const fadeIn  = p>0.01 ? Math.min((p-0.01)/0.05,1) : 0;
+  const fadeOut = p<0.94 ? 1 : Math.max(0,1-(p-0.94)/0.05);
   const alpha   = fadeIn*fadeOut;
   if(FW)  FW.style.opacity  = frameReady ? String(alpha) : '0';
   if(SC)  SC.style.opacity  = String(1-alpha*0.95);
-  if(frameReady&&alpha>0.02){
-    const normP=Math.max(0,Math.min(1,(p-0.08)/(0.88-0.08)));
+  if(alpha>0.01){
+    const normP=Math.max(0,Math.min(1,(p-0.01)/0.93));
     drawFrame(Math.min(FRAME_COUNT-1,Math.floor(normP*FRAME_COUNT)));
   }
 }
