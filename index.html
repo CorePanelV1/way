@@ -59,7 +59,7 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 
 /* HERO */
 #hero-section{position:relative;height:500vh;z-index:1}
-#hero-sticky{position:sticky;top:0;height:100svh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+#hero-sticky{position:sticky;top:0;height:100svh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:#05030a}
 #scrub-canvas{position:absolute;inset:0;z-index:1;width:100%;height:100%}
 #frame-wrap{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;will-change:opacity}
 #frame-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -540,18 +540,19 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 </footer>
 
 <script>
-gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.config({ignoreMobileResize:true});
+try{gsap.registerPlugin(ScrollTrigger);ScrollTrigger.config({ignoreMobileResize:true});}catch(e){}
 
 /* ═══ LENIS SMOOTH SCROLL ════════════════════════════════════════════ */
-const lenis = new Lenis({duration:0.7,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true,smoothTouch:false});
-lenis.on('scroll', e => {
-  ScrollTrigger.update();
-  const sp = document.getElementById('scroll-progress');
-  if(sp) sp.style.transform = `scaleX(${e.progress})`;
-});
-gsap.ticker.add(time=>lenis.raf(time*1000));
-gsap.ticker.lagSmoothing(0);
+let lenis;
+try{
+  lenis = new Lenis({duration:0.7,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true,smoothTouch:false});
+  lenis.on('scroll', e => {
+    try{ScrollTrigger.update();}catch(e){}
+    const sp = document.getElementById('scroll-progress');
+    if(sp) sp.style.transform = `scaleX(${e.progress})`;
+  });
+  try{gsap.ticker.add(time=>lenis.raf(time*1000));gsap.ticker.lagSmoothing(0);}catch(e){}
+}catch(e){}
 
 /* ═══ GENERATIVE UNIVERSE RENDERER ═══════════════════════════════════ */
 const U = (function(){
@@ -698,12 +699,18 @@ function updateFrameSequence(p){
 
 /* ═══ GENERATIVE STAR CANVAS + RAF ════════════════════════════════════ */
 const SC=document.getElementById('scrub-canvas');
+const HERO_SEC=document.getElementById('hero-section');
 let tp=0,AT=0;
 U.init(SC);
 window.addEventListener('resize',()=>{U.init(SC);sizeFC();},{passive:true});
 
 (function loop(){
   AT+=.016;
+  // Always derive tp directly from DOM so it works regardless of GSAP/Lenis state
+  if(HERO_SEC){
+    const total=HERO_SEC.offsetHeight-window.innerHeight;
+    if(total>0) tp=Math.max(0,Math.min(1,-HERO_SEC.getBoundingClientRect().top/total));
+  }
   U.draw(SC,tp,AT);
   updateFrameSequence(tp);
   requestAnimationFrame(loop);
@@ -739,13 +746,16 @@ const HP  = document.getElementById('hud-pct');
 const HUD = document.getElementById('hud');
 
 // Entrance animation
+try{
 const el = gsap.timeline({delay:.4});
 el.from(TT, {opacity:0,y:20,duration:.8,ease:'expo.out'},0);
 el.from(HI, {opacity:0,y:12,duration:.8,ease:'expo.out'},.25);
 el.from(TB, {opacity:0,y:-20,duration:.8,ease:'expo.out'},.18);
 el.to(HUD,  {opacity:1,duration:1},1.4);
+}catch(e){if(HUD)HUD.style.opacity='1';}
 
 // Scroll-scrubbed master timeline
+try{
 const master = gsap.timeline({
   scrollTrigger:{
     trigger:'#hero-section', start:'top top', end:'bottom bottom',
@@ -805,6 +815,7 @@ master.to(TB,{opacity:0,ease:'power1.in',duration:.18},.18);
 master.to(TT,{x:0,opacity:1,letterSpacing:'-.02em',ease:'power2.inOut',duration:.22},.78);
 master.to(TB,{x:0,opacity:1,letterSpacing:'-.02em',ease:'power2.inOut',duration:.22},.78);
 ScrollTrigger.refresh();
+}catch(e){}
 
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY>60);
