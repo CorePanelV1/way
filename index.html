@@ -686,7 +686,9 @@ function drawTextEat(tp){
   //   tp 0.56 → 0.72       : text holds over the returning starfield
   //   tp 0.72 → 0.80       : text fades out, proverbs take over
 
-  const endFade = tp>0.82 ? Math.max(0,(0.91-tp)/0.09) : 1;
+  // The title is the name of the app — it holds until the hero is almost
+  // fully scrolled, dissolving only as the next section arrives.
+  const endFade = tp>0.94 ? Math.max(0,(1.0-tp)/0.06) : 1;
   const alpha   = endFade;
   if(alpha<=0) return;
 
@@ -776,8 +778,8 @@ function drawTextEat(tp){
     TCX.restore();
   }
 
-  // 4. Roman laurels — sprout up around the title as the video drains,
-  //    framing the settled crimson text like a victory wreath.
+  // 4. Stele ornament — ruled lines, gold diamond, carved sub-inscription
+  //    fading in beneath the settled title as the video drains.
   const lgrow = 1-vidA;
   if(lgrow>0.01 && shrink>0.95){
     TCX.font=fontStr;
@@ -789,90 +791,16 @@ function drawTextEat(tp){
 }
 
 const GOLD='201,162,95';
-const GOLD2='168,128,58';
 
-// ── Bezier branch helper ────────────────────────────────────────────────
-function bezierBranch(ctx,x0,y0,x1,y1,cpx,cpy,nLeaves,leafSz,grow,a){
-  if(grow<=0||a<=0) return;
-  const STEPS=50;
-  const b=(t)=>{const mt=1-t;return{
-    x:mt*mt*x0+2*mt*t*cpx+t*t*x1,
-    y:mt*mt*y0+2*mt*t*cpy+t*t*y1
-  };};
-  ctx.save();
-  ctx.globalAlpha=a;
-  ctx.lineCap='round';
-  // stem
-  ctx.strokeStyle=`rgba(${GOLD},0.82)`;
-  ctx.lineWidth=Math.max(0.7,leafSz*0.14);
-  ctx.beginPath();
-  for(let i=0;i<=Math.floor(STEPS*grow);i++){const p=b(i/STEPS);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}
-  ctx.stroke();
-  // leaves
-  for(let k=1;k<=nLeaves;k++){
-    const t=k/(nLeaves+1);
-    if(t>grow) break;
-    const p=b(t), pn=b(Math.min(1,t+0.025));
-    const tang=Math.atan2(pn.y-p.y,pn.x-p.x);
-    const L=leafSz*(0.88+0.24*Math.sin(k*1.9+0.3));
-    const la=Math.min(1,(grow-t)*10);
-    for(const s of [1,-1]){
-      const th=tang+s*0.82;
-      ctx.save();
-      ctx.globalAlpha=a*la;
-      ctx.translate(p.x+Math.cos(th)*L*0.46,p.y+Math.sin(th)*L*0.46);
-      ctx.rotate(th);
-      ctx.fillStyle=`rgba(${s>0?GOLD:GOLD2},${s>0?0.88:0.68})`;
-      ctx.beginPath();
-      ctx.ellipse(0,0,L*0.50,L*0.155,0,0,Math.PI*2);
-      ctx.fill();
-      // leaf midrib
-      ctx.strokeStyle=`rgba(${GOLD},0.18)`;
-      ctx.lineWidth=0.5;
-      ctx.beginPath();ctx.moveTo(-L*0.46,0);ctx.lineTo(L*0.46,0);ctx.stroke();
-      ctx.restore();
-    }
-  }
-  ctx.restore();
-}
-
-// ── The full editorial composition ─────────────────────────────────────
-// One grand asymmetric branch sweeps from lower-left up past the text.
-// A short counterweight sprig sits top-right. A ruled stele base with a
-// carved sub-inscription anchors the composition — like a stone tablet.
+// ── Stele composition ───────────────────────────────────────────────────
+// Inscription-on-stone framing: thin ruled lines extending to the screen
+// edges, a rotated gold diamond at center, and a letterpress-spaced
+// sub-inscription — no figurative ornament.
 function drawRomanComposition(ctx,W,H,lx1,ly1,lx2,ly2,tw1,tw2,fs,grow,alpha){
   ctx.save();
   ctx.lineJoin='round';
 
-  // ── 1. GRAND LEFT BRANCH  (grows first, fast) ─────────────────────
-  // Sweeps from the lower-left corner curving up and slightly inward,
-  // ending above the first line — tall, architectural, asymmetric.
-  const g1=Math.min(1,grow*2.2);
-  bezierBranch(ctx,
-    W*0.04, ly2+fs*0.70,               // base: lower-left
-    lx1-tw1*0.62, ly1-fs*1.05,         // tip: above "WHERE"
-    W*0.06, ly1+fs*0.15,               // control: bows slightly right
-    11, fs*0.080, g1, alpha);
-
-  // ─ Sub-sprig off the grand branch at mid-height ────────────────────
-  const g1b=Math.min(1,Math.max(0,(grow-0.25)*2.0));
-  bezierBranch(ctx,
-    W*0.07, ly1+fs*0.48,
-    W*0.18, ly1+fs*0.12,
-    W*0.10, ly1+fs*0.20,
-    5, fs*0.052, g1b, alpha*0.72);
-
-  // ── 2. SMALL COUNTER-SPRIG  top-right (delayed, smaller) ──────────
-  // One short sprig angling away from the text — visual tension,
-  // not a mirror.
-  const g2=Math.min(1,Math.max(0,(grow-0.35)*2.4));
-  bezierBranch(ctx,
-    lx2+tw2*0.52, ly1-fs*0.38,         // base: just right of WHERE endpoint
-    W*0.93, ly1-fs*0.72,               // tip: up-right toward corner
-    lx2+tw2*0.78, ly1-fs*0.60,
-    5, fs*0.052, g2, alpha*0.68);
-
-  // ── 3. STELE BASE: ruled lines + gold diamond ─────────────────────
+  // ── STELE BASE: ruled lines + gold diamond ─────────────────────────
   // Think: inscription on stone. A thin horizontal rule extends from
   // both sides of the wider line, then a micro-inscription below.
   const ruleGrow=Math.min(1,Math.max(0,(grow-0.50)*4));
@@ -1099,38 +1027,10 @@ const master = gsap.timeline({
       HI.style.opacity = introFade;
       HI.style.pointerEvents = introFade > 0.05 ? 'auto' : 'none';
 
-      // Proverb float — appears only after the title text has faded out
-      const fadeIn  = p > 0.91 ? Math.min((p-0.91)/0.04,1) : 0;
-      const fadeOut = p < 0.98 ? 1 : Math.max(0,1-(p-0.98)/0.02);
-      const pfAlpha = fadeIn * fadeOut;
-      PF.style.opacity = pfAlpha;
-      PF.style.transform = `translate(-50%,calc(-50% + ${(p-0.945)*-40}px))`;
-
-      // Star burst
-      if(p > 0.92 && p < 0.98){
-        SB.classList.add('vis');
-        const sa = Math.min((p-0.92)/0.04,(0.98-p)/0.03,1);
-        SB.style.opacity = sa * 0.9;
-        const ss = 1 + sa * 80;
-        SB.style.width = ss+'px'; SB.style.height = ss+'px';
-        SB.style.marginLeft = -(ss/2)+'px'; SB.style.marginTop = -(ss/2)+'px';
-      } else {
-        SB.style.opacity = 0;
-      }
-
-      // Culture crossfade — window matches proverb float window
-      if(p > .91 && p < .98){
-        const ci = Math.min(CULTURES.length-1, Math.floor((p-.91)/.07*CULTURES.length));
-        if(ci !== lastCI){
-          lastCI = ci;
-          const c = CULTURES[ci];
-          HCU.textContent = '';
-          gsap.to(PF,{opacity:0,duration:.18,onComplete:()=>{
-            OQ.textContent = c.q;
-            gsap.to(PF,{opacity:pfAlpha,duration:.28});
-          }});
-        }
-      } else { lastCI = -1; }
+      // Proverb float + star burst retired from the hero: the title (the
+      // app's name) now holds the center until the hero ends.
+      PF.style.opacity = 0;
+      SB.style.opacity = 0;
     }
   }
 });
