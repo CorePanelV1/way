@@ -679,116 +679,84 @@ function drawTextEat(tp){
   TCX.clearRect(0,0,W,H);
   if(!fontsLoaded||tp<TEXT_START) return;
 
-  //   tp TEXT_START        : hard swap — video now plays INSIDE giant letters
-  //   tp TEXT_START → 0.42 : letters shrink from giant to normal size
-  //                          (you watch the video get swallowed into the text)
-  //   tp 0.50 → 0.66       : video drains out of the letters → solid crimson
-  //   tp 0.66 → 0.80       : text remains over returning starfield
-  //   tp 0.80 → 0.88       : text fades out
+  //   tp TEXT_START        : hard swap — video now plays INSIDE giant bold letters
+  //   tp TEXT_START → 0.40 : WHERE glides in from the left, ARE YOU? from the
+  //                          right, both shrinking from giant to normal size
+  //   tp 0.44 → 0.56       : video drains out of the letters → solid crimson
+  //   tp 0.56 → 0.72       : text holds over the returning starfield
+  //   tp 0.72 → 0.80       : text fades out, proverbs take over
 
-  const endFade = tp>0.80 ? Math.max(0,(0.88-tp)/0.08) : 1;
+  const endFade = tp>0.72 ? Math.max(0,(0.80-tp)/0.08) : 1;
   const alpha   = endFade;
   if(alpha<=0) return;
 
-  // Giant → normal: letters start at 4.5× with wide tracking and stroke-only
-  // outlines (the full interior of each letter is a video window). As you
-  // scroll the letters shrink, tracking closes, and the fill fades in so
-  // they arrive at solid crimson at normal size.
-  const sp     = Math.min(Math.max((tp-TEXT_START)/(0.46-TEXT_START),0),1);
+  // Giant → normal: super-thick (bold 700) letters start at 4.5× so the
+  // video is properly visible through the fat glyph interiors, easing
+  // down to normal display size by tp=0.40.
+  const sp     = Math.min(Math.max((tp-TEXT_START)/(0.40-TEXT_START),0),1);
   const shrink = 1-Math.pow(1-sp,2.5); // ease-out
-  const fontSize = textFontMax*(4.5-3.5*shrink);
+  const fontSize = textFontMax*(3.4-2.4*shrink);
+
+  // Cinematic side entrance: WHERE slides in from the left, ARE YOU? from
+  // the right, converging on center as the letters shrink.
+  const slide  = (1-shrink)*W*0.28;
+  const line1x = W/2 - slide;
+  const line2x = W/2 + slide;
 
   // Letter spacing: generous at giant, zero at normal
-  const tracking = Math.floor((1-shrink)*fontSize*0.055);
+  const tracking = Math.floor((1-shrink)*fontSize*0.04);
 
-  // Font weight: light at giant (300) for thinner strokes → semi-bold (600) at normal
-  const weight  = Math.round((300+300*shrink)/100)*100;
-  const fontStr = `${weight} ${fontSize}px "Cormorant Garamond",serif`;
+  const fontStr = `700 ${fontSize}px "Cormorant Garamond",serif`;
 
-  // Line height: extra breathing room when giant
-  const lineH = fontSize*(1.12+0.45*(1-shrink));
+  // Line height: tighter when giant so both lines stay on screen
+  const lineH = fontSize*(1.12-0.12*(1-shrink));
   const totalH= lineH*2;
   const cy    = H/2;
   const line1y= cy - totalH/2 + fontSize*0.82;
   const line2y= line1y + lineH;
 
-  // Video inside the letters: full from the swap, drains away 0.50→0.66
-  const vidA = tp<0.50 ? 1
-             : tp<0.66 ? Math.max(0, 1-(tp-0.50)/0.16)
+  // Video inside the letters: full through the slide, drains away 0.44→0.56
+  const vidA = tp<0.44 ? 1
+             : tp<0.56 ? Math.max(0, 1-(tp-0.44)/0.12)
              : 0;
 
-  // ── Stroke (outline) layer — crimson border around each letter ────────
-  // Thick + opaque when giant; fades as fill takes over
-  const strokeAlpha = alpha * Math.max(0, 1-shrink*1.4);
-  const fillAlpha   = alpha * Math.min(1, shrink*1.6);
-  const strokeW     = Math.max(1.5, fontSize*0.028*(1-shrink*0.6));
-
-  function drawLetters(ctx, fill, stroke){
+  function drawLetters(ctx, fill){
     ctx.font = fontStr;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     ctx.letterSpacing = tracking+'px';
-    if(stroke){
-      ctx.lineWidth = strokeW;
-      ctx.lineJoin = 'round';
-      ctx.strokeStyle = stroke;
-      ctx.strokeText('WHERE',   W/2, line1y);
-      ctx.strokeText('ARE YOU?',W/2, line2y);
-    }
-    if(fill){
-      ctx.fillStyle = fill;
-      ctx.fillText('WHERE',   W/2, line1y);
-      ctx.fillText('ARE YOU?',W/2, line2y);
-    }
+    ctx.fillStyle = fill;
+    ctx.fillText('WHERE',   line1x, line1y);
+    ctx.fillText('ARE YOU?',line2x, line2y);
     ctx.letterSpacing = '0px'; // always reset
   }
 
-  // 1. Crimson stroke outline (visible when giant)
-  if(strokeAlpha>0.01){
-    TCX.save();
-    TCX.globalAlpha = strokeAlpha;
-    if(vidA>0){ TCX.shadowBlur=strokeW*4; TCX.shadowColor='#8c1b35'; }
-    drawLetters(TCX, null, '#8c1b35');
-    TCX.restore();
-  }
-  // 2. Crimson fill (grows in as letters shrink to normal)
-  if(fillAlpha>0.01){
-    TCX.save();
-    TCX.globalAlpha = fillAlpha;
-    if(vidA>0){ TCX.shadowBlur=fontSize*0.3; TCX.shadowColor='#8c1b35'; }
-    drawLetters(TCX, '#8c1b35', null);
-    TCX.restore();
-  }
+  // 1. Crimson base under the video — shows through as the video drains,
+  //    and gives the letters a soft ember glow while the video lives inside.
+  TCX.save();
+  TCX.globalAlpha = alpha;
+  if(vidA>0){ TCX.shadowBlur=fontSize*0.18; TCX.shadowColor='rgba(140,27,53,0.85)'; }
+  drawLetters(TCX, '#8c1b35');
+  TCX.restore();
 
   if(vidA>0){
     // 2. Off-screen canvas: white text mask → source-in composites the video.
-    //    Must use the same font/tracking as the visible layers so the video
+    //    Same font/tracking/positions as the visible layer so the video
     //    clips exactly to the letter shapes the user sees.
     const osc = typeof OffscreenCanvas!=='undefined'
       ? new OffscreenCanvas(W,H)
       : Object.assign(document.createElement('canvas'),{width:W,height:H});
     const oct = osc.getContext('2d');
     oct.clearRect(0,0,W,H);
-    // Mask: fill (letter interior) + stroke expanded slightly so the video
-    // bleeds to the stroke edge at the giant/outline phase.
-    drawLetters(oct, 'white', null);
-    if(strokeAlpha>0.01){
-      oct.lineWidth = strokeW;
-      oct.lineJoin  = 'round';
-      oct.font      = fontStr;
-      oct.textAlign = 'center';
-      oct.textBaseline = 'alphabetic';
-      oct.letterSpacing = tracking+'px';
-      oct.strokeStyle = 'white';
-      oct.strokeText('WHERE',   W/2, line1y);
-      oct.strokeText('ARE YOU?',W/2, line2y);
-      oct.letterSpacing = '0px';
-    }
+    drawLetters(oct, 'white');
     oct.globalCompositeOperation='source-in';
     const fi=Math.min(FRAME_COUNT-1,Math.floor(tp*FRAME_COUNT));
     const img=frames[fi]||(()=>{for(let d=1;d<30;d++){const f=frames[Math.max(0,fi-d)];if(f&&f.complete&&f.naturalWidth)return f;}return null;})();
     if(img&&img.complete&&img.naturalWidth){
-      const s=Math.max(W/img.naturalWidth,H/img.naturalHeight);
+      // Slight zoom-out on the video itself as the letters settle — the
+      // world recedes as it's captured.
+      const zoom=1+0.18*(1-shrink);
+      const s=Math.max(W/img.naturalWidth,H/img.naturalHeight)*zoom;
       const dW=img.naturalWidth*s,dH=img.naturalHeight*s;
       oct.drawImage(img,(W-dW)/2,(H-dH)/2,dW,dH);
     }
@@ -878,7 +846,7 @@ function updateFrameSequence(p){
   // masked giant-letter version takes over (drawn on text-canvas). The video
   // is never visible outside the letters once the text exists.
   const eatFade = tp<TEXT_START ? 1 : 0;
-  const inEat   = tp>=TEXT_START && tp<0.70;
+  const inEat   = tp>=TEXT_START && tp<0.58;
   const alpha   = fadeIn*exit*eatFade;
   if(FW)  FW.style.opacity =frameReady?String(alpha):'0';
   // After the eat, the starfield returns behind the remaining crimson text
@@ -913,7 +881,7 @@ window.addEventListener('resize',()=>{U.init(SC);sizeFC();},{passive:true});
     if(end>0) vp=Math.max(0,Math.min(1,window.scrollY/end));
   }
   // During the eat phase draw a pure black background on SC instead of stars
-  if(tp>=TEXT_START&&tp<0.70){
+  if(tp>=TEXT_START&&tp<0.58){
     const ectx=SC.getContext('2d');
     ectx.fillStyle='#040203';
     ectx.fillRect(0,0,SC.width,SC.height);
@@ -977,16 +945,16 @@ const master = gsap.timeline({
       HI.style.pointerEvents = introFade > 0.05 ? 'auto' : 'none';
 
       // Proverb float — appears only after the title text has faded out
-      const fadeIn  = p > 0.86 ? Math.min((p-0.86)/0.05,1) : 0;
-      const fadeOut = p < 0.96 ? 1 : Math.max(0,1-(p-0.96)/0.04);
+      const fadeIn  = p > 0.80 ? Math.min((p-0.80)/0.05,1) : 0;
+      const fadeOut = p < 0.95 ? 1 : Math.max(0,1-(p-0.95)/0.04);
       const pfAlpha = fadeIn * fadeOut;
       PF.style.opacity = pfAlpha;
-      PF.style.transform = `translate(-50%,calc(-50% + ${(p-0.91)*-40}px))`;
+      PF.style.transform = `translate(-50%,calc(-50% + ${(p-0.875)*-40}px))`;
 
       // Star burst
-      if(p > 0.88 && p < 0.96){
+      if(p > 0.83 && p < 0.95){
         SB.classList.add('vis');
-        const sa = Math.min((p-0.88)/0.04,(0.96-p)/0.05,1);
+        const sa = Math.min((p-0.83)/0.05,(0.95-p)/0.05,1);
         SB.style.opacity = sa * 0.9;
         const ss = 1 + sa * 80;
         SB.style.width = ss+'px'; SB.style.height = ss+'px';
@@ -996,8 +964,8 @@ const master = gsap.timeline({
       }
 
       // Culture crossfade — window matches proverb float window
-      if(p > .86 && p < .96){
-        const ci = Math.min(CULTURES.length-1, Math.floor((p-.86)/.10*CULTURES.length));
+      if(p > .80 && p < .95){
+        const ci = Math.min(CULTURES.length-1, Math.floor((p-.80)/.15*CULTURES.length));
         if(ci !== lastCI){
           lastCI = ci;
           const c = CULTURES[ci];
