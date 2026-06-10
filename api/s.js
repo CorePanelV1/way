@@ -41,6 +41,7 @@ export default function handler(req) {
 <meta property="og:title" content="${esc(title)}"/>
 <meta property="og:description" content="${esc(desc)}"/>
 <meta property="og:type" content="website"/>
+<meta property="og:url" content="${esc(url.origin + '/s' + (d ? '?d=' + encodeURIComponent(d) : ''))}"/>
 <meta property="og:image" content="${url.origin}/og-${k}.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
