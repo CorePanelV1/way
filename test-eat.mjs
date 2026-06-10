@@ -23,7 +23,7 @@ const total = await page.evaluate(()=>{
   return h.offsetHeight - window.innerHeight;
 });
 
-for(const tp of [0, 0.12, 0.30, 0.44, 0.55, 0.70, 0.84, 0.92]){
+for(const tp of [0, 0.15, 0.17, 0.25, 0.35, 0.45, 0.58, 0.70, 0.84]){
   await page.evaluate(y=>window.scrollTo(0,y), Math.round(tp*total));
   await page.waitForTimeout(900);
   await page.screenshot({path:`shot-tp${String(tp).replace('.','_')}.png`});

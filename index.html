@@ -669,8 +669,9 @@ computeTextFontMax();
 document.fonts.load('600 48px "Cormorant Garamond"').then(()=>{fontsLoaded=true;});
 window.addEventListener('resize',()=>{sizeFC();computeTextFontMax();},{passive:true});
 
-// TEXT_START: when the text (and simultaneous video-in-letters crossfade) begins.
-// Full-bleed video plays alone until this point.
+// TEXT_START: the full-bleed video plays alone until this point, then is
+// swapped for the masked version — from here on the video exists only
+// INSIDE the letters; outside is solid background, never video.
 const TEXT_START = 0.16;
 
 function drawTextEat(tp){
@@ -678,25 +679,27 @@ function drawTextEat(tp){
   TCX.clearRect(0,0,W,H);
   if(!fontsLoaded||tp<TEXT_START) return;
 
-  // From TEXT_START onward everything happens together:
-  //   tp TEXT_START → TEXT_START+0.12 : text fades in, video-in-letters fades in
-  //                                     (full-bleed is already fading out in updateFrameSequence)
-  //   tp 0.44 → 0.62 : video drains out of the letters → solid crimson text
-  //   tp 0.62 → 0.80 : text remains over returning starfield
-  //   tp 0.80 → 0.88 : text fades out
+  //   tp TEXT_START        : hard swap — video now plays INSIDE giant letters
+  //   tp TEXT_START → 0.42 : letters shrink from giant to normal size
+  //                          (you watch the video get swallowed into the text)
+  //   tp 0.50 → 0.66       : video drains out of the letters → solid crimson
+  //   tp 0.66 → 0.80       : text remains over returning starfield
+  //   tp 0.80 → 0.88       : text fades out
 
-  const fadeIn  = Math.min((tp-TEXT_START)/0.12, 1);
   const endFade = tp>0.80 ? Math.max(0,(0.88-tp)/0.08) : 1;
-  const alpha   = fadeIn*endFade;
+  const alpha   = endFade;
   if(alpha<=0) return;
 
-  const fontSize = textFontMax; // fixed size — no grow/settle
+  // Giant → normal: letters start ~3.2× (glyph strokes fill most of the
+  // screen so the swap from full-bleed reads as capture, not a cut),
+  // easing down to 1× by tp=0.42.
+  const sp = Math.min(Math.max((tp-TEXT_START)/(0.42-TEXT_START),0),1);
+  const shrink = 1-Math.pow(1-sp,3); // ease-out cubic
+  const fontSize = textFontMax*(3.2-2.2*shrink);
 
-  // Video inside the letters: fades in exactly as text fades in, then drains
-  const vidA = tp<TEXT_START ? 0
-             : tp<TEXT_START+0.12 ? Math.min((tp-TEXT_START)/0.12, 1)
-             : tp<0.44 ? 1
-             : tp<0.62 ? Math.max(0, 1-(tp-0.44)/0.18)
+  // Video inside the letters: full from the swap, drains away 0.50→0.66
+  const vidA = tp<0.50 ? 1
+             : tp<0.66 ? Math.max(0, 1-(tp-0.50)/0.16)
              : 0;
 
   const lineH = fontSize*1.12;
@@ -823,13 +826,11 @@ function updateFrameSequence(p){
     const vh=window.innerHeight;
     vig=Math.max(0,Math.min(1,gt/(vh*0.8)));
   }
-  // During the eat phase the video lives inside the text letters (text-canvas).
-  // Full-bleed collapses into the letters (tp 0.24→0.40) and SC stays opaque
-  // (it shows the black background drawn by the RAF loop for the eat phase).
-  // Full-bleed video plays alone until TEXT_START, then crossfades out
-  // at the exact same rate the text (and video-in-letters) fades in.
-  const eatFade = tp<TEXT_START ? 1 : tp<TEXT_START+0.12 ? Math.max(0,1-(tp-TEXT_START)/0.12) : 0;
-  const inEat   = tp>TEXT_START-0.02 && tp<0.65;
+  // Hard swap at TEXT_START: full-bleed video disappears the instant the
+  // masked giant-letter version takes over (drawn on text-canvas). The video
+  // is never visible outside the letters once the text exists.
+  const eatFade = tp<TEXT_START ? 1 : 0;
+  const inEat   = tp>=TEXT_START && tp<0.70;
   const alpha   = fadeIn*exit*eatFade;
   if(FW)  FW.style.opacity =frameReady?String(alpha):'0';
   // After the eat, the starfield returns behind the remaining crimson text
@@ -864,7 +865,7 @@ window.addEventListener('resize',()=>{U.init(SC);sizeFC();},{passive:true});
     if(end>0) vp=Math.max(0,Math.min(1,window.scrollY/end));
   }
   // During the eat phase draw a pure black background on SC instead of stars
-  if(tp>TEXT_START-0.02&&tp<0.65){
+  if(tp>=TEXT_START&&tp<0.70){
     const ectx=SC.getContext('2d');
     ectx.fillStyle='#040203';
     ectx.fillRect(0,0,SC.width,SC.height);
