@@ -1092,6 +1092,14 @@ function openShareModal(){
   document.getElementById('modal-audio-btn').classList.remove('active');
   AudioEngine.stop();
   setTimeout(()=>{ AudioEngine.play(weeklyKey); updateModalAudioBtn(true); }, 400);
+  // First time ever: one slow auto-flip so the user discovers the back face
+  try{
+    if(!localStorage.getItem('way_flip_hinted')){
+      localStorage.setItem('way_flip_hinted','1');
+      setTimeout(()=>{document.getElementById('flip-card').classList.add('flipped');},1500);
+      setTimeout(()=>{document.getElementById('flip-card').classList.remove('flipped');},3200);
+    }
+  }catch(e){}
 }
 
 function toggleFlip(){
@@ -1519,8 +1527,18 @@ function renderFavList(){
   const list=document.getElementById('fav-list');
   if(!list) return;
   const favs=getFavs();
-  if(!favs.length){list.innerHTML='<div style="color:rgba(245,230,208,.25);font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:1rem;text-align:center;padding:40px 0">No saved bearings yet.<br>Heart a card to save it here.</div>';return;}
-  list.innerHTML=favs.map((f,i)=>{
+  // Collection progress: one glyph per tradition, lit when you hold a bearing from it
+  const collected=new Set(favs.map(f=>f.key));
+  const ORDER=['arabic','zen','stoic','ubuntu','sufi','taoist','vedic','celtic','nordic','confucian'];
+  const progress=`<div style="margin-bottom:18px">
+    <div style="font-family:'Cinzel',serif;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.3);margin-bottom:10px">Your Collection · ${collected.size}/10 traditions</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${ORDER.map(k=>{
+      const m=WEEKLY_META[k]||{};const has=collected.has(k);
+      return`<span title="${m.label||k}" style="width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-size:.95rem;border:.5px solid ${has?(m.color||'#c9a84c'):'rgba(245,230,208,.08)'};color:${has?(m.color||'#c9a84c'):'rgba(245,230,208,.12)'};background:${has?'rgba(245,230,208,.04)':'transparent'}">${m.glyph||'✦'}</span>`;
+    }).join('')}</div>
+  </div>`;
+  if(!favs.length){list.innerHTML=progress+'<div style="color:rgba(245,230,208,.25);font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:1rem;text-align:center;padding:40px 0">No saved bearings yet.<br>Heart a card to save it here.</div>';return;}
+  list.innerHTML=progress+favs.map((f,i)=>{
     const m=WEEKLY_META[f.key]||WEEKLY_META.arabic;
     return`<div style="background:rgba(245,230,208,.03);border:.5px solid rgba(245,230,208,.08);border-radius:14px;padding:16px;margin-bottom:10px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -1529,9 +1547,23 @@ function renderFavList(){
       </div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--parch2);line-height:1.5;margin-bottom:5px">${escHtml(f.quote)}</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(245,230,208,.38);line-height:1.5;margin-bottom:8px">${escHtml(f.translation)}</div>
-      <div style="font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--golddim)">${escHtml(f.concept)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--golddim)">${escHtml(f.concept)}</span>
+        <button onclick="shareFav(${i})" style="background:transparent;border:.5px solid rgba(245,230,208,.15);color:rgba(245,230,208,.5);padding:6px 14px;border-radius:16px;font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">⎘ Share</button>
+      </div>
     </div>`;
   }).join('');
+}
+async function shareFav(i){
+  const f=getFavs()[i];
+  if(!f) return;
+  const m=WEEKLY_META[f.key]||{};
+  const payload={k:f.key,q:(f.quote||'').slice(0,300),t:(f.translation||'').slice(0,200),c:f.concept||'',a:(f.coordinate||m.coord||'')+' · '+(f.region||m.region||'')};
+  const encoded=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
+  showToast('Shortening link…');
+  const url=await shortUrl(window.location.origin+'/s?d='+encoded);
+  const ok=await copyText(url);
+  showToast(ok?'Link copied ✓':'Copy failed — long-press to copy');
 }
 function removeFav(i){const favs=getFavs();favs.splice(i,1);saveFavs(favs);updateFavCount();renderFavList();}
 function openFavDrawer(){renderFavList();document.getElementById('fav-drawer').style.right='0';document.getElementById('fav-overlay').style.display='block';}

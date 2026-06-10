@@ -176,6 +176,9 @@ const GLYPHS={arabic:'☽',zen:'⛩',stoic:'Φ',ubuntu:'◉',sufi:'✦',taoist:'
     document.getElementById('cb-coord2').textContent=a;
     const wrap=document.getElementById('card-wrap');
     wrap.style.display='flex';
+    // Teach the flip: one slow auto-flip and back shortly after reveal
+    setTimeout(()=>{document.getElementById('flip-wrap').classList.add('flipped');},1700);
+    setTimeout(()=>{document.getElementById('flip-wrap').classList.remove('flipped');},3400);
   }catch(e){
     document.getElementById('error-state').style.display='block';
   }

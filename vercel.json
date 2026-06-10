@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/s",     "destination": "/s.html" },
+    { "source": "/s",     "destination": "/api/s" },
     { "source": "/card",  "destination": "/card.html" },
     { "source": "/today", "destination": "/today.html" },
     { "source": "/about", "destination": "/about.html" }
@@ -28,6 +28,12 @@
     },
     {
       "source": "/(og|og-card|favicon).svg",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/og-(.*).png",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400" }
       ]
