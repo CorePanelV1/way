@@ -63,14 +63,16 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 
 /* HERO */
 #hero-section{position:relative;height:500vh;z-index:1}
-#hero-sticky{position:sticky;top:0;height:100svh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:#05030a}
-#scrub-canvas{position:absolute;inset:0;z-index:1;width:100%;height:100%}
-#frame-wrap{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;will-change:opacity}
+#hero-sticky{position:sticky;top:0;height:100dvh;height:100vh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:transparent}
+#scrub-canvas{position:fixed;inset:0;z-index:1;width:100%;height:100%}
+#frame-wrap{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;will-change:opacity}
 #frame-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #frame-loader{position:fixed;bottom:0;left:0;right:0;height:2px;background:rgba(201,168,76,.08);z-index:199;pointer-events:none;transition:opacity 1.2s}
 #frame-loader.done{opacity:0}
 #frame-loader-fill{height:100%;background:var(--gold);width:0%;transition:width .15s linear}
-#vignette{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.45) 100%)}
+#vignette{position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.45) 100%)}
+/* All content sections sit above the fixed video layer */
+#scroll-grid,#how-section,#why,#share-section,#cta-section,footer{position:relative;z-index:5}
 
 /* HERO TITLES */
 .hero-title{position:relative;z-index:7;font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,12vw,10rem);font-weight:600;line-height:.85;letter-spacing:-.02em;will-change:transform,opacity;user-select:none}
@@ -694,20 +696,20 @@ function drawFrame(idx){
 })();
 
 const GRID_SEC=document.getElementById('scroll-grid');
+const VIG=document.getElementById('vignette');
 function updateFrameSequence(p){
-  const fadeIn  = p>0.01 ? Math.min((p-0.01)/0.05,1) : 0;
-  // Fade-out is driven by the arrival of the "Wisdom that has waited for you"
-  // section, not by hero progress — the video stays visible and playing until
-  // that section scrolls in, then dissolves as it takes over the viewport.
-  let exit = 1;
+  const fadeIn = p>0.01 ? Math.min((p-0.01)/0.05,1) : 0;
+  // Fade out when "Wisdom that has waited for you" (#scroll-grid) enters viewport
+  let exit=1;
   if(GRID_SEC){
-    const gt = GRID_SEC.getBoundingClientRect().top;
-    const vh = window.innerHeight;
-    exit = Math.max(0, Math.min(1, (gt - vh*0.30) / (vh*0.70)));
+    const gt=GRID_SEC.getBoundingClientRect().top;
+    const vh=window.innerHeight;
+    exit=Math.max(0,Math.min(1,(gt-vh*0.25)/(vh*0.75)));
   }
-  const alpha = fadeIn*exit;
-  if(FW)  FW.style.opacity  = frameReady ? String(alpha) : '0';
-  if(SC)  SC.style.opacity  = String(1-alpha*0.95);
+  const alpha=fadeIn*exit;
+  if(FW)  FW.style.opacity =frameReady?String(alpha):'0';
+  if(SC)  SC.style.opacity =String(exit*(1-alpha*0.9));
+  if(VIG) VIG.style.opacity=String(exit);
   if(alpha>0.01){
     const normP=Math.max(0,Math.min(1,(p-0.01)/0.99));
     drawFrame(Math.min(FRAME_COUNT-1,Math.floor(normP*FRAME_COUNT)));
