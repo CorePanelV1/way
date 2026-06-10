@@ -124,6 +124,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   <div class="day-eyebrow">WAY of the Day</div>
   <div class="day-date" id="day-date"></div>
   <div class="day-title">Today's<br>bearing</div>
+  <div id="streak-chip" style="display:none;margin-top:14px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.75);border:.5px solid rgba(201,168,76,.3);border-radius:16px;padding:7px 16px;align-items:center;gap:7px"></div>
 </div>
 
 <div class="day-card" id="day-card">
@@ -154,6 +155,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
   <div class="share-row">
     <button class="sh-btn" onclick="copyLink()">⎘ Copy Link</button>
     <a class="sh-btn" id="x-btn" href="#" target="_blank">𝕏 Share on X</a>
+    <button class="sh-btn" onclick="addWeeklyReminder()">✦ Weekly Reminder</button>
   </div>
   <div class="audio-row">
     <button class="play-day-btn" id="play-day-btn" onclick="toggleDayAudio()">
@@ -477,6 +479,48 @@ function toggleDayAudio(){
     ? '<rect x="0" y="0" width="3.5" height="12"/><rect x="6.5" y="0" width="3.5" height="12"/>'
     : '<polygon points="0,0 10,6 0,12"/>';
   lbl.textContent = on ? 'Pause' : 'Play Ambient';
+}
+
+/* ── DAILY STREAK ── */
+(function(){
+  const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD local
+  const yest = new Date(Date.now()-864e5).toLocaleDateString('en-CA');
+  let s = {c:0,l:''};
+  try{ s = JSON.parse(localStorage.getItem('way_streak')) || s; }catch{}
+  if(s.l !== today){
+    s.c = (s.l === yest) ? s.c+1 : 1;
+    s.l = today;
+    localStorage.setItem('way_streak', JSON.stringify(s));
+  }
+  const chip = document.getElementById('streak-chip');
+  chip.innerHTML = s.c === 1
+    ? '✦ Day 1 — your bearing begins'
+    : `✦ ${s.c}-day streak — wisdom compounds`;
+  chip.style.display = 'inline-flex';
+})();
+
+/* ── WEEKLY CALENDAR REMINDER (.ics, recurring Monday 9am local) ── */
+function addWeeklyReminder(){
+  const d = new Date();
+  d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); // next Monday
+  d.setHours(9,0,0,0);
+  const p = n => String(n).padStart(2,'0');
+  const dt = `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}T090000`;
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//WAY//Weekly Bearing//EN',
+    'BEGIN:VEVENT',
+    'UID:weekly-bearing@way-whereareyou.vercel.app',
+    `DTSTART:${dt}`,
+    'RRULE:FREQ=WEEKLY;BYDAY=MO',
+    'SUMMARY:✦ WAY — a new tradition awaits',
+    'DESCRIPTION:A new wisdom tradition rotates in this week. Find your bearing → https://way-whereareyou.vercel.app/today',
+    'URL:https://way-whereareyou.vercel.app/today',
+    'END:VEVENT','END:VCALENDAR'
+  ].join('\r\n');
+  const url = URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
+  const a = document.createElement('a');
+  a.href = url; a.download = 'way-weekly.ics'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 3000);
 }
 
 /* ── COPY LINK ── */

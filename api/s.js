@@ -29,7 +29,7 @@ export default function handler(req) {
 
   const label = k.charAt(0).toUpperCase() + k.slice(1);
   const title = q ? `“${q}” — ${label} wisdom on WAY` : 'WAY — Find Your Bearing';
-  const desc  = t || 'Ancient wisdom for exactly where you are. Ten traditions, one a week.';
+  const desc  = t || 'Someone told WAY where they were. This was the answer. Ten traditions, one a week.';
   const dest  = '/s.html' + (d ? '?d=' + encodeURIComponent(d) : '');
 
   const html = `<!DOCTYPE html>

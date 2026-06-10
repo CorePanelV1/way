@@ -1179,11 +1179,11 @@ async function modalX(){
   const d=lastWisdom[weeklyKey];
   let tweetText;
   if(isFlipped){
-    const gz=(d.genZ||'').slice(0,220);
-    tweetText=`"${gz}" — ${weeklyMeta.label} wisdom (gen z edition) via WAY`;
+    const gz=(d.genZ||'').slice(0,200);
+    tweetText=`I told WAY where I was. The gen z take: "${gz}" — ${weeklyMeta.label} wisdom`;
   } else {
-    const quote=(d.translation||d.quote||'').slice(0,160);
-    tweetText=`"${quote}" — ${d.concept}, ${weeklyMeta.label} wisdom`;
+    const quote=(d.translation||d.quote||'').slice(0,150);
+    tweetText=`I told WAY where I was. It answered: "${quote}" — ${weeklyMeta.label} wisdom`;
   }
   showToast('Shortening link…');
   const link=await shortUrl(buildShareUrl(weeklyKey));
@@ -1198,7 +1198,7 @@ async function modalWhatsApp(){
   const orig=waBtn.innerHTML;
   waBtn.innerHTML='<span style="opacity:.6">•••</span> Generating…';
   waBtn.disabled=true;
-  const waText=`✦ WAY · ${m.label}\n\n${d.quote}\n\n"${d.translation}"\n— ${d.concept}\n\nFind your bearing 👉 way-whereareyou.vercel.app`;
+  const waText=`✦ I told WAY where I was. It answered — ${m.label} wisdom:\n\n${d.quote}\n\n"${d.translation}"\n— ${d.concept}\n\nTell it where *you* are 👉 way-whereareyou.vercel.app`;
   try {
     const isFlipped=document.getElementById('flip-card').classList.contains('flipped');
     const canvas=await buildWisdomCanvas(isFlipped?'genz':'wisdom');
