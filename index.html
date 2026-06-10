@@ -982,7 +982,7 @@ function renderCard(idx, animate){
       .join('');
   }
 
-  if(animate){
+  if(animate && typeof gsap!=='undefined'){
     gsap.to(card,{opacity:0,y:6,duration:.18,ease:'power2.in',onComplete:()=>{
       apply();
       gsap.to(card,{opacity:1,y:0,duration:.26,ease:'power2.out'});
