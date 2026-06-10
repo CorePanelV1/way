@@ -775,6 +775,87 @@ function drawTextEat(tp){
     TCX.drawImage(osc,0,0);
     TCX.restore();
   }
+
+  // 4. Roman laurels — sprout up around the title as the video drains,
+  //    framing the settled crimson text like a victory wreath.
+  const lgrow = 1-vidA;
+  if(lgrow>0.01 && shrink>0.95){
+    TCX.font=fontStr;
+    const textW=Math.max(TCX.measureText('ARE YOU?').width,TCX.measureText('WHERE').width);
+    const R =Math.min(W*0.46, textW*0.62+fontSize*0.55);
+    const Ry=Math.min(H*0.36, totalH*1.05);
+    drawLaurelBranch(TCX,W/2,cy,R,Ry,-1,lgrow,alpha,fontSize);
+    drawLaurelBranch(TCX,W/2,cy, R,Ry, 1,lgrow,alpha,fontSize);
+    // small gold diamond anchoring the wreath beneath the title
+    if(lgrow>0.9){
+      TCX.save();
+      TCX.globalAlpha=alpha*Math.min(1,(lgrow-0.9)*10);
+      TCX.translate(W/2, cy+Ry*0.99);
+      TCX.rotate(Math.PI/4);
+      const d=fontSize*0.045;
+      TCX.fillStyle=`rgba(${GOLD},0.9)`;
+      TCX.fillRect(-d/2,-d/2,d,d);
+      TCX.restore();
+    }
+  }
+}
+
+// ── Roman laurel branch ──────────────────────────────────────────────
+// Procedural laurel (victory wreath half) hugging one side of the title.
+// grow 0→1 draws the branch from its base upward, leaf by leaf — it
+// appears to sprout as the video drains out of the letters.
+const GOLD='201,162,95';
+function drawLaurelBranch(ctx,cx,cy,R,Ry,side,grow,alpha,fs){
+  if(grow<=0.01||alpha<=0.01) return;
+  const STEPS=40;
+  const pt=t=>{                       // t 0→1: base (bottom) → tip (top)
+    const a=1.05-2.10*t;              // arc angle
+    return {x:cx+side*R*(0.80+0.20*Math.cos(a)), y:cy+Ry*Math.sin(a)};
+  };
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.lineCap='round';
+  // stem
+  ctx.strokeStyle=`rgba(${GOLD},0.75)`;
+  ctx.lineWidth=Math.max(1,fs*0.014);
+  ctx.beginPath();
+  const n=Math.max(2,Math.floor(STEPS*grow));
+  for(let i=0;i<=n;i++){const p=pt(i/STEPS); i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}
+  ctx.stroke();
+  // leaves — pairs angled off the stem, classic laurel rhythm
+  const LEAVES=13;
+  for(let k=1;k<=LEAVES;k++){
+    const t=k/(LEAVES+1);
+    if(t>grow) break;
+    const p=pt(t), p2=pt(t+0.02);
+    const tang=Math.atan2(p2.y-p.y,p2.x-p.x);
+    const L=fs*(0.085+0.02*Math.sin(k*2.7));          // slight organic variation
+    const leafA=alpha*Math.min(1,(grow-t)*8);          // each leaf fades in as reached
+    for(const sgn of [1,-1]){
+      const th=tang+sgn*0.78;
+      ctx.save();
+      ctx.globalAlpha=leafA;
+      ctx.translate(p.x+Math.cos(th)*L*0.55, p.y+Math.sin(th)*L*0.55);
+      ctx.rotate(th);
+      ctx.fillStyle=`rgba(${GOLD},${sgn>0?0.80:0.62})`;
+      ctx.beginPath();
+      ctx.ellipse(0,0,L*0.52,L*0.17,0,0,Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+  // tip leaf along the stem direction
+  if(grow>0.97){
+    const p=pt(1), p0=pt(0.97);
+    const th=Math.atan2(p.y-p0.y,p.x-p0.x);
+    ctx.translate(p.x+Math.cos(th)*fs*0.05, p.y+Math.sin(th)*fs*0.05);
+    ctx.rotate(th);
+    ctx.fillStyle=`rgba(${GOLD},0.85)`;
+    ctx.beginPath();
+    ctx.ellipse(0,0,fs*0.055,fs*0.018,0,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
 }
 
 window.addEventListener('resize',sizeFC,{passive:true});
