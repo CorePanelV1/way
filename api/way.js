@@ -196,6 +196,7 @@ export default async function handler(req) {
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+      signal: AbortSignal.timeout(25000),
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [
@@ -220,7 +221,9 @@ export default async function handler(req) {
     const match = text.match(/\{[\s\S]*\}/);
     if (!match) return new Response(JSON.stringify({ error: 'Could not parse wisdom. Try again.' }), { status: 500, headers });
 
-    const wisdom = JSON.parse(match[0]);
+    let wisdom;
+    try { wisdom = JSON.parse(match[0]); }
+    catch { return new Response(JSON.stringify({ error: 'Could not parse wisdom. Try again.' }), { status: 500, headers }); }
     // If any tradition has an empty quote, substitute from the curated list
     // Prefer entries the user hasn't seen recently
     for (const key of Object.keys(TRADITIONS)) {

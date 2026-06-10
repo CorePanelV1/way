@@ -4,9 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>WAY — Find Your Bearing</title>
-<meta name="description" content="Tell WAY how you feel. Receive ancient wisdom from four cultures."/>
+<meta name="description" content="Tell WAY how you feel. Receive ancient wisdom from ten traditions rotating weekly."/>
 <meta property="og:title" content="WAY — Find Your Bearing"/>
-<meta property="og:description" content="Tell WAY how you feel. Receive ancient wisdom from Arabic, Zen, Stoic and Ubuntu traditions."/>
+<meta property="og:description" content="Tell WAY how you feel. Ten wisdom traditions rotating weekly — Arabic, Zen, Stoic, Ubuntu, Sufi, Taoist, Vedic, Celtic, Nordic, Confucian."/>
 <meta property="og:image" content="/og.svg"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://way-whereareyou.vercel.app/way.html"/>
@@ -553,7 +553,7 @@ body{background:var(--bg);color:var(--parch);font-family:'Cormorant Garamond',se
 </div>
 
 <!-- ═══ SHARE MODAL ════════════════════════════════════════════════════ -->
-<div id="share-modal" class="hidden">
+<div id="share-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Share your bearing">
   <div class="modal-backdrop" onclick="closeShareModal()"></div>
   <div class="modal-inner">
     <button class="modal-close" onclick="closeShareModal()" aria-label="Close">✕ Close</button>
@@ -910,11 +910,16 @@ function recordRecentQuote(quote){
   }catch{}
 }
 
+let seeking = false;
 async function seek(){
+  if(seeking) return;
   if(navigator.vibrate) navigator.vibrate(50);
   const feeling = feelingEl.value.trim();
   if(feeling.length < 3){ showToast('Share a little more…'); feelingEl.focus(); return; }
 
+  seeking = true;
+  const seekBtn = document.getElementById('seek-btn');
+  if(seekBtn) seekBtn.disabled = true;
   AudioEngine.stop();
   show('state-loading');
 
@@ -967,6 +972,10 @@ async function seek(){
     finishLoadAnim();
     show('state-input');
     showToast(err.message || 'Something went wrong. Try again.');
+  } finally {
+    seeking = false;
+    const sb = document.getElementById('seek-btn');
+    if(sb) sb.disabled = false;
   }
 }
 
@@ -1094,6 +1103,9 @@ function closeShareModal(){
   document.getElementById('share-modal').classList.add('hidden');
   AudioEngine.stop();
 }
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!document.getElementById('share-modal').classList.contains('hidden')) closeShareModal();
+});
 
 function updateModalAudioBtn(playing){
   const btn = document.getElementById('modal-audio-btn');
@@ -1129,11 +1141,27 @@ async function shortUrl(u){
   return u;
 }
 
+function copyText(t){
+  if(navigator.clipboard?.writeText){
+    return navigator.clipboard.writeText(t).then(()=>true).catch(()=>copyTextFallback(t));
+  }
+  return Promise.resolve(copyTextFallback(t));
+}
+function copyTextFallback(t){
+  const ta=document.createElement('textarea');
+  ta.value=t;ta.style.cssText='position:fixed;opacity:0';
+  document.body.appendChild(ta);ta.select();
+  let ok=false;
+  try{ok=document.execCommand('copy');}catch{}
+  document.body.removeChild(ta);
+  return ok;
+}
 async function modalCopy(){
   if(!lastWisdom||!activeShareKey) return;
   showToast('Shortening link…');
   const url=await shortUrl(buildShareUrl(activeShareKey));
-  navigator.clipboard.writeText(url).then(()=>showToast('Link copied ✓'));
+  const ok=await copyText(url);
+  showToast(ok?'Link copied ✓':'Copy failed — long-press to copy');
 }
 
 async function modalX(){
@@ -1232,9 +1260,9 @@ async function buildWisdomCanvas(side){
   ctx.scale(dpr,dpr);
 
   // Culture accent colours
-  const ACCENT={arabic:'#8c1b35',zen:'#1a6b58',stoic:'#7a4820',ubuntu:'#7a3010'};
-  const BG={arabic:'#0e0105',zen:'#02080a',stoic:'#090706',ubuntu:'#0c0600'};
-  const GLOW={arabic:'rgba(140,27,53,.28)',zen:'rgba(26,107,88,.22)',stoic:'rgba(122,72,32,.25)',ubuntu:'rgba(122,48,16,.28)'};
+  const ACCENT={arabic:'#8c1b35',zen:'#1a6b58',stoic:'#7a4820',ubuntu:'#7a3010',sufi:'#7a3585',taoist:'#2a5c78',vedic:'#c47820',celtic:'#2d6b3a',nordic:'#4a5a8c',confucian:'#8c4a2a'};
+  const BG={arabic:'#0e0105',zen:'#02080a',stoic:'#090706',ubuntu:'#0c0600',sufi:'#0d0210',taoist:'#010a0e',vedic:'#0e0800',celtic:'#010e04',nordic:'#03050e',confucian:'#0e0500'};
+  const GLOW={arabic:'rgba(140,27,53,.28)',zen:'rgba(26,107,88,.22)',stoic:'rgba(122,72,32,.25)',ubuntu:'rgba(122,48,16,.28)',sufi:'rgba(122,53,133,.28)',taoist:'rgba(42,92,120,.25)',vedic:'rgba(196,120,32,.28)',celtic:'rgba(45,107,58,.25)',nordic:'rgba(74,90,140,.25)',confucian:'rgba(140,74,42,.28)'};
   const accent=ACCENT[weeklyKey]||'#8c1b35';
   const bgCol=BG[weeklyKey]||'#0f0608';
   const glowCol=GLOW[weeklyKey]||'rgba(140,27,53,.2)';
@@ -1412,7 +1440,7 @@ function obFinish(){
   const trads=Array.from(document.querySelectorAll('.ob-trad.sel')).map(b=>b.dataset.key);
   try{
     localStorage.setItem('way_onboarded','1');
-    if(trads.length) localStorage.setItem('way_prefs',JSON.stringify(trads));
+    if(trads.length) localStorage.setItem('way_traditions',JSON.stringify(trads));
   }catch(e){}
   const modal=document.getElementById('onboard-modal');
   const inner=modal.querySelector('.ob-inner');

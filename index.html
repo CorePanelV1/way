@@ -9,8 +9,8 @@
 <meta property="og:description" content="Tell WAY how you feel. Ten wisdom traditions rotating weekly — Arabic, Zen, Stoic, Ubuntu, Sufi, Taoist, Vedic, Celtic, Nordic, Confucian."/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="/og.svg"/>
-<meta property="og:url" content="https://way-whereareyou.vercel.app/index.html"/>
-<link rel="canonical" href="https://way-whereareyou.vercel.app/index.html"/>
+<meta property="og:url" content="https://way-whereareyou.vercel.app/"/>
+<link rel="canonical" href="https://way-whereareyou.vercel.app/"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="WAY — Where Are You?"/>
 <meta name="twitter:description" content="Ancient wisdom for your exact moment."/>
@@ -31,7 +31,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 /* SCROLL PROGRESS */
-#scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:200;pointer-events:none}
+#scroll-progress{position:fixed;top:env(safe-area-inset-top,0);left:0;right:0;height:2px;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:200;pointer-events:none}
 :root{
   --bg:#f5e6d0;--bg2:#eedcc0;--bg3:#e5cfa6;
   --red:#8c1b35;--red2:#a82040;--red3:#5a1020;
@@ -48,7 +48,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 /* Hero: dark bg — light text */
 .nav-logo{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;letter-spacing:8px;color:rgba(245,230,208,.85);text-decoration:none;transition:color .5s}
 .nav-links{display:flex;gap:32px;align-items:center}
-.nav-link{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.65);text-decoration:none;transition:color .3s}
+.nav-link{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,230,208,.82);text-decoration:none;transition:color .3s}
 .nav-link:hover{color:rgba(245,230,208,1)}
 .nav-cta{background:transparent;border:.5px solid rgba(245,230,208,.3);color:rgba(245,230,208,.7);padding:9px 24px;min-height:44px;display:inline-flex;align-items:center;border-radius:6px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .nav-cta:hover{background:rgba(245,230,208,.1);color:rgba(245,230,208,1)}
@@ -248,7 +248,11 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
   .pillars{display:flex;flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:14px;padding:4px 20px 20px;margin:0 -20px;scrollbar-width:none}
   .pillars::-webkit-scrollbar{display:none}
   .pillar{flex:0 0 78vw;max-width:300px;scroll-snap-align:center}
+  .sc-audio-btn{width:44px;height:44px}
+  .card-nav{width:44px;height:44px}
+  #floating-pill{right:12px;padding:10px 14px}
 }
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 /* ═══ SCROLL GRID ══════════════════════════════════════════════════════ */
 #scroll-grid{background:var(--card-dark);padding:80px 0;overflow:hidden;position:relative;z-index:2;border-bottom:.5px solid rgba(201,168,76,.08)}
@@ -868,6 +872,10 @@ document.querySelectorAll('.pillar,.step').forEach(el => io.observe(el));
   window.__weeklyKey = key;
   window.__weeklyMeta = m;
 
+  // HUD shows the actual weekly culture (was hardcoded to ARABIC)
+  const hudCu = document.getElementById('hud-culture');
+  if(hudCu) hudCu.textContent = m.label.toUpperCase()+' · '+m.coord;
+
   // Weekly feature card
   const wf = document.getElementById('weekly-feature');
   if(wf){
@@ -977,6 +985,7 @@ function showToast(msg){
 
 const WAY = {
   goCard(i){
+    if(i<0||i>=SHARE_QUOTES.length) i=0;
     const wp = AudioEngine.playing;
     shareIdx = i; renderCard(i, true);
     if(wp) AudioEngine.play(SHARE_QUOTES[i].audioKey);
@@ -1006,7 +1015,7 @@ const WAY = {
     const q = SHARE_QUOTES[shareIdx];
     const url = window.location.origin + '/way.html';
     const text = q.arabic+'\n\n*"'+q.english+'"*\n\nFind your own bearing → '+url;
-    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener');
   },
 
   shareNative(){
@@ -1188,7 +1197,8 @@ const AudioEngine = (() => {
       r3.style.transform=`translateX(${-drift*0.5}px)`;
       ticking=false;
     }
-    lenis.on('scroll', ()=>{ if(!ticking){ requestAnimationFrame(update); ticking=true; }});
+    if(lenis) lenis.on('scroll', ()=>{ if(!ticking){ requestAnimationFrame(update); ticking=true; }});
+    else window.addEventListener('scroll', ()=>{ if(!ticking){ requestAnimationFrame(update); ticking=true; }},{passive:true});
     update();
   })();
 })();
