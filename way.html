@@ -1141,8 +1141,10 @@ function buildShareUrl(key){
 }
 
 async function shortUrl(u){
+  // Shorten via our own edge function — direct browser calls to TinyURL/is.gd
+  // are blocked by CORS, which silently left users with the full-length link.
   try{
-    const r=await fetch('https://tinyurl.com/api-create.php?url='+encodeURIComponent(u),{signal:AbortSignal.timeout(5000)});
+    const r=await fetch('/api/shorten?url='+encodeURIComponent(u),{signal:AbortSignal.timeout(8000)});
     if(r.ok){const t=(await r.text()).trim();if(t.startsWith('http'))return t;}
   }catch{}
   return u;
@@ -1322,6 +1324,9 @@ async function buildWisdomCanvas(side){
     y+=36;
 
     // GenZ text — large, centered
+    // Reset letterSpacing: wrap() measures at 0, so any leftover header
+    // spacing makes rendered lines wider than measured and they bleed off-card
+    ctx.letterSpacing='0px';
     const gzFont=`italic 400 22px "Cormorant Garamond",serif`;
     const gzLines=wrap(d.genZ||'',gzFont,IW-10);
     ctx.font=gzFont;ctx.fillStyle='rgba(245,230,208,.95)';ctx.textAlign='center';
@@ -1354,6 +1359,9 @@ async function buildWisdomCanvas(side){
     ctx.textAlign='center';ctx.fillText(b.glyph,W/2,y+48);ctx.textAlign='left';
 
     // Quote
+    // Reset letterSpacing: wrap() measures at 0, so any leftover header
+    // spacing makes rendered lines wider than measured and they bleed off-card
+    ctx.letterSpacing='0px';
     const isAr=weeklyKey==='arabic';
     const qFont=`italic 400 ${isAr?'22':'24'}px "Cormorant Garamond",serif`;
     const qLines=wrap(d.quote||'',qFont,IW);
