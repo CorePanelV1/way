@@ -631,7 +631,7 @@ const LDF = document.getElementById('frame-loader-fill');
 const frames = new Array(FRAME_COUNT).fill(null);
 let framesLoaded=0, frameReady=false, currentFrame=-1;
 
-function sizeFC(){FC.width=window.innerWidth;FC.height=window.innerHeight;}
+function sizeFC(){FC.width=window.innerWidth;FC.height=window.innerHeight;currentFrame=-1;}
 sizeFC();
 window.addEventListener('resize',sizeFC,{passive:true});
 
