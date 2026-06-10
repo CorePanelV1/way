@@ -62,7 +62,7 @@ nav.scrolled .nav-cta:hover{background:var(--red);color:var(--bg)}
 .nav-mobile-cta{display:none;align-items:center;gap:6px;background:var(--red);color:var(--bg);border:none;border-radius:6px;padding:9px 18px;min-height:44px;font-family:'Cinzel',serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none}
 
 /* HERO */
-#hero-section{position:relative;height:500vh;z-index:1}
+#hero-section{position:relative;height:360vh;z-index:1}
 #hero-sticky{position:sticky;top:0;height:100dvh;height:100vh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:transparent}
 #scrub-canvas{position:fixed;inset:0;z-index:1;width:100%;height:100%}
 #frame-wrap{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;will-change:opacity}
@@ -257,7 +257,8 @@ footer{position:relative;z-index:2;border-top:.5px solid rgba(140,27,53,.1);padd
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 /* ═══ SCROLL GRID ══════════════════════════════════════════════════════ */
-#scroll-grid{background:var(--card-dark);padding:80px 0;overflow:hidden;position:relative;z-index:2;border-bottom:.5px solid rgba(201,168,76,.08)}
+/* Semi-transparent so the fixed hero video glows through behind the content */
+#scroll-grid{background:linear-gradient(180deg,rgba(10,4,7,.42) 0%,rgba(13,5,7,.78) 38%,rgba(17,6,8,.96) 100%);padding:80px 0;overflow:hidden;position:relative;z-index:2;border-bottom:.5px solid rgba(201,168,76,.08)}
 #scroll-grid::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(140,27,53,.08) 0%,transparent 70%);pointer-events:none}
 .sg-label{text-align:center;margin-bottom:52px;position:relative;z-index:1}
 .sg-eyebrow{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:5px;text-transform:uppercase;color:rgba(201,168,76,.45);margin-bottom:10px}
@@ -696,20 +697,30 @@ function drawFrame(idx){
 })();
 
 const GRID_SEC=document.getElementById('scroll-grid');
+const HOW_SEC=document.getElementById('how-section');
 const VIG=document.getElementById('vignette');
 function updateFrameSequence(p){
   const fadeIn = p>0.01 ? Math.min((p-0.01)/0.05,1) : 0;
-  // Fade out when "Wisdom that has waited for you" (#scroll-grid) enters viewport
+  // The video blends INTO the Wisdom section: #scroll-grid's translucent
+  // background lets it glow through. Full fade-out happens only as the
+  // cream #how-section approaches the viewport.
   let exit=1;
+  if(HOW_SEC){
+    const ht=HOW_SEC.getBoundingClientRect().top;
+    const vh=window.innerHeight;
+    exit=Math.max(0,Math.min(1,(ht-vh*0.15)/(vh*0.85)));
+  }
+  // Vignette eases off earlier so it doesn't darken the Wisdom content
+  let vig=1;
   if(GRID_SEC){
     const gt=GRID_SEC.getBoundingClientRect().top;
     const vh=window.innerHeight;
-    exit=Math.max(0,Math.min(1,(gt-vh*0.25)/(vh*0.75)));
+    vig=Math.max(0,Math.min(1,gt/(vh*0.8)));
   }
   const alpha=fadeIn*exit;
   if(FW)  FW.style.opacity =frameReady?String(alpha):'0';
   if(SC)  SC.style.opacity =String(exit*(1-alpha*0.9));
-  if(VIG) VIG.style.opacity=String(exit);
+  if(VIG) VIG.style.opacity=String(Math.min(exit,vig));
   if(alpha>0.01){
     const normP=Math.max(0,Math.min(1,(p-0.01)/0.99));
     drawFrame(Math.min(FRAME_COUNT-1,Math.floor(normP*FRAME_COUNT)));
